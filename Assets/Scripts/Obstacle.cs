@@ -15,13 +15,13 @@ public class Obstacle : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
-		double anguloPropio = gameObject.transform.rotation.z;
+		double anguloPropio = gameObject.transform.rotation.eulerAngles.z / 180 * Mathf.PI ;
 		WaveFragment interfaz = (WaveFragment)collider.GetComponent(typeof(WaveFragment));
 		double anguloColider = interfaz.getAngulo ();
-		Debug.Log (anguloPropio);
-		float anguloFinal = (float)(anguloColider + (Mathf.PI * 0.5) + (anguloPropio * 2));
-
+		float anguloFinal = (float)(anguloColider + (Mathf.PI) + (( anguloPropio - anguloColider ) * 2));
+		//Debug.Log ("anguloPropio:" + anguloPropio + " angulo collider:" + anguloColider + "  anguloFinal:" + anguloFinal);
 		interfaz.setDireccion(new Vector3 (Mathf.Cos(anguloFinal), Mathf.Sin(anguloFinal), 0));
+		//Debug.Log ("x: " + Mathf.Cos(anguloFinal) + "  Y:" +  Mathf.Sin(anguloFinal));
 
 	}
 }
