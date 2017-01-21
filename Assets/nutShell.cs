@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class nutShell : MonoBehaviour {
 	private Rigidbody2D rigidBody;
+	public float peso = 8;
 	// Use this for initialization
 	void Start () {
 		rigidBody = GetComponent<Rigidbody2D>();
@@ -11,10 +12,18 @@ public class nutShell : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
+	}
+
+	void FixedUpdate () {
 		OrientarHaciaDireccion();
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
+		RecibirimpulsoDeOla (collider);
+	}
+
+	void RecibirimpulsoDeOla (Collider2D collider){
 		WaveFragment interfaz = (WaveFragment)collider.GetComponent(typeof(WaveFragment));
 		float impulso = interfaz.getImpulso ();
 		Vector3 direccion = interfaz.getDireccion ();
@@ -22,6 +31,17 @@ public class nutShell : MonoBehaviour {
 	}
 
 	void OrientarHaciaDireccion() {
-		
+		double anguloPropio = gameObject.transform.rotation.eulerAngles.z / 180 * Mathf.PI ;
+		Vector2 direccionActual = rigidBody.velocity.normalized;
+		double anguloObjetivo = Mathf.Atan2 (direccionActual.y, direccionActual.x);
+		float anguloDiferencia = (float)(anguloObjetivo - anguloPropio);
+		if (anguloDiferencia > Mathf.PI) {
+			anguloDiferencia -= 2 * Mathf.PI;
+		}
+		if (anguloDiferencia < Mathf.PI) {
+			anguloDiferencia += 2 * Mathf.PI;
+		}
+		float torque = (float)(anguloDiferencia / (peso * Mathf.PI));
+		rigidBody.AddTorque (torque);
 	}
 }

@@ -5,12 +5,17 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager> {
 	[SerializeField]
 	private GameObject splashObject;
-
+	[SerializeField]
+	private GameObject waveGenerator;
+	[SerializeField]
+	private GameObject terrain;
+	private Collider2D terrainCollider;
 	private const float _TIEMPO_PANTALLA_LOGO = 7.6f;
 	private float tiempoTranscurridoMenuPrincipal;
 	// Use this for initialization
 	void Start () {
 		this.tiempoTranscurridoMenuPrincipal = 0;
+		Collider2D terrainCollider = terrain.GetComponent<Collider2D>();
 	}
 	
 	// Update is called once per frame
@@ -18,7 +23,7 @@ public class GameManager : Singleton<GameManager> {
 		if(SceneManager.GetActiveScene().name == "MenuPrincipal") {
 			GestionaMenuSplash();
 		}
-		
+		AplicarInteraccion ();
 	}
 
 	public void CambiaEscena(string nombreEscena) {
@@ -37,6 +42,22 @@ public class GameManager : Singleton<GameManager> {
 
 		} else {
 			tiempoTranscurridoMenuPrincipal += Time.deltaTime;
+		}
+	}
+
+	void AplicarInteraccion () {
+		AplicarRaton ();
+	}
+
+	void AplicarRaton () {
+
+		if (Input.GetButtonDown ("Fire1")) {
+			RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+			if (terrainCollider.Raycast (ray, out hit, Mathf.Infinity)) {
+				Instantiate (waveGenerator, hit.point, Quaternion.identity);
+			}
 		}
 	}
 }
