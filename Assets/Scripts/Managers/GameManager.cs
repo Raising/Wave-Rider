@@ -20,35 +20,19 @@ public class GameManager : Singleton<GameManager> {
 	
 	// Update is called once per frame
 	void Update () {
-		if(SceneManager.GetActiveScene().name == "MenuPrincipal") {
-			GestionaMenuSplash();
+		if(SceneManager.GetActiveScene().name.Contains("Nivel")) {
+			AplicarInteraccion();
 		}
-		AplicarInteraccion ();
 	}
 
 	public void CambiaEscena(string nombreEscena) {
 		SceneManager.LoadScene(nombreEscena);
 	}
-
-	public void GestionaMenuSplash() {
-		Image imagenSplash = splashObject.GetComponent<Image>();
-		if(this.tiempoTranscurridoMenuPrincipal >= _TIEMPO_PANTALLA_LOGO) {
-			if(imagenSplash.color.a > 0) {
-				Color restandoAlpha = new Color(imagenSplash.color.r, imagenSplash.color.g, imagenSplash.color.b, imagenSplash.color.a - 0.02f);
-				imagenSplash.color = restandoAlpha;
-			} else {
-				splashObject.SetActive(false);
-			}
-
-		} else {
-			tiempoTranscurridoMenuPrincipal += Time.deltaTime;
-		}
-	}
-
-<<<<<<< HEAD
+		
 	public void ExitGame() {
 		Application.Quit ();
-=======
+	}
+
 	void AplicarInteraccion () {
 		AplicarRaton ();
 	}
@@ -68,6 +52,5 @@ public class GameManager : Singleton<GameManager> {
 				Instantiate (waveGenerator, hit.point, Quaternion.identity);
 			}
 		}
->>>>>>> 935607c054a3ba8de08ff5c44c405e7deb662d57
 	}
 }
