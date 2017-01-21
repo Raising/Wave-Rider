@@ -5,14 +5,18 @@ using UnityEngine;
 public class GeneradorOndas : MonoBehaviour {
 	[SerializeField]
 	private int numeroOndas;
-
+	[SerializeField]
 	private float tiempoEntreOnda;
 	private float fuerzaImpulso;
+	[SerializeField]
 	private float delayInicial;
 	private float instanteCreacionGeneradorOndas;
 	private float instanteUltimaOndaLanzada;
 
 	private int ondasLanzadas;
+
+	public GameObject waveFragmentPrefab;
+	public float numeroFragmentoPorOnda = 10;
 
 	public int NumeroOndasRestantes {
 		get {
@@ -39,7 +43,7 @@ public class GeneradorOndas : MonoBehaviour {
 	}
 
 	private bool QuedanOndasPorEmitir() {
-		return this.ondasLanzadas < this.numeroOndas;
+		return this.ondasLanzadas <= this.numeroOndas;
 	}
 
 	private bool NingunaOndaHaSidoLanzada() {
@@ -48,19 +52,31 @@ public class GeneradorOndas : MonoBehaviour {
 
 	private void GeneraPrimeraOndaTrasDelay() {
 		if((Time.time - this.instanteCreacionGeneradorOndas) >= this.delayInicial) {
-			GeneraOnda();
+			emitirOnda();
 		}
 	}
 
 	private void LanzarOndaTrasFrecuencia() {
 		if((Time.time - this.instanteUltimaOndaLanzada >= this.tiempoEntreOnda)) {
-			GeneraOnda();
+			emitirOnda();
 		}
 	}
 
-	private void GeneraOnda() {
-		//TODO MAÑANA LO HABLAMOS
+	void emitirOnda (){
+		Debug.Log("Hello", gameObject);
 
+		for (int i = 0; i < numeroFragmentoPorOnda; i++) {
+		
+           var angle = i * Mathf.PI * 2 / numeroFragmentoPorOnda;
+	       // var pos = new Vector3 (Mathf.Cos(angle), 0, Mathf.Sin(angle)) * 5;
+	       GameObject waveFragment = Instantiate(waveFragmentPrefab, gameObject.transform.position, Quaternion.identity);
+          // waveFragment.transform.rotation = new Vector3(90,0,0);
+         // var  script = waveFragment.GetComponent<"WaveFragment">();
+           WaveFragment interfaz = (WaveFragment)waveFragment.GetComponent(typeof(WaveFragment));
+           interfaz.setDireccion(new Vector3 (Mathf.Cos(angle), Mathf.Sin(angle), 0));
+		   
+        }
+		this.ondasLanzadas++;
 		this.instanteUltimaOndaLanzada = Time.time;
 	}
 	
