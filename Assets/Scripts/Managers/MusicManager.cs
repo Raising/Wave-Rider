@@ -27,7 +27,7 @@ public class MusicManager : Singleton<MusicManager> {
 	}
 
 	public void LoadAudioResources() {
-		AudioResourcesCollection
+
 	}
 
 	void OnLevelWasLoaded(int nivel) {
