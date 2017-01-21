@@ -63,15 +63,9 @@ public class GeneradorOndas : MonoBehaviour {
 	}
 
 	void emitirOnda (){
-		Debug.Log("Hello", gameObject);
-
 		for (int i = 0; i < numeroFragmentoPorOnda; i++) {
-		
-           var angle = i * Mathf.PI * 2 / numeroFragmentoPorOnda;
-	       // var pos = new Vector3 (Mathf.Cos(angle), 0, Mathf.Sin(angle)) * 5;
+           float angle = i * Mathf.PI * 2 / numeroFragmentoPorOnda;
 	       GameObject waveFragment = Instantiate(waveFragmentPrefab, gameObject.transform.position, Quaternion.identity);
-          // waveFragment.transform.rotation = new Vector3(90,0,0);
-         // var  script = waveFragment.GetComponent<"WaveFragment">();
            WaveFragment interfaz = (WaveFragment)waveFragment.GetComponent(typeof(WaveFragment));
            interfaz.setDireccion(new Vector3 (Mathf.Cos(angle), Mathf.Sin(angle), 0));
 		   

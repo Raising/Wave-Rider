@@ -1,4 +1,4 @@
-﻿﻿using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +13,7 @@ public class WaveFragment : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Avanzar();
+
 	}
 
 	void Avanzar () {
@@ -28,4 +29,12 @@ public class WaveFragment : MonoBehaviour {
 		velocidad = nuevaVelocidad;
 	}
 
+
+	void OnBecameInvisible () {
+		Destroy(this.gameObject);
+	}
+
+	public float getAngulo () {
+		return Mathf.Atan2(direccion.x , direccion.y);
+	}
 }
