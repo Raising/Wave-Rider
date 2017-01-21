@@ -20,7 +20,7 @@ public class nutShell : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
-		if (collider.tag == "wave") {
+		if (collider.tag == "Wave") {
 			RecibirimpulsoDeOla (collider);
 		}
 	}

@@ -52,10 +52,14 @@ public class GameManager : Singleton<GameManager> {
 	void AplicarRaton () {
 
 		if (Input.GetButtonDown ("Fire1")) {
-			RaycastHit hit;
+			
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            
-			if (Physics.Raycast (ray, out hit, Mathf.Infinity)) {
+			RaycastHit2D hit;
+			hit = Physics2D.GetRayIntersection(ray);
+
+			if (hit.collider != null) {
+				Debug.Log (hit.transform);
+
 				Debug.DrawLine(ray.origin, hit.point);
 				Instantiate (waveGenerator, hit.point, Quaternion.identity);
 			}
