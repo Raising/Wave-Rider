@@ -11,16 +11,17 @@ public class nutShell : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		OrientarHaciaDireccion();
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
-		
 		WaveFragment interfaz = (WaveFragment)collider.GetComponent(typeof(WaveFragment));
 		float impulso = interfaz.getImpulso ();
-		Vector2 direccion = interfaz.getDireccion ();
+		Vector3 direccion = interfaz.getDireccion ();
 		rigidBody.AddForce (direccion * impulso);
+	}
 
-
+	void OrientarHaciaDireccion() {
+		
 	}
 }
