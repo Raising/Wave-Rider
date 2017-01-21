@@ -35,6 +35,6 @@ public class WaveFragment : MonoBehaviour {
 	}
 
 	public float getAngulo () {
-		return Mathf.Atan2(direccion.x , direccion.y);
+		return Mathf.Atan2( direccion.y,direccion.x );
 	}
 }
