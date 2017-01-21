@@ -11,6 +11,7 @@ public class WaveFragment : MonoBehaviour {
 	private float proporcionDistanciaTamanio = 0.14f;
 	[SerializeField]
 	private float tiempoDisipacionDistancia = 5;
+	private WaveFragment pareja;
 	// Use this for initialization
 	void Start () {
 		
@@ -59,5 +60,9 @@ public class WaveFragment : MonoBehaviour {
 
 	public Vector3 getDireccion () {
 		return direccion;
+	}
+
+	public void setPareja (WaveFragment nuevaPareja){
+		pareja = nuevaPareja;
 	}
 }

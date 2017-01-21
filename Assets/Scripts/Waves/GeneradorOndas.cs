@@ -63,13 +63,30 @@ public class GeneradorOndas : MonoBehaviour {
 	}
 
 	void emitirOnda (){
+		
+		GameObject primerWaveFragment = null;
+		WaveFragment primerInterfaz = null;
+		GameObject previoWaveFragment = null;
+		WaveFragment previoInterfaz = null;
+		GameObject waveFragment = null;
+		WaveFragment interfaz = null;
 		for (int i = 0; i < numeroFragmentoPorOnda; i++) {
+			
            float angle = i * Mathf.PI * 2 / numeroFragmentoPorOnda;
-	       GameObject waveFragment = Instantiate(waveFragmentPrefab, gameObject.transform.position, Quaternion.identity);
-           WaveFragment interfaz = (WaveFragment)waveFragment.GetComponent(typeof(WaveFragment));
-           interfaz.setDireccion(new Vector3 (Mathf.Cos(angle), Mathf.Sin(angle), 0));
-		   
+	       waveFragment = Instantiate(waveFragmentPrefab, gameObject.transform.position, Quaternion.identity);
+		   interfaz = (WaveFragment)waveFragment.GetComponent(typeof(WaveFragment));
+
+			if (previoInterfaz == null) {
+				primerInterfaz = interfaz;
+			} else {
+				previoInterfaz.setPareja (interfaz);
+			}
+
+           interfaz.setDireccion(new Vector3 (Mathf.Cos(angle), Mathf.Sin(angle), 0));  
+		   previoInterfaz = interfaz;
         }
+		primerInterfaz.setPareja (interfaz);
+
 		this.ondasLanzadas++;
 		this.instanteUltimaOndaLanzada = Time.time;
 	}
