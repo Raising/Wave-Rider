@@ -54,8 +54,9 @@ public class GameManager : Singleton<GameManager> {
 		if (Input.GetButtonDown ("Fire1")) {
 			RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-			if (terrainCollider.Raycast (ray, out hit, Mathf.Infinity)) {
+            
+			if (Physics.Raycast (ray, out hit, Mathf.Infinity)) {
+				Debug.DrawLine(ray.origin, hit.point);
 				Instantiate (waveGenerator, hit.point, Quaternion.identity);
 			}
 		}
