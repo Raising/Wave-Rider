@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager> {
 	[SerializeField]
-	private Image imagenSplash;
+	private GameObject splashObject;
 
 	private const float _TIEMPO_PANTALLA_LOGO = 7.6f;
 	private float tiempoTranscurridoMenuPrincipal;
@@ -26,9 +26,15 @@ public class GameManager : Singleton<GameManager> {
 	}
 
 	public void GestionaMenuSplash() {
+		Image imagenSplash = splashObject.GetComponent<Image>();
 		if(this.tiempoTranscurridoMenuPrincipal >= _TIEMPO_PANTALLA_LOGO) {
-			Color restandoAlpha = new Color(imagenSplash.color.r, imagenSplash.color.g, imagenSplash.color.b, imagenSplash.color.a - 0.02f);
-			imagenSplash.color = restandoAlpha;
+			if(imagenSplash.color.a > 0) {
+				Color restandoAlpha = new Color(imagenSplash.color.r, imagenSplash.color.g, imagenSplash.color.b, imagenSplash.color.a - 0.02f);
+				imagenSplash.color = restandoAlpha;
+			} else {
+				splashObject.SetActive(false);
+			}
+
 		} else {
 			tiempoTranscurridoMenuPrincipal += Time.deltaTime;
 		}
