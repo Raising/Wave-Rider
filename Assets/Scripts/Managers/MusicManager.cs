@@ -8,7 +8,11 @@ public class MusicManager : Singleton<MusicManager> {
 	[SerializeField]
 	private const float _MASTER_VOLUME_ = 10;
 
-	private const string _MUSIC_ROOT_DIRECTORY = "Assets/Music/";
+	private List<string> validExtensions = new List<string> {".wav"};
+
+	private string _MUSIC_ROOT_DIRECTORY = "./Audio/Music/";
+
+	private FileInfo[] audioFiles;
 
 	private AudioSource audioSource;
 
@@ -17,23 +21,53 @@ public class MusicManager : Singleton<MusicManager> {
 
 
 	void Awake() {
-		LoadAudioResources();
+		AudioResourcesCollection = new Dictionary<string, AudioClip> ();
 	}
 	// Use this for initialization
 	void Start() {
+		if (Application.isEditor) _MUSIC_ROOT_DIRECTORY = "Assets/Audio/Music/";
+		LoadAudioResources();
 		audioSource = gameObject.GetComponent<AudioSource> ();
 		SetVolume(_MASTER_VOLUME_);
-		playLevelAudio (0);
+
 	}
 
 	public void LoadAudioResources() {
+		var info = new DirectoryInfo(_MUSIC_ROOT_DIRECTORY);
+		audioFiles = info.GetFiles ()
+			.Where(f => isValidAudioFile(f.Name))
+			.ToArray ();
 
+		foreach (FileInfo audioFile in audioFiles) {
+			StartCoroutine (LoadFile (audioFile.FullName, audioFile.Name));
+		}
 	}
 
-	void OnLevelWasLoaded(int nivel) {
+	IEnumerator LoadFile(string path, string name) {
+		
+		WWW www = new WWW("file://"+path);
+		print ("loading " + path);
+		yield return www;
+		if (!string.IsNullOrEmpty(www.error)) {
+			Debug.Log(www.error);
+		}
+
+		print ("done loading");
+		print ("Nombre:" + name);
+		print ("AudioClip" +www.audioClip.ToString ());
+		AudioResourcesCollection.Add (name, www.audioClip);
+
+		playLevelAudio ("MainTheme.wav");
+	}
+
+	bool isValidAudioFile(string audioFile) {
+		return validExtensions.Contains(Path.GetExtension(audioFile));
+	}
+
+	/*void OnLevelWasLoaded(int nivel) {
 		SetVolume(_MASTER_VOLUME_);
 		playLevelAudio ("ThemeNivel"+nivel);
-	}
+	}*/
 
 	private void playLevelAudio(string audioIndex) {   
 		if (AudioResourcesCollection.ContainsKey(audioIndex)) {
@@ -49,6 +83,7 @@ public class MusicManager : Singleton<MusicManager> {
 			AudioClip thisLevelAudio = AudioResourcesCollection.Values.ElementAt (audioIndex);
 			audioSource.clip = thisLevelAudio;
 			audioSource.loop = true;
+			Debug.Log (thisLevelAudio);
 			audioSource.Play ();
 		}
 	}
