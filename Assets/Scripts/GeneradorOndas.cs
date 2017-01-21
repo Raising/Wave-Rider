@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GeneradorOndas : MonoBehaviour {
 	[SerializeField]
-	private int numeroOndasRestantes;
+	private int numeroOndas;
 
 	private float tiempoEntreOnda;
 	private float fuerzaImpulso;
@@ -16,7 +16,7 @@ public class GeneradorOndas : MonoBehaviour {
 
 	public int NumeroOndasRestantes {
 		get {
-			return this.numeroOndasRestantes;
+			return this.numeroOndas;
 		}
 	}
 
@@ -29,14 +29,40 @@ public class GeneradorOndas : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if(QuedanOndasPorEmitir()) {
+			if(NingunaOndaHaSidoLanzada()) {
+				GeneraPrimeraOndaTrasDelay();
+			} else {
+				LanzarOndaTrasFrecuencia();
+			}
+		}
 	}
 
-	private bool HeLanzadoAlgunaOnda() {
-			
+	private bool QuedanOndasPorEmitir() {
+		return this.ondasLanzadas < this.numeroOndas;
+	}
 
+	private bool NingunaOndaHaSidoLanzada() {
 		return this.ondasLanzadas == 0;
 	} 
+
+	private void GeneraPrimeraOndaTrasDelay() {
+		if((Time.time - this.instanteCreacionGeneradorOndas) >= this.delayInicial) {
+			GeneraOnda();
+		}
+	}
+
+	private void LanzarOndaTrasFrecuencia() {
+		if((Time.time - this.instanteUltimaOndaLanzada >= this.tiempoEntreOnda)) {
+			GeneraOnda();
+		}
+	}
+
+	private void GeneraOnda() {
+		//TODO MAÑANA LO HABLAMOS
+
+		this.instanteUltimaOndaLanzada = Time.time;
+	}
 	
 
 }
