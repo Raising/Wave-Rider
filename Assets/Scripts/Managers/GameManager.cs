@@ -39,4 +39,8 @@ public class GameManager : Singleton<GameManager> {
 			tiempoTranscurridoMenuPrincipal += Time.deltaTime;
 		}
 	}
+
+	public void ExitGame() {
+		Application.Quit ();
+	}
 }

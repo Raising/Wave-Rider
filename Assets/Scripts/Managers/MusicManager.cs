@@ -10,7 +10,7 @@ public class MusicManager : Singleton<MusicManager> {
 
 	private List<string> validExtensions = new List<string> {".wav"};
 
-	private string _MUSIC_ROOT_DIRECTORY = "./Music/";
+	private string _MUSIC_ROOT_DIRECTORY = "./Audio/Music/";
 
 	private FileInfo[] audioFiles;
 
@@ -25,7 +25,7 @@ public class MusicManager : Singleton<MusicManager> {
 	}
 	// Use this for initialization
 	void Start() {
-		if (Application.isEditor) _MUSIC_ROOT_DIRECTORY = "Assets/Music/";
+		if (Application.isEditor) _MUSIC_ROOT_DIRECTORY = "Assets/Audio/Music/";
 		LoadAudioResources();
 		audioSource = gameObject.GetComponent<AudioSource> ();
 		SetVolume(_MASTER_VOLUME_);
@@ -39,11 +39,11 @@ public class MusicManager : Singleton<MusicManager> {
 			.ToArray ();
 
 		foreach (FileInfo audioFile in audioFiles) {
-			StartCoroutine (LoadFile (audioFile.FullName));
+			StartCoroutine (LoadFile (audioFile.FullName, audioFile.Name));
 		}
 	}
 
-	IEnumerator LoadFile(string path) {
+	IEnumerator LoadFile(string path, string name) {
 		
 		WWW www = new WWW("file://"+path);
 		print ("loading " + path);
@@ -53,9 +53,11 @@ public class MusicManager : Singleton<MusicManager> {
 		}
 
 		print ("done loading");
-		AudioResourcesCollection.Add (www.audioClip.name, www.audioClip);
+		print ("Nombre:" + name);
+		print ("AudioClip" +www.audioClip.ToString ());
+		AudioResourcesCollection.Add (name, www.audioClip);
 
-		playLevelAudio (0);
+		playLevelAudio ("MainTheme.wav");
 	}
 
 	bool isValidAudioFile(string audioFile) {
