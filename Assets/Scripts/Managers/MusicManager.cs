@@ -78,8 +78,18 @@ public class MusicManager : Singleton<MusicManager> {
 
 		string sceneName = scene.name;
 		Debug.Log (sceneName);
-		playMusic (0);
-			
+
+		if (sceneName == "MenuPrincipal") {
+			StartCoroutine (playMainMenuMusic ());
+		} else {
+			playMusic (2);
+		}
+	}
+
+	IEnumerator playMainMenuMusic() {
+		playMusic (0, false);
+		yield return new WaitForSeconds (MusicResources [0].length);
+		playMusic (1);
 	}
 
 	void Play(AudioClip audio, bool canLoop = false) {
@@ -95,10 +105,10 @@ public class MusicManager : Singleton<MusicManager> {
 		}
 	}
 
-	private void playMusic(int musicKey) {
+	private void playMusic(int musicKey, bool canLoop = true) {
 		if (MusicResources[musicKey]) {
 			AudioClip musicClip = MusicResources [musicKey];
-			Play (musicClip, true);
+			Play (musicClip, canLoop);
 		}
 	}
 		
