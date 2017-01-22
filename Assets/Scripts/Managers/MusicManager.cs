@@ -86,9 +86,9 @@ public class MusicManager : Singleton<MusicManager> {
 		}
 	}
 	IEnumerator playMainMenuMusic() {
-		playMusic (0, false);
+		MusicManager.Instance.playMusic (0, false);
 		yield return new WaitForSeconds (MusicResources [0].length);
-		playMusic (1);
+		MusicManager.Instance.playMusic (1);
 	}
 
 	public void Play(AudioClip audio, bool canLoop = false) {
