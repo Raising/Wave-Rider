@@ -77,9 +77,9 @@ public class WaveFragment : MonoBehaviour {
 
 	public void  EstablecerVisibilidad (){
 		if (pareja != null) {
-			if (visible && AnguloConPareja () > 2.1f * anguloBasePareja) {
+			if (visible && AnguloConPareja () > 4.1f * anguloBasePareja) {
 				setVisible (false);
-			} else if (!visible && AnguloConPareja () <= 2.1f * anguloBasePareja) {
+			} else if (!visible && AnguloConPareja () <= 4.1f * anguloBasePareja) {
 				setVisible (true);
 			}
 		}

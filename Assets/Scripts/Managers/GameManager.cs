@@ -6,16 +6,14 @@ public class GameManager : Singleton<GameManager> {
 	[SerializeField]
 	private GameObject splashObject;
 	[SerializeField]
+	private EmitterSelectorButton currentButton = null;
 	private GameObject waveGenerator;
-	[SerializeField]
-	private GameObject terrain;
-	private Collider2D terrainCollider;
+
 	private const float _TIEMPO_PANTALLA_LOGO = 7.6f;
 	private float tiempoTranscurridoMenuPrincipal;
 	// Use this for initialization
 	void Start () {
 		this.tiempoTranscurridoMenuPrincipal = 0;
-		Collider2D terrainCollider = terrain.GetComponent<Collider2D>();
 	}
 	
 	// Update is called once per frame
@@ -45,11 +43,22 @@ public class GameManager : Singleton<GameManager> {
 			RaycastHit2D hit;
 			hit = Physics2D.GetRayIntersection(ray);
 
-			if (hit.collider != null) {
-				Debug.Log (hit.transform);
-
-				Debug.DrawLine(ray.origin, hit.point);
-				Instantiate (waveGenerator, hit.point, Quaternion.identity);
+			if (hit.collider != null){
+				Debug.Log (hit.collider.tag);
+				if (currentButton != null && (hit.collider.tag == "Terrain" || hit.collider.tag == "Wave"))  {
+					GameObject emitter = currentButton.getEmitter ();
+					if (emitter != null) {
+						Instantiate (emitter, hit.point, Quaternion.identity);
+						currentButton.reduceAmmo ();
+					} 
+									}
+				else if(hit.collider.tag == "EmitterSelector"){
+					if (currentButton != null ){
+						currentButton.deselect();
+					}
+					currentButton = (EmitterSelectorButton)hit.collider.GetComponent(typeof(EmitterSelectorButton));
+					currentButton.select();
+				}
 			}
 		}
 	}

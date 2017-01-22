@@ -45,7 +45,7 @@ public class MusicManager : Singleton<MusicManager> {
 	}
 
 	public void LoadMusicResources() {
-		MusicResources.Add("Nivel_1.wav
+		//MusicResources.Add("Nivel_1.wav
 	}
 
 	IEnumerator LoadSoundFile(string path, string name) {

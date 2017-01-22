@@ -42,17 +42,23 @@ public class GeneradorOndas : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(QuedanOndasPorEmitir()) {
-			if(NingunaOndaHaSidoLanzada()) {
-				GeneraPrimeraOndaTrasDelay();
+		if (QuedanOndasPorEmitir ()) {
+			if (NingunaOndaHaSidoLanzada ()) {
+				GeneraPrimeraOndaTrasDelay ();
 			} else {
-				LanzarOndaTrasFrecuencia();
+				LanzarOndaTrasFrecuencia ();
+			}
+		} else {
+			transform.localScale -= new Vector3 (Time.deltaTime*0.05f, Time.deltaTime*0.05f, 0);
+
+			if (transform.localScale.x < 0) {
+				Destroy (gameObject);
 			}
 		}
 	}
 
 	private bool QuedanOndasPorEmitir() {
-		return this.ondasLanzadas <= this.numeroOndas;
+		return this.ondasLanzadas < this.numeroOndas;
 	}
 
 	private bool NingunaOndaHaSidoLanzada() {
