@@ -54,7 +54,7 @@ public class GameManager : Singleton<GameManager> {
 
 	public void winLevel () {
 		
-		MusicManager.Instance.playSound ("Win.wav");
+	
 		StartCoroutine (returnToLevelSelection());
 
 	}
@@ -67,7 +67,7 @@ public class GameManager : Singleton<GameManager> {
 
 
 	public void loseLevel() {
-		MusicManager.Instance.playSound ("Loose.wav");
+		
 		StartCoroutine (repeatLevel());
 
 	}

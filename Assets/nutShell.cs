@@ -5,9 +5,11 @@ using UnityEngine;
 public class nutShell : MonoBehaviour {
 	private Rigidbody2D rigidBody;
 	public float peso = 8;
+	private AudioSource sound;
 	// Use this for initialization
 	void Start () {
 		rigidBody = GetComponent<Rigidbody2D>();
+		sound = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -28,6 +30,7 @@ public class nutShell : MonoBehaviour {
 		gameOver ();
 	}
 	void gameOver (){
+		sound.Play ();
 		GameManager.Instance.loseLevel ();
 	}
 
