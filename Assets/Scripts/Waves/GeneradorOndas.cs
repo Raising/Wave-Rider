@@ -7,9 +7,18 @@ public class GeneradorOndas : MonoBehaviour {
 	private int numeroOndas;
 	[SerializeField]
 	private float tiempoEntreOnda;
-	private float fuerzaImpulso;
 	[SerializeField]
 	private float delayInicial;
+
+	[SerializeField]
+	private float fuerzaImpulso = 3;
+	[SerializeField]
+	private float velocidad = 1f;
+	[SerializeField]
+	private float proporcionDistanciaTamanio = 0.14f;
+	[SerializeField]
+	private float tiempoDisipacionDistancia = 5;
+
 	private float instanteCreacionGeneradorOndas;
 	private float instanteUltimaOndaLanzada;
 
@@ -33,17 +42,23 @@ public class GeneradorOndas : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(QuedanOndasPorEmitir()) {
-			if(NingunaOndaHaSidoLanzada()) {
-				GeneraPrimeraOndaTrasDelay();
+		if (QuedanOndasPorEmitir ()) {
+			if (NingunaOndaHaSidoLanzada ()) {
+				GeneraPrimeraOndaTrasDelay ();
 			} else {
-				LanzarOndaTrasFrecuencia();
+				LanzarOndaTrasFrecuencia ();
+			}
+		} else {
+			transform.localScale -= new Vector3 (Time.deltaTime*0.05f, Time.deltaTime*0.05f, 0);
+
+			if (transform.localScale.x < 0) {
+				Destroy (gameObject);
 			}
 		}
 	}
 
 	private bool QuedanOndasPorEmitir() {
-		return this.ondasLanzadas <= this.numeroOndas;
+		return this.ondasLanzadas < this.numeroOndas;
 	}
 
 	private bool NingunaOndaHaSidoLanzada() {
@@ -63,13 +78,33 @@ public class GeneradorOndas : MonoBehaviour {
 	}
 
 	void emitirOnda (){
+		
+		GameObject primerWaveFragment = null;
+		WaveFragment primerInterfaz = null;
+		GameObject previoWaveFragment = null;
+		WaveFragment previoInterfaz = null;
+		GameObject waveFragment = null;
+		WaveFragment interfaz = null;
 		for (int i = 0; i < numeroFragmentoPorOnda; i++) {
-           float angle = i * Mathf.PI * 2 / numeroFragmentoPorOnda;
-	       GameObject waveFragment = Instantiate(waveFragmentPrefab, gameObject.transform.position, Quaternion.identity);
-           WaveFragment interfaz = (WaveFragment)waveFragment.GetComponent(typeof(WaveFragment));
-           interfaz.setDireccion(new Vector3 (Mathf.Cos(angle), Mathf.Sin(angle), 0));
-		   
+			
+           	float angle = i * Mathf.PI * 2 / numeroFragmentoPorOnda;
+	       	waveFragment = Instantiate(waveFragmentPrefab, gameObject.transform.position, Quaternion.identity);
+		   	
+			interfaz = (WaveFragment)waveFragment.GetComponent(typeof(WaveFragment));
+
+           	interfaz.setDireccion(new Vector3 (Mathf.Cos(angle), Mathf.Sin(angle), 0)); 
+
+			interfaz.establecerPropiedades (velocidad,fuerzaImpulso,proporcionDistanciaTamanio,tiempoDisipacionDistancia);
+			if (previoInterfaz == null) {
+				primerInterfaz = interfaz;
+			} else {
+				previoInterfaz.setPareja (interfaz);
+			}
+
+		   	previoInterfaz = interfaz;
         }
+		primerInterfaz.setPareja (interfaz);
+
 		this.ondasLanzadas++;
 		this.instanteUltimaOndaLanzada = Time.time;
 	}

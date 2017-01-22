@@ -11,15 +11,19 @@ public class WaveFragment : MonoBehaviour {
 	private float proporcionDistanciaTamanio = 0.14f;
 	[SerializeField]
 	private float tiempoDisipacionDistancia = 5;
+	private float anguloBasePareja = 0;
+	private WaveFragment pareja;
+	private GameObject hijoVisibilidad = null;
+	private bool visible = true;
 	// Use this for initialization
 	void Start () {
-		
+		hijoVisibilidad = transform.FindChild ("waveFragmentVision").gameObject;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		Avanzar();
-
+		EstablecerVisibilidad ();
 	}
 
 	void Avanzar () {
@@ -32,7 +36,12 @@ public class WaveFragment : MonoBehaviour {
 		gameObject.transform.localScale = new Vector3 (distanciaRecorrida * proporcionDistanciaTamanio, 1 * ((tiempoDisipacionDistancia - tiempo) /tiempoDisipacionDistancia), 0);
 
 	}
-
+	public void establecerPropiedades (float nuevaVelocidad,float nuevaFuerzaImpulso,float nuevaProporcionDistanciaTamanio,float nuevoTiempoDisipacionDistancia){
+		velocidad = nuevaVelocidad;
+		impulso = nuevaFuerzaImpulso;
+		proporcionDistanciaTamanio = nuevaProporcionDistanciaTamanio;
+		tiempoDisipacionDistancia = nuevoTiempoDisipacionDistancia;
+	}
 	public void setDireccion (Vector3 nuevaDireccion) {
 		direccion = nuevaDireccion;
 		direccion.Normalize();
@@ -59,5 +68,29 @@ public class WaveFragment : MonoBehaviour {
 
 	public Vector3 getDireccion () {
 		return direccion;
+	}
+
+	public void setPareja (WaveFragment nuevaPareja){
+		pareja = nuevaPareja;
+		anguloBasePareja = AnguloConPareja();
+	}
+
+	public void  EstablecerVisibilidad (){
+		if (pareja != null) {
+			if (visible && AnguloConPareja () > 4.1f * anguloBasePareja) {
+				setVisible (false);
+			} else if (!visible && AnguloConPareja () <= 4.1f * anguloBasePareja) {
+				setVisible (true);
+			}
+		}
+	}
+
+	private void setVisible (bool visibilidad){
+		visible = visibilidad;
+		hijoVisibilidad.SetActive ( visibilidad);
+	}
+
+	public float AnguloConPareja () {
+		return Mathf.Abs(pareja.getAngulo() - getAngulo());
 	}
 }
