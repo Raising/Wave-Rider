@@ -29,7 +29,7 @@ public class GameManager : Singleton<GameManager> {
 			if (Input.GetButtonDown ("Fire1")) {
 				GameObject pressStart = GameObject.FindGameObjectWithTag ("PressStart");
 				if (pressStart.activeInHierarchy) {
-					CambiaEscena ("SeleccionNivel");
+					GameManager.Instance.CambiaEscena ("SeleccionNivel");
 				}
 			}
 		}
@@ -61,7 +61,7 @@ public class GameManager : Singleton<GameManager> {
 
 	IEnumerator returnToLevelSelection () {
 		yield return new  WaitForSeconds (2);
-		CambiaEscena ("SeleccionNivel");
+		GameManager.Instance.CambiaEscena ("SeleccionNivel");
 	}
 
 
@@ -74,7 +74,7 @@ public class GameManager : Singleton<GameManager> {
 
 	IEnumerator repeatLevel () {
 		yield return new WaitForSeconds (2);
-		CambiaEscena ("SeleccionNivel");
+		GameManager.Instance.CambiaEscena ( SceneManager.GetActiveScene ().name);
 	}
 
 	void AplicarRaton () {
