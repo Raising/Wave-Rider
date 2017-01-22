@@ -19,6 +19,9 @@ public class GeneradorOndas : MonoBehaviour {
 	[SerializeField]
 	private float tiempoDisipacionDistancia = 5;
 
+	[SerializeField]
+	private string sound = "ONDA3";
+
 	private float instanteCreacionGeneradorOndas;
 	private float instanteUltimaOndaLanzada;
 
@@ -78,13 +81,14 @@ public class GeneradorOndas : MonoBehaviour {
 	}
 
 	void emitirOnda (){
-		
+		MusicManager.Instance.playSound (sound + ".wav");
 		GameObject primerWaveFragment = null;
 		WaveFragment primerInterfaz = null;
 		GameObject previoWaveFragment = null;
 		WaveFragment previoInterfaz = null;
 		GameObject waveFragment = null;
 		WaveFragment interfaz = null;
+
 		for (int i = 0; i < numeroFragmentoPorOnda; i++) {
 			
            	float angle = i * Mathf.PI * 2 / numeroFragmentoPorOnda;
@@ -107,6 +111,8 @@ public class GeneradorOndas : MonoBehaviour {
 
 		this.ondasLanzadas++;
 		this.instanteUltimaOndaLanzada = Time.time;
+
+
 	}
 	
 

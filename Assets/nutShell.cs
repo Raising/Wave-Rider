@@ -24,12 +24,19 @@ public class nutShell : MonoBehaviour {
 			RecibirimpulsoDeOla (collider);
 		}
 	}
+	void OnBecameInvisible(){
+		gameOver ();
+	}
+	void gameOver (){
+		GameManager.Instance.loseLevel ();
+	}
 
 	void RecibirimpulsoDeOla (Collider2D collider){
 		WaveFragment interfaz = (WaveFragment)collider.GetComponent(typeof(WaveFragment));
 		float impulso = interfaz.getImpulso ();
 		Vector3 direccion = interfaz.getDireccion ();
 		rigidBody.AddForce (direccion * impulso);
+		//MusicManager.Instance.playSound (sound + ".wav");
 	}
 
 	void OrientarHaciaDireccion() {

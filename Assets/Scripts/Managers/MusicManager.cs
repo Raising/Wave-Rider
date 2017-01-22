@@ -73,13 +73,13 @@ public class MusicManager : Singleton<MusicManager> {
 		}
 	}
 
-	void Play(AudioClip audio, bool canLoop = false) {
+	public void Play(AudioClip audio, bool canLoop = false) {
 		audioSource.clip = audio;
 		audioSource.loop = canLoop;
 		audioSource.Play ();
 	}
 
-	private void playSound(string soundKey) {   
+	public void playSound(string soundKey) {   
 		if (SoundResources.ContainsKey(soundKey)) {
 			AudioClip soundClip = SoundResources [soundKey];
 			Play (soundClip);

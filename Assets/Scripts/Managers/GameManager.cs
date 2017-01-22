@@ -1,6 +1,7 @@
 ﻿using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
+using System.Collections;
 
 public class GameManager : Singleton<GameManager> {
 	[SerializeField]
@@ -32,18 +33,39 @@ public class GameManager : Singleton<GameManager> {
 	}
 
 	void AplicarInteraccion () {
-		Debug.Log ("click");
+		
 		AplicarRaton ();
 	}
 
 	public void winLevel () {
-		Debug.Log ("WINNN");
+		
+		MusicManager.Instance.playSound ("Win.wav");
+		StartCoroutine (returnToLevelSelection());
+
+	}
+
+	IEnumerator returnToLevelSelection () {
+		yield return new  WaitForSeconds (2);
+		CambiaEscena ("SeleccionNivel");
+	}
+
+
+
+	public void loseLevel() {
+		MusicManager.Instance.playSound ("Loose.wav");
+		StartCoroutine (repeatLevel());
+
+	}
+
+	IEnumerator repeatLevel () {
+		yield return new WaitForSeconds (2);
+		CambiaEscena ("SeleccionNivel");
 	}
 
 	void AplicarRaton () {
 
 		if (Input.GetButtonDown ("Fire1")) {
-			Debug.Log ("click");
+			
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit2D hit;
 			hit = Physics2D.GetRayIntersection(ray);
