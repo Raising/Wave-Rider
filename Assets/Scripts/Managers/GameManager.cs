@@ -35,6 +35,10 @@ public class GameManager : Singleton<GameManager> {
 		AplicarRaton ();
 	}
 
+	public void winLevel () {
+		Debug.Log ("WINNN");
+	}
+
 	void AplicarRaton () {
 
 		if (Input.GetButtonDown ("Fire1")) {
