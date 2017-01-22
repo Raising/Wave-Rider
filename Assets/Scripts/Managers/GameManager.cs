@@ -18,11 +18,12 @@ public class GameManager : Singleton<GameManager> {
 	
 	// Update is called once per frame
 	void Update () {
-		if(SceneManager.GetActiveScene().name.Contains("Nivel")) {
-			AplicarInteraccion();
+		string currentScene = SceneManager.GetActiveScene ().name;
+		if (currentScene.Contains ("Nivel")) {
+			AplicarInteraccion ();
 		}
 	}
-
+		
 	public void CambiaEscena(string nombreEscena) {
 		SceneManager.LoadScene(nombreEscena);
 	}

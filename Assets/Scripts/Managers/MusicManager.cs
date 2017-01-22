@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class MusicManager : Singleton<MusicManager> {
 	[SerializeField]
-	private const float _MASTER_VOLUME_ = 10;
+	private const float _MASTER_VOLUME_ = 1;
 
 	private List<string> validExtensions = new List<string> {".wav"};
 
@@ -19,18 +19,15 @@ public class MusicManager : Singleton<MusicManager> {
 
 	[SerializeField]
 	private Dictionary<string, AudioClip> SoundResources = new Dictionary<string, AudioClip> ();
-	private Dictionary<string, AudioClip> MusicResources = new Dictionary<string, AudioClip> ();
+	[SerializeField]
+	private AudioClip[] MusicResources;
 
 
 	void Awake() {
-	}
-	// Use this for initialization
-	void Start() {
 		if (Application.isEditor) _MUSIC_ROOT_DIRECTORY = "Assets/Audio/Sounds/";
 		LoadSoundResources();
 		audioSource = gameObject.GetComponent<AudioSource> ();
 		SetVolume(_MASTER_VOLUME_);
-
 	}
 
 	public void LoadSoundResources() {
@@ -42,10 +39,6 @@ public class MusicManager : Singleton<MusicManager> {
 		foreach (FileInfo audioFile in audioFiles) {
 			StartCoroutine (LoadSoundFile (audioFile.FullName, audioFile.Name));
 		}
-	}
-
-	public void LoadMusicResources() {
-		//MusicResources.Add("Nivel_1.wav
 	}
 
 	IEnumerator LoadSoundFile(string path, string name) {
@@ -65,12 +58,28 @@ public class MusicManager : Singleton<MusicManager> {
 		return validExtensions.Contains(Path.GetExtension(audioFile));
 	}
 
-	void OnLevelWasLoaded(int nivel) {
-		string sceneName = SceneManager.GetSceneByBuildIndex (nivel).name;
-		if(sceneName.Contains("Nivel_")) {
-			SetVolume(_MASTER_VOLUME_);
-			playSound (sceneName+".wav");
-		}
+	void OnEnable()
+	{
+		//Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
+		SceneManager.sceneLoaded += OnLevelFinishedLoading;
+	}
+
+	void OnDisable()
+	{
+		//Tell our 'OnLevelFinishedLoading' function to stop listening for a scene change as soon as this script is disabled. Remember to always have an unsubscription for every delegate you subscribe to!
+		SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+	}
+
+	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+	{
+		Debug.Log("Level Loaded");
+		Debug.Log(scene.name);
+		Debug.Log(mode);
+
+		string sceneName = scene.name;
+		Debug.Log (sceneName);
+		playMusic (0);
+			
 	}
 
 	void Play(AudioClip audio, bool canLoop = false) {
@@ -86,8 +95,8 @@ public class MusicManager : Singleton<MusicManager> {
 		}
 	}
 
-	private void playMusic(string musicKey) {
-		if (MusicResources.ContainsKey (musicKey)) {
+	private void playMusic(int musicKey) {
+		if (MusicResources[musicKey]) {
 			AudioClip musicClip = MusicResources [musicKey];
 			Play (musicClip, true);
 		}
