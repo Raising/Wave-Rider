@@ -10,6 +10,9 @@ public class GameManager : Singleton<GameManager> {
 	private EmitterSelectorButton currentButton = null;
 	private GameObject waveGenerator;
 
+	[SerializeField]
+	private GameObject menuPrincipal;
+
 	private const float _TIEMPO_PANTALLA_LOGO = 7.6f;
 	private float tiempoTranscurridoMenuPrincipal;
 	// Use this for initialization
@@ -19,11 +22,23 @@ public class GameManager : Singleton<GameManager> {
 	
 	// Update is called once per frame
 	void Update () {
-		if(SceneManager.GetActiveScene().name.Contains("Nivel")) {
-			AplicarInteraccion();
+		string currentScene = SceneManager.GetActiveScene ().name;
+		if (currentScene.Contains ("Nivel")) {
+			AplicarInteraccion ();
+		} else if (currentScene == "MenuPrincipal") {
+			if (Input.GetButtonDown ("Fire1")) {
+				GameObject pressStart = GameObject.FindGameObjectWithTag ("PressStart");
+				if (pressStart.activeInHierarchy) {
+					CambiaEscena ("SeleccionNivel");
+				}
+			}
 		}
 	}
 
+	public void MenuPrincipal() {
+		
+	}
+		
 	public void CambiaEscena(string nombreEscena) {
 		SceneManager.LoadScene(nombreEscena);
 	}
