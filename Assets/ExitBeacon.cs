@@ -13,4 +13,10 @@ public class ExitBeacon : MonoBehaviour {
 	void Update () {
 		
 	}
+
+	void OnTriggerEnter2D (Collider2D collider) {
+		if (collider.tag == "NutShip") {
+			GameManager.Instance.winLevel ();
+		}
+	}
 }

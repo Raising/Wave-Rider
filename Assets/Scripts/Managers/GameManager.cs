@@ -1,6 +1,7 @@
 ﻿using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
+using System.Collections;
 
 public class GameManager : Singleton<GameManager> {
 	[SerializeField]
@@ -8,6 +9,9 @@ public class GameManager : Singleton<GameManager> {
 	[SerializeField]
 	private EmitterSelectorButton currentButton = null;
 	private GameObject waveGenerator;
+
+	[SerializeField]
+	private GameObject menuPrincipal;
 
 	private const float _TIEMPO_PANTALLA_LOGO = 7.6f;
 	private float tiempoTranscurridoMenuPrincipal;
@@ -18,11 +22,23 @@ public class GameManager : Singleton<GameManager> {
 	
 	// Update is called once per frame
 	void Update () {
-		if(SceneManager.GetActiveScene().name.Contains("Nivel")) {
-			AplicarInteraccion();
+		string currentScene = SceneManager.GetActiveScene ().name;
+		if (currentScene.Contains ("Nivel")) {
+			AplicarInteraccion ();
+		} else if (currentScene == "MenuPrincipal") {
+			if (Input.GetButtonDown ("Fire1")) {
+				GameObject pressStart = GameObject.FindGameObjectWithTag ("PressStart");
+				if (pressStart.activeInHierarchy) {
+					CambiaEscena ("SeleccionNivel");
+				}
+			}
 		}
 	}
 
+	public void MenuPrincipal() {
+		
+	}
+		
 	public void CambiaEscena(string nombreEscena) {
 		SceneManager.LoadScene(nombreEscena);
 	}
@@ -32,18 +48,39 @@ public class GameManager : Singleton<GameManager> {
 	}
 
 	void AplicarInteraccion () {
-		Debug.Log ("click");
+		
 		AplicarRaton ();
 	}
 
 	public void winLevel () {
-		Debug.Log ("WINNN");
+		
+		MusicManager.Instance.playSound ("Win.wav");
+		StartCoroutine (returnToLevelSelection());
+
+	}
+
+	IEnumerator returnToLevelSelection () {
+		yield return new  WaitForSeconds (2);
+		CambiaEscena ("SeleccionNivel");
+	}
+
+
+
+	public void loseLevel() {
+		MusicManager.Instance.playSound ("Loose.wav");
+		StartCoroutine (repeatLevel());
+
+	}
+
+	IEnumerator repeatLevel () {
+		yield return new WaitForSeconds (2);
+		CambiaEscena ("SeleccionNivel");
 	}
 
 	void AplicarRaton () {
 
 		if (Input.GetButtonDown ("Fire1")) {
-			Debug.Log ("click");
+			
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit2D hit;
 			hit = Physics2D.GetRayIntersection(ray);
