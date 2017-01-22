@@ -80,23 +80,18 @@ public class MusicManager : Singleton<MusicManager> {
 		Debug.Log (sceneName);
 
 		if (sceneName == "MenuPrincipal") {
-			StartCoroutine (playMainMenuMusic ());
+			StartCoroutine (MusicManager.Instance.playMainMenuMusic ());
 		} else {
-			playMusic (2);
+			MusicManager.Instance.playMusic (2);
 		}
 	}
-
-<<<<<<< HEAD
-	public void Play(AudioClip audio, bool canLoop = false) {
-=======
 	IEnumerator playMainMenuMusic() {
 		playMusic (0, false);
 		yield return new WaitForSeconds (MusicResources [0].length);
 		playMusic (1);
 	}
 
-	void Play(AudioClip audio, bool canLoop = false) {
->>>>>>> 3fa13cd032fb5d9bccf645550fb5ca001bc11876
+	public void Play(AudioClip audio, bool canLoop = false) {
 		audioSource.clip = audio;
 		audioSource.loop = canLoop;
 		audioSource.Play ();
