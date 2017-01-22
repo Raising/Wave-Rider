@@ -32,13 +32,18 @@ public class GameManager : Singleton<GameManager> {
 	}
 
 	void AplicarInteraccion () {
+		Debug.Log ("click");
 		AplicarRaton ();
+	}
+
+	public void winLevel () {
+		Debug.Log ("WINNN");
 	}
 
 	void AplicarRaton () {
 
 		if (Input.GetButtonDown ("Fire1")) {
-			
+			Debug.Log ("click");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit2D hit;
 			hit = Physics2D.GetRayIntersection(ray);
