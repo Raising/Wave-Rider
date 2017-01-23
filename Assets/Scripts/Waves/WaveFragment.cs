@@ -14,10 +14,12 @@ public class WaveFragment : MonoBehaviour {
 	private float anguloBasePareja = 0;
 	private WaveFragment pareja;
 	private GameObject hijoVisibilidad = null;
+	private Rigidbody2D thisrigidbody = null;
 	private bool visible = true;
 	// Use this for initialization
 	void Start () {
 		hijoVisibilidad = transform.FindChild ("waveFragmentVision").gameObject;
+		thisrigidbody = GetComponent<Rigidbody2D> ();
 	}
 	
 	// Update is called once per frame
@@ -31,9 +33,9 @@ public class WaveFragment : MonoBehaviour {
 		if (tiempo > tiempoDisipacionDistancia){
 			Destroy(gameObject);
 		}
-		gameObject.transform.position += Time.deltaTime * velocidad * direccion;
+		thisrigidbody.transform.position += Time.deltaTime * velocidad * direccion;
 		distanciaRecorrida += velocidad * Time.deltaTime;
-		gameObject.transform.localScale = new Vector3 (distanciaRecorrida * proporcionDistanciaTamanio, 1 * ((tiempoDisipacionDistancia - tiempo) /tiempoDisipacionDistancia), 0);
+		hijoVisibilidad.transform.localScale = new Vector3 (distanciaRecorrida * proporcionDistanciaTamanio, 1 * ((tiempoDisipacionDistancia - tiempo) /tiempoDisipacionDistancia), 0);
 
 	}
 	public void establecerPropiedades (float nuevaVelocidad,float nuevaFuerzaImpulso,float nuevaProporcionDistanciaTamanio,float nuevoTiempoDisipacionDistancia){

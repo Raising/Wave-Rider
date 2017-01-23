@@ -79,7 +79,7 @@ public class GameManager : Singleton<GameManager> {
 
 	void AplicarRaton () {
 
-		if (Input.GetButtonDown ("Fire1")) {
+		if (Input.GetButtonDown ("Fire1") ) {
 			
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit2D hit;
