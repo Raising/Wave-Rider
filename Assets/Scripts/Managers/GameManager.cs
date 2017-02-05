@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : Singleton<GameManager> {
 	[SerializeField]
@@ -9,16 +10,12 @@ public class GameManager : Singleton<GameManager> {
 	[SerializeField]
 	private EmitterSelectorButton currentButton = null;
 	private GameObject waveGenerator;
-
 	[SerializeField]
 	private GameObject menuPrincipal;
 
-	private const float _TIEMPO_PANTALLA_LOGO = 7.6f;
-	private float tiempoTranscurridoMenuPrincipal;
 	// Use this for initialization
 	void Start () {
-		this.tiempoTranscurridoMenuPrincipal = 0;
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -26,7 +23,7 @@ public class GameManager : Singleton<GameManager> {
 		if (currentScene.Contains ("Nivel")) {
 			AplicarInteraccion ();
 		} else if (currentScene == "MenuPrincipal") {
-			if (Input.GetButtonDown ("Fire1")) {
+			if (InputController.CheckUserInput()) {
 				GameObject pressStart = GameObject.FindGameObjectWithTag ("PressStart");
 				if (pressStart.activeInHierarchy) {
 					GameManager.Instance.CambiaEscena ("SeleccionNivel");

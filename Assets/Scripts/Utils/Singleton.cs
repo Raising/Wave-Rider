@@ -2,7 +2,7 @@
 
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour { // NECESARIO PARA QUE T HEREDE DE MONO
 
-    public static T instance;
+    private static T instance;
 
 	public static T Instance {
 		get{
