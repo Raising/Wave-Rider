@@ -15,9 +15,39 @@ public class Obstacle : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
-		RedirigirWaveFragment (collider);
+		//RedirigirWaveFragment (collider);
 		CompensarPosicion (collider);
 
+
+
+	}
+	void OnTriggerStay2D(Collider2D collider) {
+		//RedirigirWaveFragment (collider);
+		CompensarPosicion (collider);
+	
+
+
+	}
+	void OnCollisionStay2D(Collision2D collision){
+		foreach (ContactPoint2D contact in collision.contacts) {
+			Debug.DrawLine(contact.point, contact.point + contact.normal, Color.red);
+		}
+		//Debug.DrawLine (collision.contacts [0].point, new Vector2 (0, 0),Color.red);
+		//RedirigirWaveFragment (collision.collider);
+		/*WaveSector waveSector = collision.collider.GetComponent<WaveSector> ();
+		if (waveSector) {
+			waveSector.HandleObstacleCollision (collision,gameObject);
+		}*/
+
+
+	}
+
+	void OnCollisionEnter2D(Collision2D collision){
+		
+		WaveSector waveSector = collision.collider.GetComponent<WaveSector> ();
+		if (waveSector) {
+			waveSector.HandleObstacleCollision (collision);
+		}
 	}
 	void RedirigirWaveFragment (Collider2D collider){
 		double anguloPropio = gameObject.transform.rotation.eulerAngles.z / 180 * Mathf.PI ;
