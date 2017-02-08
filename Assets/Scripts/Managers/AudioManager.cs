@@ -5,20 +5,26 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
 
-public class SoundManager : Singleton<SoundManager> {
+public class AudioManager : Singleton<AudioManager> {
+
+	// Variables de PATH para los recursos de sonido
 	private static string _AUDIO_ROOT_DIRECTORY = "./Audio/";
 	private static string _SOUND_ROOT_DIRECTORY = _AUDIO_ROOT_DIRECTORY + "Sounds/";
 	private static string _MUSIC_ROOT_DIRECTORY = _AUDIO_ROOT_DIRECTORY + "Music/";
+	// Variables de PATH para los recursos de sonido
 
+
+	//
+	private AudioSource audioSource;
 	[SerializeField] private const float _MASTER_VOLUME_ = 1;
 
+	[SerializeField] private AudioClip[] serializedMusicResources;
 	private Dictionary<string, AudioClip> soundResources = new Dictionary<string, AudioClip> ();
 	private Dictionary<string, AudioClip> musicResources = new Dictionary<string, AudioClip> ();
-
 	private List<string> validExtensions = new List<string> {".wav"};
 	private FileInfo[] audioFiles;
 
-	private AudioSource audioSource;
+
 
 	public void SoundResource(string name, AudioClip audioClip) {
 		soundResources.Add (name, audioClip);
@@ -30,24 +36,32 @@ public class SoundManager : Singleton<SoundManager> {
 			_SOUND_ROOT_DIRECTORY = _AUDIO_ROOT_DIRECTORY + "Sounds/";
 			_MUSIC_ROOT_DIRECTORY = _AUDIO_ROOT_DIRECTORY + "Music/";
 		}
-		LoadAudioResources (_MUSIC_ROOT_DIRECTORY, ref  musicResources);
-		LoadAudioResources (_SOUND_ROOT_DIRECTORY,  ref soundResources);
+
+		LoadMusicResources ();
+		LoadSoundResources (_SOUND_ROOT_DIRECTORY);
 		audioSource = gameObject.GetComponent<AudioSource> ();
 		SetVolume(_MASTER_VOLUME_);
 	}
 
-	public void LoadAudioResources(string path,  ref Dictionary<string, AudioClip> audioResource) {
+	public void LoadMusicResources() {
+		foreach (AudioClip audio in serializedMusicResources) {
+			musicResources.Add (audio.name, audio);
+		}
+	}
+		
+
+	public void LoadSoundResources(string path) {
 		var info = new DirectoryInfo(path);
 		audioFiles = info.GetFiles ()
 			.Where(f => isValidSoundFile(f.Name))
 			.ToArray ();
 
 		foreach (FileInfo audioFile in audioFiles) {
-			StartCoroutine (LoadSoundFile (audioFile.FullName, audioFile.Name, audioResource));
+			StartCoroutine (LoadSoundFile (audioFile.FullName, audioFile.Name));
 		}
 	}
 
-	IEnumerator LoadSoundFile(string path, string name, Dictionary<string, AudioClip> audioResource) {
+	IEnumerator LoadSoundFile(string path, string name) {
 		
 		WWW www = new WWW("file://"+path);
 		print ("Loading " + path);
@@ -57,8 +71,9 @@ public class SoundManager : Singleton<SoundManager> {
 		}
 
 		print ("Done Loading: " + name);
-		audioResource.Add(name, www.audioClip);
+		SoundResource(name, www.audioClip);
 	}
+
 
 	bool isValidSoundFile(string audioFile) {
 		return validExtensions.Contains(Path.GetExtension(audioFile));
@@ -86,15 +101,15 @@ public class SoundManager : Singleton<SoundManager> {
 		Debug.Log (sceneName);
 
 		if (sceneName == "MenuPrincipal") {
-			//StartCoroutine (SoundManager.Instance.playMainMenuMusic ());
+			StartCoroutine (AudioManager.Instance.playMainMenuMusic ());
 		} else {
 			//SoundManager.Instance.playMusic ("NIVEL GENERICO NUEVO");
 		}
 	}
 	IEnumerator playMainMenuMusic() {
-		SoundManager.Instance.playMusic ("CABECERA", false);
+		AudioManager.Instance.playMusic ("CABECERA", false);
 		yield return new WaitForSeconds (musicResources ["CABECERA"].length);
-		SoundManager.Instance.playMusic ("NIVEL 1 + MENÚ");
+		AudioManager.Instance.playMusic ("NIVEL 1 + MENÚ");
 	}
 
 	public void Play(AudioClip audio, bool canLoop = false) {
@@ -111,11 +126,8 @@ public class SoundManager : Singleton<SoundManager> {
 	}
 
 	public void playMusic(string musicKey, bool canLoop = true) { 
-		while (!musicResources.ContainsKey (musicKey)) {
-
-		}
 		if (musicResources.ContainsKey(musicKey)) {
-			AudioClip soundClip = soundResources [musicKey];
+			AudioClip soundClip = musicResources [musicKey];
 			Play (soundClip, canLoop);
 		}
 	}
