@@ -6,41 +6,32 @@ using System.IO;
 using UnityEngine.SceneManagement;
 
 public class AudioManager : Singleton<AudioManager> {
-
+	
 	// Variables de PATH para los recursos de sonido
-	private static string _AUDIO_ROOT_DIRECTORY = "./Audio/";
+	private static string _AUDIO_ROOT_DIRECTORY = "Assets/Audio/";
 	private static string _SOUND_ROOT_DIRECTORY = _AUDIO_ROOT_DIRECTORY + "Sounds/";
 	private static string _MUSIC_ROOT_DIRECTORY = _AUDIO_ROOT_DIRECTORY + "Music/";
-	// Variables de PATH para los recursos de sonido
 
-
-	//
+	// Componentes de audio y configuración.
 	private AudioSource audioSource;
 	[SerializeField] private const float _MASTER_VOLUME_ = 1;
 
+	// Recursos de audio, formatos permitidos y todo lo necesario para recuperarlos.
 	[SerializeField] private AudioClip[] serializedMusicResources;
 	private Dictionary<string, AudioClip> soundResources = new Dictionary<string, AudioClip> ();
 	private Dictionary<string, AudioClip> musicResources = new Dictionary<string, AudioClip> ();
 	private List<string> validExtensions = new List<string> {".wav"};
 	private FileInfo[] audioFiles;
 
-
-
-	public void SoundResource(string name, AudioClip audioClip) {
-		soundResources.Add (name, audioClip);
-	}
-
 	void Awake() {
-		if (Application.isEditor) {
-			_AUDIO_ROOT_DIRECTORY = "Assets/Audio/";
-			_SOUND_ROOT_DIRECTORY = _AUDIO_ROOT_DIRECTORY + "Sounds/";
-			_MUSIC_ROOT_DIRECTORY = _AUDIO_ROOT_DIRECTORY + "Music/";
-		}
-
 		LoadMusicResources ();
 		LoadSoundResources (_SOUND_ROOT_DIRECTORY);
 		audioSource = gameObject.GetComponent<AudioSource> ();
 		SetVolume(_MASTER_VOLUME_);
+	}
+
+	public void SoundResource(string name, AudioClip audioClip) {
+		soundResources.Add (name, audioClip);
 	}
 
 	public void LoadMusicResources() {
@@ -131,18 +122,7 @@ public class AudioManager : Singleton<AudioManager> {
 			Play (soundClip, canLoop);
 		}
 	}
-
-
-	/*private void playLevelAudio(int audioIndex) {   
-		if (SoundResources.ContainsKey(SoundResources.Keys.ElementAt(audioIndex))) {
-			AudioClip thisLevelAudio = SoundResources.Values.ElementAt (audioIndex);
-			audioSource.clip = thisLevelAudio;
-			audioSource.loop = true;
-			Debug.Log (thisLevelAudio);
-			audioSource.Play ();
-		}
-	}*/
-
+		
 	public void SetVolume(float volume) {
 		audioSource.volume = volume;
 	}
