@@ -30,17 +30,12 @@ public class AudioManager : Singleton<AudioManager> {
 		SetVolume(_MASTER_VOLUME_);
 	}
 
-	public void SoundResource(string name, AudioClip audioClip) {
-		soundResources.Add (name, audioClip);
-	}
-
 	public void LoadMusicResources() {
 		foreach (AudioClip audio in serializedMusicResources) {
 			musicResources.Add (audio.name, audio);
 		}
 	}
 		
-
 	public void LoadSoundResources(string path) {
 		var info = new DirectoryInfo(path);
 		audioFiles = info.GetFiles ()
@@ -62,9 +57,8 @@ public class AudioManager : Singleton<AudioManager> {
 		}
 
 		print ("Done Loading: " + name);
-		SoundResource(name, www.audioClip);
+        AudioManager.Instance.soundResources.Add(name, www.audioClip);
 	}
-
 
 	bool isValidSoundFile(string audioFile) {
 		return validExtensions.Contains(Path.GetExtension(audioFile));
