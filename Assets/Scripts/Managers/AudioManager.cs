@@ -40,7 +40,6 @@ public class AudioManager : Singleton<AudioManager> {
 	public void LoadMusicResources() {
 		foreach (AudioClip audio in serializedMusicResources) {
 			musicResources.Add (audio.name, audio);
-            LoadSour
 		}
 	}
 
