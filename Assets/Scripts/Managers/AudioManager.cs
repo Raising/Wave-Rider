@@ -24,19 +24,33 @@ public class AudioManager : Singleton<AudioManager> {
 	private FileInfo[] audioFiles;
 
 	void Awake() {
+        // Se cargan los recursos de musica y sonido
 		LoadMusicResources ();
 		LoadSoundResources (_SOUND_ROOT_DIRECTORY);
+        //Recuperamos componente de audio y seteamos configuracion
 		audioSource = gameObject.GetComponent<AudioSource> ();
 		SetVolume(_MASTER_VOLUME_);
 	}
 
+    /// <summary>
+    /// Carga los recursos de musica en un diccionario a partir del array 
+    /// que hay cargado en AudioManager
+    /// </summary>
+      
 	public void LoadMusicResources() {
 		foreach (AudioClip audio in serializedMusicResources) {
 			musicResources.Add (audio.name, audio);
+            LoadSour
 		}
 	}
-		
-	public void LoadSoundResources(string path) {
+
+    /// <summary>
+    /// Carga los recursos de sonido dada una ruta
+    /// <remarks>Formatos admitidos en <paramref name="validExtensions"/></remarks>
+    /// </summary>
+    /// <param name="path">Ruta absoluta a los recursos de sonido</param>
+
+    public void LoadSoundResources(string path) {
 		var info = new DirectoryInfo(path);
 		audioFiles = info.GetFiles ()
 			.Where(f => isValidSoundFile(f.Name))
