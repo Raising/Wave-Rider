@@ -5,23 +5,77 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Clase encargada de gestionar todos los recursos de audio, así como su reproducción 
+/// <remarks> SINGLETON, acceder siempre mediante <see cref="Instance"/> </remarks>
+/// </summary>
+
 public class AudioManager : Singleton<AudioManager> {
-	
-	// Variables de PATH para los recursos de sonido
+
+	/// <summary>
+	/// Ruta base de los recursos de audio
+	/// </summary>
 	private static string _AUDIO_ROOT_DIRECTORY = "Assets/Audio/";
+	/// <summary>
+	/// Ruta de los recursos de sonido
+	/// </summary>
 	private static string _SOUND_ROOT_DIRECTORY = _AUDIO_ROOT_DIRECTORY + "Sounds/";
+	/// <summary>
+	/// Ruta de los recursos de musica
+	/// </summary>
 	private static string _MUSIC_ROOT_DIRECTORY = _AUDIO_ROOT_DIRECTORY + "Music/";
 
-	// Componentes de audio y configuración.
+	/// <summary>
+	/// Audiosource que se utiliza para reproducir los sonidos
+	/// <remarks> Se marca desde editor></remarks>
+	/// </summary>
 	private AudioSource audioSource;
+	/// <summary>
+	/// Volumen maestro (por defecto)
+	/// </summary>
 	[SerializeField] private const float _MASTER_VOLUME_ = 1;
 
-	// Recursos de audio, formatos permitidos y todo lo necesario para recuperarlos.
+	/// <summary>
+	/// El volumen actual
+	/// </summary>
+	private float currentVolume;
+
+	/// <summary>
+	/// Array de los recursos de musica
+	/// <remarks> Se marca desde el editor </remarks>
+	/// </summary>
 	[SerializeField] private AudioClip[] serializedMusicResources;
+	/// <summary>
+	/// Diccionario con todos los sonidos
+	/// /// <remarks> Se accede a ellos mediante su nombre de fichero </remarks>
+	/// </summary>
 	private Dictionary<string, AudioClip> soundResources = new Dictionary<string, AudioClip> ();
+	/// <summary>
+	/// Diccionario con toda la musica
+	/// <remarks> Se accede a ellos mediante su nombre de fichero </remarks>
+	/// </summary>
 	private Dictionary<string, AudioClip> musicResources = new Dictionary<string, AudioClip> ();
+	/// <summary>
+	/// Extensiones de sonido validas
+	/// </summary>
 	private List<string> validExtensions = new List<string> {".wav"};
+	/// <summary>
+	/// Array para recoger los ficheros de audio a cargar.
+	/// </summary>
 	private FileInfo[] audioFiles;
+
+	/// <summary>
+	/// Obtiene o modifica el volumen actual
+	/// </summary>
+	/// <value>The current volume.</value>
+	public float CurrentVolume {
+		get {
+			return this.currentVolume;
+		}
+		set {
+			currentVolume = value;
+		}
+	}
 
 	void Awake() {
         // Se cargan los recursos de musica y sonido
@@ -29,7 +83,8 @@ public class AudioManager : Singleton<AudioManager> {
 		LoadSoundResources (_SOUND_ROOT_DIRECTORY);
         //Recuperamos componente de audio y seteamos configuracion
 		audioSource = gameObject.GetComponent<AudioSource> ();
-		SetVolume(_MASTER_VOLUME_);
+		currentVolume = _MASTER_VOLUME_;
+		SetVolume(currentVolume);
 	}
 
     /// <summary>
@@ -60,6 +115,12 @@ public class AudioManager : Singleton<AudioManager> {
 		}
 	}
 
+	/// <summary>
+	/// Carga un sonido y lo añade a <paramref name="soundResources"/>
+	/// </summary>
+	/// <param name="path">Ruta del sonido.</param>
+	/// <param name="name">Nombre del sonido.</param>
+
 	IEnumerator LoadSoundFile(string path, string name) {
 		
 		WWW www = new WWW("file://"+path);
@@ -73,24 +134,35 @@ public class AudioManager : Singleton<AudioManager> {
         AudioManager.Instance.soundResources.Add(name, www.audioClip);
 	}
 
+	/// <summary>
+	/// Compruebo si el fichero de audio tiene una extensión válida
+	/// </summary>
+	/// <returns><c>true</c>, Si el recurso tiene una extensión valida, <c>false</c> Cualquier otro caso.</returns>
+	/// <param name="audioFile">Audio file.</param>
 	bool isValidSoundFile(string audioFile) {
 		return validExtensions.Contains(Path.GetExtension(audioFile));
 	}
 
-	void OnEnable()
-	{
-		//Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
+	/// <summary>
+	/// //Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
+	/// </summary>
+	void OnEnable() { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
 		SceneManager.sceneLoaded += OnLevelFinishedLoading;
 	}
 
-	void OnDisable()
-	{
-		//Tell our 'OnLevelFinishedLoading' function to stop listening for a scene change as soon as this script is disabled. Remember to always have an unsubscription for every delegate you subscribe to!
+	/// <summary>
+	//Tell our 'OnLevelFinishedLoading' function to stop listening for a scene change as soon as this script is disabled. Remember to always have an unsubscription for every delegate you subscribe to!
+	/// </summary>
+	void OnDisable() { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
 		SceneManager.sceneLoaded -= OnLevelFinishedLoading;
 	}
 
-	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
-	{
+	/// <summary>
+	/// Se ejecuta una vez se ha finalizado de cargar un nivel
+	/// </summary>
+	/// <param name="scene">Escena.</param>
+	/// <param name="mode">Modo de carga de la escena <value>4: Single</value>.</param>
+	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
 		Debug.Log("Level Loaded");
 		Debug.Log(scene.name);
 		Debug.Log(mode);
@@ -104,32 +176,56 @@ public class AudioManager : Singleton<AudioManager> {
 			//SoundManager.Instance.playMusic ("NIVEL GENERICO NUEVO");
 		}
 	}
-	IEnumerator playMainMenuMusic() {
+
+	/// <summary>
+	/// Reproduce la música de la intro + menú principal
+	/// </summary>
+	IEnumerator playMainMenuMusic() { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
 		AudioManager.Instance.playMusic ("CABECERA", false);
 		yield return new WaitForSeconds (musicResources ["CABECERA"].length);
 		AudioManager.Instance.playMusic ("NIVEL 1 + MENÚ");
 	}
 
+	/// <summary>
+	/// Reproduce un audio
+	/// <remarks> Reemplazará cualquier otro sonido que hubiese reproduciéndose como principal></remarks>
+	/// </summary>
+	/// <param name="audio">Audioclip a reproducir.</param>
+	/// <param name="canLoop">Indica si el audio se reproduce en bucle<c>true</c> En bucle.</param>
 	public void Play(AudioClip audio, bool canLoop = false) {
 		audioSource.clip = audio;
 		audioSource.loop = canLoop;
 		audioSource.Play ();
 	}
 
+	/// <summary>
+	/// Reproduce un determinado recurso de sonido
+	/// <remarks> Respetará cualquier otra fuente de sonido en marcha></remarks>
+	/// </summary>
+	/// <param name="soundKey">Nombre del sonido.</param>
 	public void playSound(string soundKey) {   
 		if (soundResources.ContainsKey(soundKey)) {
 			AudioClip soundClip = soundResources [soundKey];
-			Play (soundClip);
+			audioSource.PlayOneShot (soundClip);
 		}
 	}
 
+	/// <summary>
+	/// Reproduce un determinado recurso de musica
+	/// </summary>
+	/// <param name="musicKey">Nombre de la musica.</param>
+	/// <param name="canLoop">Indica si el audio se reproduce en bucle<c>true</c> En bucle.</param>
 	public void playMusic(string musicKey, bool canLoop = true) { 
 		if (musicResources.ContainsKey(musicKey)) {
 			AudioClip soundClip = musicResources [musicKey];
 			Play (soundClip, canLoop);
 		}
 	}
-		
+
+	/// <summary>
+	/// Modifica el valor del volumen en el audioSource
+	/// </summary>
+	/// <param name="volume">Volume.</param>
 	public void SetVolume(float volume) {
 		audioSource.volume = volume;
 	}
