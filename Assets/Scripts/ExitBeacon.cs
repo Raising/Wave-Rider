@@ -6,7 +6,7 @@ public class ExitBeacon : MonoBehaviour {
 	private AudioSource sound;
 	// Use this for initialization
 	void Start () {
-		sound = GetComponent<AudioSource> ();
+		//sound = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -16,7 +16,8 @@ public class ExitBeacon : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D collider) {
 		if (collider.tag == "NutShip") {
-			sound.Play ();
+			//sound.Play ();
+			AudioManager.Instance.playSound("Win.wav"); //TODO TEMPORALMENTE ROTO, PUES NO ESPERA QUE SE ACABE DE REPRODUCIR EL SONIDO
 			GameManager.Instance.winLevel ();
 		}
 	}

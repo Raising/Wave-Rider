@@ -9,7 +9,7 @@ public class nutShell : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rigidBody = GetComponent<Rigidbody2D>();
-		sound = GetComponent<AudioSource> ();
+		//sound = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -30,7 +30,8 @@ public class nutShell : MonoBehaviour {
 		gameOver ();
 	}
 	void gameOver (){
-		sound.Play ();
+		//sound.Play ();
+		AudioManager.Instance.playMusic("Loose.wav"); //TODO TEMPORALMENTE ROTO, PUES NO ESPERA QUE SE ACABE DE REPRODUCIR EL SONIDO
 		GameManager.Instance.loseLevel ();
 	}
 
