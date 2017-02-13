@@ -7,18 +7,13 @@ public static class Trigonometrics {
 	}
 
 	public static Vector2 localPointToGlobal(GameObject referent,Vector2 point) {
-		Vector2 rotatedPoint = rotatePointFromCenter(point,referent.transform.rotation.eulerAngles.z);
-		Vector2 escaledPoint = new Vector2(rotatedPoint.x * referent.transform.localScale.x,rotatedPoint.y * referent.transform.localScale.y);
-		Vector2 traslatedPoint = escaledPoint + getPosition2D(referent) ;
-
-		return traslatedPoint; 
+		
+		return referent.transform.TransformPoint (point);
 	}
 
 	public static Vector2 globalPointToLocal(GameObject referent, Vector2 point) {
-		Vector2 traslatedPoint = point +- getPosition2D(referent) ;
-		Vector2 escaledPoint = new Vector2(traslatedPoint.x / referent.transform.localScale.x,traslatedPoint.y / referent.transform.localScale.y);
-		Vector2 rotatedPoint = rotatePointFromCenter(escaledPoint, -1*referent.transform.rotation.eulerAngles.z);
-		return rotatedPoint;
+		return referent.transform.InverseTransformPoint(point);
+
 	}
 
 	public static Vector2 getPosition2D(GameObject referent){

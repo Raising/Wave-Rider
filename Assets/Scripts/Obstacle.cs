@@ -15,7 +15,7 @@ public class Obstacle : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
-		//RedirigirWaveFragment (collider);
+		RedirigirWaveFragment (collider);
 		CompensarPosicion (collider);
 
 
@@ -30,7 +30,7 @@ public class Obstacle : MonoBehaviour {
 	}
 	void OnCollisionStay2D(Collision2D collision){
 		foreach (ContactPoint2D contact in collision.contacts) {
-			Debug.DrawLine(contact.point, contact.point + contact.normal, Color.red);
+			//Debug.DrawLine(contact.point, contact.point + contact.normal, Color.red);
 		}
 		//Debug.DrawLine (collision.contacts [0].point, new Vector2 (0, 0),Color.red);
 		//RedirigirWaveFragment (collision.collider);
