@@ -4,6 +4,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+public enum GameState {
+	ready, playing, paused, win, gameOver
+}
 public class GameManager : Singleton<GameManager> {
 	[SerializeField]
 	private GameObject splashObject;
@@ -13,8 +16,12 @@ public class GameManager : Singleton<GameManager> {
 	[SerializeField]
 	private GameObject menuPrincipal;
 
+	[SerializeField] private GameState gameState;
+
+
 	// Use this for initialization
 	void Start () {
+		gameState = GameState.playing;
     }
 	
 	// Update is called once per frame
@@ -100,5 +107,23 @@ public class GameManager : Singleton<GameManager> {
 				}
 			}
 		}
+	}
+
+	private void PauseResumeGame() {
+		if (GameManager.Instance.gameState == GameState.paused) {
+			GameManager.Instance.Resume ();		
+		} else if (GameManager.Instance.gameState == GameState.playing) {
+			GameManager.Instance.Pause ();
+		}
+	}
+
+	private void Pause() {
+		Time.timeScale = 0;
+		GameManager.Instance.gameState = GameState.paused;
+	}
+
+	private void Resume() {
+		Time.timeScale = 1;
+		GameManager.Instance.gameState = GameState.playing;
 	}
 }
