@@ -57,7 +57,7 @@ public class GameManager : Singleton<GameManager> {
 	}
 
 	IEnumerator returnToLevelSelection () {
-		yield return new  WaitForSeconds (2);
+		yield return new WaitForSeconds (AudioManager.Instance.SoundResources("Win.wav").length);
 		GameManager.Instance.CambiaEscena ("SeleccionNivel");
 	}
 
@@ -70,7 +70,7 @@ public class GameManager : Singleton<GameManager> {
 	}
 
 	IEnumerator repeatLevel () {
-		yield return new WaitForSeconds (2);
+		yield return new WaitForSeconds (AudioManager.Instance.SoundResources("Loose.wav").length);
 		GameManager.Instance.CambiaEscena ( SceneManager.GetActiveScene ().name);
 	}
 

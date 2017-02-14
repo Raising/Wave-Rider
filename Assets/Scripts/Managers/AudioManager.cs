@@ -77,6 +77,19 @@ public class AudioManager : Singleton<AudioManager> {
 		}
 	}
 
+	/// <summary>
+	/// Permite obtener un recurso de sonido
+	/// </summary>
+	/// <returns>Retorna el recurso de sonido</returns>
+	/// <param name="soundKey">Nombre del fichero de sonido</param>
+	public AudioClip SoundResources (string soundKey) {
+		if (this.soundResources.ContainsKey (soundKey)) {
+			return this.soundResources [soundKey];
+		}
+
+		return null;
+	}
+
 	void Awake() {
         // Se cargan los recursos de musica y sonido
 		LoadMusicResources ();
@@ -204,8 +217,8 @@ public class AudioManager : Singleton<AudioManager> {
 	/// </summary>
 	/// <param name="soundKey">Nombre del sonido.</param>
 	public void playSound(string soundKey) {   
-		if (soundResources.ContainsKey(soundKey)) {
-			AudioClip soundClip = soundResources [soundKey];
+		if (AudioManager.Instance.soundResources.ContainsKey(soundKey)) {
+			AudioClip soundClip = AudioManager.Instance.soundResources [soundKey];
 			AudioManager.Instance.audioSource.PlayOneShot (soundClip);
 		}
 	}

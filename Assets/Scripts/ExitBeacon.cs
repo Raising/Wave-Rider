@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ExitBeacon : MonoBehaviour {
-	private AudioSource sound;
 	// Use this for initialization
 	void Start () {
 		//sound = GetComponent<AudioSource> ();
