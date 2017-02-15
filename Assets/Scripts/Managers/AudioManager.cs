@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
+using UnityEngine.Analytics;
 
 /// <summary>
 /// Clase encargada de gestionar todos los recursos de audio, así como su reproducción 
@@ -188,6 +189,11 @@ public class AudioManager : Singleton<AudioManager> {
 		} else if(sceneName.Contains("Nivel_")) {
 			AudioManager.Instance.playMusic ("NIVEL GENERICO NUEVO");
 		}
+
+		Analytics.CustomEvent ("Escenas Visitadas", new Dictionary<string, object> { { "nombre", sceneName } }); // ENVIA INFORMACION PERSONALIZADA PARA LAS ESTADISTICAS
+		Analytics.Transaction("12345abcde", 0.99m, "USD", null, null); // ENVIA ESTADISTICAS DE COMPRAS EN APP
+		int birthYear = 2014;
+		Analytics.SetUserBirthYear(birthYear);
 	}
 
 	/// <summary>
