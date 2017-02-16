@@ -45,5 +45,15 @@ public class SceneController : Singleton<SceneController> {
 		Analytics.Transaction("12345abcde", 0.99m, "USD", null, null); // ENVIA ESTADISTICAS DE COMPRAS EN APP
 		int birthYear = 2014;
 		Analytics.SetUserBirthYear(birthYear);
+
+        AdsController.Instance.CheckAdCondition(sceneName);
 	}
+
+    public bool IsSceneLevel() {
+        if(SceneManager.GetActiveScene().name.Contains("Nivel_")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
