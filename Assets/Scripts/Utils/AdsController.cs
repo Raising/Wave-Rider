@@ -19,7 +19,7 @@ public class AdsController : Singleton<AdsController> {
             Advertisement.Show();
         }
     }
-#endif
+
 
     public void CheckAdCondition(string sceneName) {
         if (SceneController.Instance.IsSceneLevel()) {
@@ -36,4 +36,5 @@ public class AdsController : Singleton<AdsController> {
             }
         }
     }
+#endif
 }

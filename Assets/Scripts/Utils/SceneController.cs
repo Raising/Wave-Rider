@@ -46,8 +46,10 @@ public class SceneController : Singleton<SceneController> {
 		int birthYear = 2014;
 		Analytics.SetUserBirthYear(birthYear);
 
+#if UNITY_ADS
         AdsController.Instance.CheckAdCondition(sceneName);
-	}
+#endif
+    }
 
     public bool IsSceneLevel() {
         if(SceneManager.GetActiveScene().name.Contains("Nivel_")) {
