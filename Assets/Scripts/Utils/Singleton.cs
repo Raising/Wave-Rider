@@ -12,7 +12,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour { // NECESARIO
 				Destroy(FindObjectOfType<T>());
 			}
 
-			DontDestroyOnLoad(FindObjectOfType<T>().transform.root); // PERSISTE ENTRE ESCENAS
+			DontDestroyOnLoad(FindObjectOfType<T>()); // PERSISTE ENTRE ESCENAS
 			return instance;
 		}
 	}

@@ -19,7 +19,7 @@ public class GeneradorOndas : MonoBehaviour {
 	[SerializeField]
 	private float tiempoDisipacionDistancia = 5;
 
-	private AudioSource sound;
+	private AudioSource sound; //TODO ESTE SE QUEDA POR AHORA ASI HASTA QUE HAGAMOS LAS SUBCLASES
 	private float instanteCreacionGeneradorOndas;
 	private float instanteUltimaOndaLanzada;
 

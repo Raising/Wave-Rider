@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ExitBeacon : MonoBehaviour {
-	private AudioSource sound;
 	// Use this for initialization
 	void Start () {
 		//sound = GetComponent<AudioSource> ();
@@ -19,6 +18,8 @@ public class ExitBeacon : MonoBehaviour {
 			//sound.Play ();
 			AudioManager.Instance.playSound("Win.wav"); //TODO TEMPORALMENTE ROTO, PUES NO ESPERA QUE SE ACABE DE REPRODUCIR EL SONIDO
 			GameManager.Instance.winLevel ();
+			Rigidbody2D nutRigi = collider.GetComponent<Rigidbody2D> ();
+			nutRigi.constraints = RigidbodyConstraints2D.FreezeAll;
 		}
 	}
 }

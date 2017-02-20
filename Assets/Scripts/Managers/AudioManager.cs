@@ -3,7 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using UnityEngine.SceneManagement;
+
+
 
 /// <summary>
 /// Clase encargada de gestionar todos los recursos de audio, así como su reproducción 
@@ -77,14 +78,27 @@ public class AudioManager : Singleton<AudioManager> {
 		}
 	}
 
+	/// <summary>
+	/// Permite obtener un recurso de sonido
+	/// </summary>
+	/// <returns>Retorna el recurso de sonido</returns>
+	/// <param name="soundKey">Nombre del fichero de sonido</param>
+	public AudioClip SoundResources (string soundKey) {
+		if (this.soundResources.ContainsKey (soundKey)) {
+			return this.soundResources [soundKey];
+		}
+
+		return null;
+	}
+
 	void Awake() {
         // Se cargan los recursos de musica y sonido
 		LoadMusicResources ();
 		LoadSoundResources (_SOUND_ROOT_DIRECTORY);
         //Recuperamos componente de audio y seteamos configuracion
-		AudioManager.Instance.audioSource = gameObject.GetComponent<AudioSource> ();
-		AudioManager.Instance.currentVolume = _MASTER_VOLUME_;
-		AudioManager.Instance.SetVolume(currentVolume);
+		Instance.audioSource = gameObject.GetComponent<AudioSource> ();
+		Instance.currentVolume = _MASTER_VOLUME_;
+		Instance.SetVolume(currentVolume);
 	}
 
     /// <summary>
@@ -131,7 +145,7 @@ public class AudioManager : Singleton<AudioManager> {
 		}
 
 		print ("Done Loading: " + name);
-        AudioManager.Instance.soundResources.Add(name, www.audioClip);
+        Instance.soundResources.Add(name, www.audioClip);
 	}
 
 	/// <summary>
@@ -143,47 +157,15 @@ public class AudioManager : Singleton<AudioManager> {
 		return validExtensions.Contains(Path.GetExtension(audioFile));
 	}
 
-	/// <summary>
-	/// //Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
-	/// </summary>
-	void OnEnable() { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
-		SceneManager.sceneLoaded += OnLevelFinishedLoading;
-	}
 
-	/// <summary>
-	//Tell our 'OnLevelFinishedLoading' function to stop listening for a scene change as soon as this script is disabled. Remember to always have an unsubscription for every delegate you subscribe to!
-	/// </summary>
-	void OnDisable() { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
-		SceneManager.sceneLoaded -= OnLevelFinishedLoading;
-	}
-
-	/// <summary>
-	/// Se ejecuta una vez se ha finalizado de cargar un nivel
-	/// </summary>
-	/// <param name="scene">Escena.</param>
-	/// <param name="mode">Modo de carga de la escena <value>4: Single</value>.</param>
-	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
-		Debug.Log("Level Loaded");
-		Debug.Log(scene.name);
-		Debug.Log(mode);
-
-		string sceneName = scene.name;
-		Debug.Log (sceneName);
-
-		if (sceneName == "MenuPrincipal") { //TODO TRANQUILIDAD, ESTO SE PLANTEARA DE OTRA FORMA
-			StartCoroutine (AudioManager.Instance.playMainMenuMusic ());
-		} else if(sceneName.Contains("Nivel_")) {
-			AudioManager.Instance.playMusic ("NIVEL GENERICO NUEVO");
-		}
-	}
 
 	/// <summary>
 	/// Reproduce la música de la intro + menú principal
 	/// </summary>
-	IEnumerator playMainMenuMusic() { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
-		AudioManager.Instance.playMusic ("CABECERA", false);
+	public IEnumerator playMainMenuMusic() { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
+		Instance.playMusic ("CABECERA", false);
 		yield return new WaitForSeconds (musicResources ["CABECERA"].length);
-		AudioManager.Instance.playMusic ("NIVEL 1 + MENÚ");
+		Instance.playMusic ("NIVEL 1 + MENÚ");
 	}
 
 	/// <summary>
@@ -193,9 +175,9 @@ public class AudioManager : Singleton<AudioManager> {
 	/// <param name="audio">Audioclip a reproducir.</param>
 	/// <param name="canLoop">Indica si el audio se reproduce en bucle<c>true</c> En bucle.</param>
 	private void Play(AudioClip audio, bool canLoop = false) {
-		AudioManager.Instance.audioSource.clip = audio;
-		AudioManager.Instance.audioSource.loop = canLoop;
-		AudioManager.Instance.audioSource.Play ();
+		Instance.audioSource.clip = audio;
+		Instance.audioSource.loop = canLoop;
+		Instance.audioSource.Play ();
 	}
 
 	/// <summary>
@@ -204,9 +186,9 @@ public class AudioManager : Singleton<AudioManager> {
 	/// </summary>
 	/// <param name="soundKey">Nombre del sonido.</param>
 	public void playSound(string soundKey) {   
-		if (soundResources.ContainsKey(soundKey)) {
-			AudioClip soundClip = soundResources [soundKey];
-			AudioManager.Instance.audioSource.PlayOneShot (soundClip);
+		if (Instance.soundResources.ContainsKey(soundKey)) {
+			AudioClip soundClip = Instance.soundResources [soundKey];
+			Instance.audioSource.PlayOneShot (soundClip);
 		}
 	}
 
@@ -218,7 +200,7 @@ public class AudioManager : Singleton<AudioManager> {
 	public void playMusic(string musicKey, bool canLoop = true) { 
 		if (musicResources.ContainsKey(musicKey)) {
 			AudioClip soundClip = musicResources [musicKey];
-			AudioManager.Instance.Play (soundClip, canLoop);
+			Instance.Play (soundClip, canLoop);
 		}
 	}
 
@@ -227,6 +209,6 @@ public class AudioManager : Singleton<AudioManager> {
 	/// </summary>
 	/// <param name="volume">Volume.</param>
 	public void SetVolume(float volume) {
-		AudioManager.Instance.audioSource.volume = volume;
+		Instance.audioSource.volume = volume;
 	}
 }

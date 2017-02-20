@@ -32,8 +32,8 @@ public class nutShell : MonoBehaviour {
 		gameOver ();
 	}
 	void gameOver (){
-		//sound.Play ();
-		AudioManager.Instance.playMusic("Loose.wav"); //TODO TEMPORALMENTE ROTO, PUES NO ESPERA QUE SE ACABE DE REPRODUCIR EL SONIDO
+
+		AudioManager.Instance.playSound("Loose.wav");
 		GameManager.Instance.loseLevel ();
 	}
 
