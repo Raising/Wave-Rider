@@ -266,12 +266,30 @@ public class WaveSector : MonoBehaviour {
 	}
 
 	private Vector2[] calculateCirucnferencePoints (float startAnglePercent , float endAnglePercent){
-		int numberOfPoints = 2 + (int)Mathf.Floor (colliderPointDensityFactor * Mathf.Abs (pointA.x * 2));
+		float  startAngle =  ((startAnglePercent * 2) - 1)  * pointsDispersionAngle;
+
+
+		int numberOfPoints = 2 + (int)Mathf.Floor (colliderPointDensityFactor * Mathf.Abs (pointA.x * 2) * (endAnglePercent - startAnglePercent));
 		Vector2[] circunferencePoints = new Vector2[numberOfPoints + 1];
 
 		float angleStep = (pointsDispersionAngle * 2) / (float)numberOfPoints;
 		angleStep = angleStep * (endAnglePercent - startAnglePercent);
-		float  startAngle =  ((startAnglePercent * 2) - 1)  * pointsDispersionAngle;
+
+		for (int i = 0; i <= numberOfPoints; i++) {
+			float sectorProportionAngle = startAngle +  i * angleStep ;
+			Vector2 pointInSector = Trigonometrics.GetCircunferencePoint (circunferenceCenter,circunferenceRadius,sectorProportionAngle);
+			circunferencePoints [i] = pointInSector;
+
+			if (i > 0) {
+				DrawSegment (circunferencePoints [i - 1], circunferencePoints [i]);
+			}
+		}
+
+		numberOfPoints = 2 + (int)Mathf.Floor (spritesDensityFactor * Mathf.Abs (pointA.x * 2)* (endAnglePercent - startAnglePercent));
+
+		angleStep = (pointsDispersionAngle * 2) / (float)numberOfPoints;
+		angleStep = angleStep * (endAnglePercent - startAnglePercent);
+
 		for (int i = 0; i <= numberOfPoints; i++) {
 			if (i >= dots.Count) {
 				GameObject newDot = Instantiate (waveImage);
@@ -279,25 +297,23 @@ public class WaveSector : MonoBehaviour {
 			}
 			float sectorProportionAngle = startAngle +  i * angleStep ;
 			Vector2 pointInSector = Trigonometrics.GetCircunferencePoint (circunferenceCenter,circunferenceRadius,sectorProportionAngle);
-			circunferencePoints [i] = pointInSector;
 			Vector2 globalPoint = Trigonometrics.localPointToGlobal (gameObject,pointInSector);
 			((GameObject)dots [i]).transform.position = new Vector3 (globalPoint.x, globalPoint.y, 0);
 
-			if (i > 0) {
-				DrawSegment (circunferencePoints [i - 1], circunferencePoints [i]);
-			}
+
 		}
+
 
 		return circunferencePoints;
 	}
 	private void FullDestroy(){
-		foreach (GameObject dot in dots) {
-			Destroy (dot);
+		foreach (Object dot in dots) {
+			Destroy ((GameObject)dot);
 		}
 		Destroy (gameObject);
 	}
 	private void DrawSegment(Vector2 point1,Vector2 point2){
-		//Debug.DrawLine(Trigonometrics.localPointToGlobal(gameObject,point1), Trigonometrics.localPointToGlobal(gameObject,point2),selfColor);
+		Debug.DrawLine(Trigonometrics.localPointToGlobal(gameObject,point1), Trigonometrics.localPointToGlobal(gameObject,point2),selfColor);
 	}
 
 	private Vector2 getPosition2D (){
