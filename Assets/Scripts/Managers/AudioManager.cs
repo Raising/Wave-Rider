@@ -11,12 +11,12 @@ using System.IO;
 /// <remarks> SINGLETON, acceder siempre mediante <see cref="Instance"/> </remarks>
 /// </summary>
 
-public class AudioManager : Singleton<AudioManager> {
-
-	/// <summary>
-	/// Ruta base de los recursos de audio
-	/// </summary>
-	private static string _AUDIO_ROOT_DIRECTORY = "Assets/Audio/";
+public class AudioManager : MonoBehaviour {
+    public static AudioManager Instance = null;
+    /// <summary>
+    /// Ruta base de los recursos de audio
+    /// </summary>
+    private static string _AUDIO_ROOT_DIRECTORY = "Assets/Audio/";
 	/// <summary>
 	/// Ruta de los recursos de sonido
 	/// </summary>
@@ -65,11 +65,11 @@ public class AudioManager : Singleton<AudioManager> {
 	/// </summary>
 	private FileInfo[] audioFiles;
 
-	/// <summary>
-	/// Obtiene o modifica el volumen actual
-	/// </summary>
-	/// <value>The current volume.</value>
-	public float CurrentVolume {
+    /// <summary>
+    /// Obtiene o modifica el volumen actual
+    /// </summary>
+    /// <value>The current volume.</value>
+    public float CurrentVolume {
 		get {
 			return this.currentVolume;
 		}
@@ -92,13 +92,27 @@ public class AudioManager : Singleton<AudioManager> {
 	}
 
 	void Awake() {
+        //Check if instance already exists
+        if (Instance == null)
+
+            //if not, set instance to this
+            Instance = this;
+
+        //If instance already exists and it's not this:
+        else if (Instance != this)
+
+            //Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
+            Destroy(gameObject);
+
+        //Sets this to not be destroyed when reloading scene
+        DontDestroyOnLoad(gameObject);
         // Se cargan los recursos de musica y sonido
-		LoadMusicResources ();
+        LoadMusicResources ();
 		LoadSoundResources (_SOUND_ROOT_DIRECTORY);
         //Recuperamos componente de audio y seteamos configuracion
-		Instance.audioSource = gameObject.GetComponent<AudioSource> ();
-		Instance.currentVolume = _MASTER_VOLUME_;
-		Instance.SetVolume(currentVolume);
+		audioSource = gameObject.GetComponent<AudioSource> ();
+		currentVolume = _MASTER_VOLUME_;
+		SetVolume(currentVolume);
 	}
 
     /// <summary>
@@ -145,7 +159,7 @@ public class AudioManager : Singleton<AudioManager> {
 		}
 
 		print ("Done Loading: " + name);
-        Instance.soundResources.Add(name, www.audioClip);
+        soundResources.Add(name, www.audioClip);
 	}
 
 	/// <summary>
@@ -163,9 +177,9 @@ public class AudioManager : Singleton<AudioManager> {
 	/// Reproduce la música de la intro + menú principal
 	/// </summary>
 	public IEnumerator playMainMenuMusic() { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
-		Instance.playMusic ("CABECERA", false);
+		playMusic ("CABECERA", false);
 		yield return new WaitForSeconds (musicResources ["CABECERA"].length);
-		Instance.playMusic ("NIVEL 1 + MENÚ");
+		playMusic ("NIVEL 1 + MENÚ");
 	}
 
 	/// <summary>
@@ -175,9 +189,9 @@ public class AudioManager : Singleton<AudioManager> {
 	/// <param name="audio">Audioclip a reproducir.</param>
 	/// <param name="canLoop">Indica si el audio se reproduce en bucle<c>true</c> En bucle.</param>
 	private void Play(AudioClip audio, bool canLoop = false) {
-		Instance.audioSource.clip = audio;
-		Instance.audioSource.loop = canLoop;
-		Instance.audioSource.Play ();
+		audioSource.clip = audio;
+		audioSource.loop = canLoop;
+		audioSource.Play ();
 	}
 
 	/// <summary>
@@ -186,9 +200,9 @@ public class AudioManager : Singleton<AudioManager> {
 	/// </summary>
 	/// <param name="soundKey">Nombre del sonido.</param>
 	public void playSound(string soundKey) {   
-		if (Instance.soundResources.ContainsKey(soundKey)) {
-			AudioClip soundClip = Instance.soundResources [soundKey];
-			Instance.audioSource.PlayOneShot (soundClip);
+		if (soundResources.ContainsKey(soundKey)) {
+			AudioClip soundClip = soundResources [soundKey];
+			audioSource.PlayOneShot (soundClip);
 		}
 	}
 
@@ -200,7 +214,7 @@ public class AudioManager : Singleton<AudioManager> {
 	public void playMusic(string musicKey, bool canLoop = true) { 
 		if (musicResources.ContainsKey(musicKey)) {
 			AudioClip soundClip = musicResources [musicKey];
-			Instance.Play (soundClip, canLoop);
+			Play (soundClip, canLoop);
 		}
 	}
 
@@ -209,6 +223,6 @@ public class AudioManager : Singleton<AudioManager> {
 	/// </summary>
 	/// <param name="volume">Volume.</param>
 	public void SetVolume(float volume) {
-		Instance.audioSource.volume = volume;
+		audioSource.volume = volume;
 	}
 }

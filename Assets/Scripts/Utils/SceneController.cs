@@ -6,20 +6,39 @@ using System.IO;
 using UnityEngine.SceneManagement;
 using UnityEngine.Analytics;
 
-public class SceneController : Singleton<SceneController> {
+public class SceneController : MonoBehaviour {
+    public static SceneController Instance = null;
 
-	/// <summary>
-	/// //Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
-	/// </summary>
-	void OnEnable() { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
-		SceneManager.sceneLoaded += SceneController.Instance.OnLevelFinishedLoading;
+    void Awake() {
+        //Check if instance already exists
+        if (Instance == null)
+
+            //if not, set instance to this
+            Instance = this;
+
+        //If instance already exists and it's not this:
+        else if (Instance != this)
+
+            //Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
+            Destroy(gameObject);
+
+        //Sets this to not be destroyed when reloading scene
+        DontDestroyOnLoad(gameObject);
+    }
+
+
+    /// <summary>
+    /// //Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
+    /// </summary>
+    void OnEnable() { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
+		SceneManager.sceneLoaded += OnLevelFinishedLoading;
 	}
 
 	/// <summary>
 	//Tell our 'OnLevelFinishedLoading' function to stop listening for a scene change as soon as this script is disabled. Remember to always have an unsubscription for every delegate you subscribe to!
 	/// </summary>
 	void OnDisable() { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
-		SceneManager.sceneLoaded -= SceneController.Instance.OnLevelFinishedLoading;
+		SceneManager.sceneLoaded -= OnLevelFinishedLoading;
 	}
 
 	/// <summary>

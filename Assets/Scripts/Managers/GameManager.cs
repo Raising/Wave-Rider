@@ -8,20 +8,37 @@ using System.Collections.Generic;
 public enum GameState {
 	ready, playing, paused, win, gameOver
 }
-public class GameManager : Singleton<GameManager> {
-	[SerializeField]
+public class GameManager : MonoBehaviour {
+    public static GameManager Instance = null;
+    [SerializeField]
 	private GameObject splashObject;
 	[SerializeField]
 	private EmitterSelectorButton currentButton = null;
 	private GameObject waveGenerator;
 	[SerializeField]
 	private GameObject menuPrincipal;
-
 	[SerializeField] private GameState gameState;
 
+    void Awake() {
+        //Check if instance already exists
+        if (Instance == null)
 
-	// Use this for initialization
-	void Start () {
+            //if not, set instance to this
+            Instance = this;
+
+        //If instance already exists and it's not this:
+        else if (Instance != this)
+
+            //Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
+            Destroy(gameObject);
+
+        //Sets this to not be destroyed when reloading scene
+        DontDestroyOnLoad(gameObject);
+    }
+
+
+        // Use this for initialization
+        void Start () {
 		gameState = GameState.playing;
     }
 	
@@ -34,7 +51,7 @@ public class GameManager : Singleton<GameManager> {
 			if (InputController.CheckUserInput()) {
 				GameObject pressStart = GameObject.FindGameObjectWithTag ("PressStart");
 				if (pressStart.activeInHierarchy) {
-					GameManager.Instance.CambiaEscena ("SeleccionNivel");
+					CambiaEscena ("SeleccionNivel");
 				}
 			}
 		}
@@ -66,7 +83,7 @@ public class GameManager : Singleton<GameManager> {
 
 	IEnumerator returnToLevelSelection () {
 		yield return new WaitForSeconds (AudioManager.Instance.SoundResources("Win.wav").length);
-		GameManager.Instance.CambiaEscena ("SeleccionNivel");
+		CambiaEscena ("SeleccionNivel");
 	}
 
 
@@ -79,7 +96,7 @@ public class GameManager : Singleton<GameManager> {
 
 	IEnumerator repeatLevel () {
 		yield return new WaitForSeconds (AudioManager.Instance.SoundResources("Loose.wav").length);
-		GameManager.Instance.CambiaEscena ( SceneManager.GetActiveScene ().name);
+		CambiaEscena ( SceneManager.GetActiveScene ().name);
 	}
 
 	void AplicarRaton () {
@@ -111,20 +128,20 @@ public class GameManager : Singleton<GameManager> {
 	}
 
 	private void PauseResumeGame() {
-		if (GameManager.Instance.gameState == GameState.paused) {
-			GameManager.Instance.Resume ();		
-		} else if (GameManager.Instance.gameState == GameState.playing) {
-			GameManager.Instance.Pause ();
+		if (gameState == GameState.paused) {
+			Resume ();		
+		} else if (gameState == GameState.playing) {
+			Pause ();
 		}
 	}
 
 	private void Pause() {
 		Time.timeScale = 0;
-		GameManager.Instance.gameState = GameState.paused;
+		gameState = GameState.paused;
 	}
 
 	private void Resume() {
 		Time.timeScale = 1;
-		GameManager.Instance.gameState = GameState.playing;
+		gameState = GameState.playing;
 	}
 }

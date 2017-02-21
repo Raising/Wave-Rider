@@ -6,7 +6,7 @@ public class InputController : MonoBehaviour {
     
     public static bool CheckUserInput() {
         //Check if we are running either in the Unity editor or in a standalone build.
-        #if UNITY_STANDALONE || UNITY_WEBPLAYER
+        #if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
 	        if (Input.GetButtonDown("Fire1")) {
 	            return true;
 	        } else {
@@ -29,8 +29,8 @@ public class InputController : MonoBehaviour {
     public static Vector3 GetUserInputPosition() {
         Vector3 inputPosition = new Vector3();
 
-	    #if UNITY_STANDALONE || UNITY_WEBPLAYER
-        	inputPosition = Input.mousePosition;
+        #if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
+            inputPosition = Input.mousePosition;
 
 		#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
         	inputPosition = Input.GetTouch(0).position;
