@@ -40,7 +40,7 @@ public class WaveSector : MonoBehaviour {
 
 	[SerializeField]
 	private string reshapeMode = "undefined";
-
+	private ObstacleWall wall = null;
 
 
 
@@ -69,78 +69,64 @@ public class WaveSector : MonoBehaviour {
 	}
 		
 	public void HandleObstacleCollision(PolygonCollider2D wallCollider){
-		//PolygonCollider2D wallCollider = (PolygonCollider2D)collision.contacts [0].otherCollider;
 		if (isInmune (wallCollider.gameObject)) {
 			return;
 		}
 			
-		ObstacleWall wall = new ObstacleWall(wallCollider);
+		wall = new ObstacleWall(wallCollider);
 		wall.defineAproachigWave (this);
 		float angleA = -1 * pointsDispersionAngle;
 		float angleB = pointsDispersionAngle;
+
 		float firstImpactAngle = wall.firstImpactAngle ();
 
-		if (wall.getLeftBound () >= wall.getRightBound ()) {
+		float wallLeftBound = wall.getLeftBound ();
+		float wallRightBound = wall.getRightBound ();
+
+		if (wallLeftBound >= wallRightBound) {
 			return;
 		}
 
 		if (wall.isLeftExceedByWave ()) {
-			float wallLeftBound = wall.getLeftBound ();
-
 			WaveSector leftExceed = createSplitedSector (angleA,wallLeftBound - (minimumCollisionAngle/ circunferenceRadius) );
 			angleA = wallLeftBound;
 		}
 
 		if (wall.isRightExceedByWave ()) {
-			float wallRightBound = wall.getRightBound ();
 			WaveSector rightExceed = createSplitedSector (wallRightBound  + minimumCollisionAngle/ circunferenceRadius,angleB);
 			angleB = wallRightBound;
 		}
-			
+
 		if (firstImpactAngle - angleA > minimumCollisionAngle) {
-			float distanceToEndShape = Mathf.Max(wall.getDistanceFromCircunferenceToWall(firstImpactAngle),wall.getDistanceFromCircunferenceToWall(angleA));
-
-			float timeToEndShape = distanceToEndShape  * reshapeFactor / traslationSpeed;
-			/*Debug.Log ("left: " + firstImpactAngle + " - " + angleA + "=" + (firstImpactAngle - angleA) );
-			Debug.Log ("left: " + distanceToEndShape + " -> " + timeToEndShape);
-			Debug.Break ();*/
-			//Debug.Log ("distance = " + distanceToEndShape + "  tiempo = " + timeToEndShape);
-			WaveSector leftBounce = createSplitedSector (angleA,firstImpactAngle);	
-
-
-			leftBounce.setReshape ("DestroyFromRight",timeToEndShape);
-
-			WaveSector leftBounceMirror = leftBounce.createClone ();
-			leftBounceMirror.gameObject.transform.position = wall.getMirrorPosition (leftBounce.gameObject.transform.position); 
-			leftBounceMirror.gameObject.transform.rotation = wall.getMirrorRotation (leftBounce.gameObject.transform.rotation); 
-			leftBounceMirror.setInmunityToObstacle (wallCollider.gameObject);
-			leftBounceMirror.remainingAliveTime = leftBounceMirror.remainingAliveTime - 1;
-
-			leftBounceMirror.setReshape ("CreateFromLeft",timeToEndShape);
-			leftBounce.setTotalInmunity ();
+			generateBouncingColisioningPair (angleA, firstImpactAngle, "Right");
 		}
-
 		if ( angleB - firstImpactAngle  > minimumCollisionAngle) {
-			float distanceToEndShape = Mathf.Max(wall.getDistanceFromCircunferenceToWall(firstImpactAngle),wall.getDistanceFromCircunferenceToWall(angleB)); 
-			float timeToEndShape = distanceToEndShape *  reshapeFactor / traslationSpeed;
-			/*Debug.Log ("right: " + angleB + " - " + firstImpactAngle + "=" + (angleB - firstImpactAngle) );
-			Debug.Log ("right: " + distanceToEndShape + " -> " + timeToEndShape);*/
-			WaveSector rightBounce = createSplitedSector (firstImpactAngle,angleB);	
-			rightBounce.setReshape ("DestroyFromLeft",timeToEndShape);
+			generateBouncingColisioningPair (firstImpactAngle, angleB, "Left");
 
-			WaveSector rightBounceMirror = rightBounce.createClone ();
-			rightBounceMirror.gameObject.transform.position = wall.getMirrorPosition (rightBounce.gameObject.transform.position); 
-			rightBounceMirror.gameObject.transform.rotation = wall.getMirrorRotation (rightBounce.gameObject.transform.rotation); 
-			rightBounceMirror.setInmunityToObstacle (wallCollider.gameObject);
-			rightBounceMirror.remainingAliveTime = rightBounceMirror.remainingAliveTime - 1;
-
-
-			rightBounceMirror.setReshape ("CreateFromRight",timeToEndShape);
-			rightBounce.setTotalInmunity();
 		}
-		//Debug.Break();
 		FullDestroy();
+	}
 
+	private void generateBouncingColisioningPair ( float leftAngle,float rightAngle,string direction){
+		float distanceToEndShape = Mathf.Max(wall.getDistanceFromCircunferenceToWall(rightAngle),wall.getDistanceFromCircunferenceToWall(leftAngle));
+		float timeToEndShape = distanceToEndShape  * reshapeFactor / traslationSpeed;
+
+		WaveSector colisioner = createSplitedSector (leftAngle,rightAngle);	
+
+		WaveSector bouncer = colisioner.createClone ();
+		bouncer.gameObject.transform.position = wall.getMirrorPosition (colisioner.gameObject.transform.position); 
+		bouncer.gameObject.transform.rotation = wall.getMirrorRotation (colisioner.gameObject.transform.rotation); 
+		bouncer.setInmunityToObstacle (wall.gameObject);
+		bouncer.remainingAliveTime = bouncer.remainingAliveTime - 1;
+
+		if (direction == "Right") {
+			colisioner.setReshape ("DestroyFromRight", timeToEndShape);
+			bouncer.setReshape ("CreateFromLeft", timeToEndShape);
+		} else if (direction == "Right") {
+			colisioner.setReshape ("DestroyFromLeft", timeToEndShape);
+			bouncer.setReshape ("CreateFromRight", timeToEndShape);
+		}
+		colisioner.setTotalInmunity ();
 	}
 
 	public void constructor(float pointsDistance,float newPointsDispersionAngle, float newSpeed, float newRemainingTime){
