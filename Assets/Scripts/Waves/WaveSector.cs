@@ -29,6 +29,8 @@ public class WaveSector : MonoBehaviour {
 	public Vector2 circunferenceCenter = new Vector2(0,0);
 	public float circunferenceRadius = 0;
 
+
+	private Rigidbody2D rigidBody = null;
 	//Angulos en radianes
 	public float pointsDispersionAngle = Mathf.PI/4; 
 
@@ -53,6 +55,8 @@ public class WaveSector : MonoBehaviour {
 		edgeCollider = gameObject.GetComponent<EdgeCollider2D> ();
 		selfColor = Random.ColorHSV (0f, 1f, 1f, 1f, 1f, 1f);
 		dots = new ArrayList ();
+		rigidBody = GetComponent<Rigidbody2D> ();
+		//rigidBody.velocity = Vector2.up;
 	}
 	
 	// Update is called once per frame
@@ -77,9 +81,7 @@ public class WaveSector : MonoBehaviour {
 		wall.defineAproachigWave (this);
 		float angleA = -1 * pointsDispersionAngle;
 		float angleB = pointsDispersionAngle;
-
 		float firstImpactAngle = wall.firstImpactAngle ();
-
 		float wallLeftBound = wall.getLeftBound ();
 		float wallRightBound = wall.getRightBound ();
 
