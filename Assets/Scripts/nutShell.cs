@@ -19,6 +19,8 @@ public class nutShell : MonoBehaviour {
 
 	void FixedUpdate () {
 		OrientarHaciaDireccion();
+		ApplyWorldForce ();
+		World.setReadyNextInfluentMatrix ();
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
@@ -29,7 +31,7 @@ public class nutShell : MonoBehaviour {
 		}
 	}
 	void OnBecameInvisible(){
-		gameOver ();
+//		gameOver ();
 	}
 	void gameOver (){
 
@@ -44,6 +46,12 @@ public class nutShell : MonoBehaviour {
 		Vector2 direccion = interfaz.getDireccion (new Vector2(transform.position.x,transform.position.y) );
 		rigidBody.AddForce (direccion * impulso);
 
+	}
+
+	private void ApplyWorldForce(){
+		Vector2 selfPosition = new Vector2 (transform.position.x,transform.position.y);
+		Vector2 worlfInfluenceVector = World.getWorldInfluenceInArea (selfPosition);
+		rigidBody.AddForce (worlfInfluenceVector);
 	}
 
 	void OrientarHaciaDireccion() {
