@@ -13,13 +13,15 @@ public class WaveSector : MonoBehaviour {
 	[SerializeField]
 	private GameObject waveSectorPrefab = null; 
 	[SerializeField]
+	private GameObject waveImage = null;
+	[SerializeField]
 	private float diferenceFactorToSplitOrBounce = 0.1f; 
 	[SerializeField]
 	private float minimumCollisionAngle = 0.2f; 
 	[SerializeField]
 	private float reshapeFactor = 0.1f; 
 
-
+	private ArrayList dots = null;
 
 	private bool noCollision = false;
 	public Vector2 pointA = new Vector2(0,0); 
@@ -27,6 +29,8 @@ public class WaveSector : MonoBehaviour {
 	public Vector2 circunferenceCenter = new Vector2(0,0);
 	public float circunferenceRadius = 0;
 
+
+	private Rigidbody2D rigidBody = null;
 	//Angulos en radianes
 	public float pointsDispersionAngle = Mathf.PI/4; 
 
@@ -38,6 +42,10 @@ public class WaveSector : MonoBehaviour {
 
 	[SerializeField]
 	private string reshapeMode = "undefined";
+	private ObstacleWall wall = null;
+
+
+
 	private float currentReshapeTime = 0;
 	private float totalRechapeTime = 0.4f;
 	// Use this for initialization
@@ -46,6 +54,9 @@ public class WaveSector : MonoBehaviour {
 	void Start () {
 		edgeCollider = gameObject.GetComponent<EdgeCollider2D> ();
 		selfColor = Random.ColorHSV (0f, 1f, 1f, 1f, 1f, 1f);
+		dots = new ArrayList ();
+		rigidBody = GetComponent<Rigidbody2D> ();
+		//rigidBody.velocity = Vector2.up;
 	}
 	
 	// Update is called once per frame
@@ -61,71 +72,63 @@ public class WaveSector : MonoBehaviour {
 		moveForward ();
 	}
 		
-	public void HandleObstacleCollision(Collision2D collision){
-		PolygonCollider2D wallCollider = (PolygonCollider2D)collision.contacts [0].otherCollider;
+	public void HandleObstacleCollision(PolygonCollider2D wallCollider){
 		if (isInmune (wallCollider.gameObject)) {
 			return;
 		}
 			
-		ObstacleWall wall = new ObstacleWall(wallCollider);
+		wall = new ObstacleWall(wallCollider);
 		wall.defineAproachigWave (this);
 		float angleA = -1 * pointsDispersionAngle;
 		float angleB = pointsDispersionAngle;
 		float firstImpactAngle = wall.firstImpactAngle ();
+		float wallLeftBound = wall.getLeftBound ();
+		float wallRightBound = wall.getRightBound ();
 
-		if (wall.getLeftBound () >= wall.getRightBound ()) {
+		if (wallLeftBound >= wallRightBound) {
 			return;
 		}
 
 		if (wall.isLeftExceedByWave ()) {
-			float wallLeftBound = wall.getLeftBound ();
-			WaveSector leftExceed = createSplitedSector (angleA,wallLeftBound - minimumCollisionAngle/ circunferenceRadius );
+			WaveSector leftExceed = createSplitedSector (angleA,wallLeftBound - (minimumCollisionAngle/ circunferenceRadius) );
 			angleA = wallLeftBound;
 		}
 
 		if (wall.isRightExceedByWave ()) {
-			float wallRightBound = wall.getRightBound ();
 			WaveSector rightExceed = createSplitedSector (wallRightBound  + minimumCollisionAngle/ circunferenceRadius,angleB);
 			angleB = wallRightBound;
 		}
-			
+
 		if (firstImpactAngle - angleA > minimumCollisionAngle) {
-
-
-			float distanceToEndShape = wall.getDistanceFromCircunferenceToWall(firstImpactAngle);
-
-			float timeToEndShape = distanceToEndShape  * reshapeFactor / traslationSpeed;
-			//Debug.Log ("distance = " + distanceToEndShape + "  tiempo = " + timeToEndShape);
-			WaveSector leftBounce = createSplitedSector (angleA,firstImpactAngle);	
-			leftBounce.setTotalInmunity ();
-			leftBounce.setReshape ("DestroyFromLeft",timeToEndShape);
-
-			WaveSector leftBounceMirror = leftBounce.createClone ();
-			leftBounceMirror.gameObject.transform.position = wall.getMirrorPosition (leftBounce.gameObject.transform.position); 
-			leftBounceMirror.gameObject.transform.rotation = wall.getMirrorRotation (leftBounce.gameObject.transform.rotation); 
-			leftBounceMirror.setInmunityToObstacle (wallCollider.gameObject);
-
-			leftBounceMirror.setReshape ("CreateFromLeft",timeToEndShape);
+			generateBouncingColisioningPair (angleA, firstImpactAngle, "Right");
 		}
-
 		if ( angleB - firstImpactAngle  > minimumCollisionAngle) {
-			float distanceToEndShape = wall.getDistanceFromCircunferenceToWall(firstImpactAngle); 
-			float timeToEndShape = distanceToEndShape *  reshapeFactor / traslationSpeed;
+			generateBouncingColisioningPair (firstImpactAngle, angleB, "Left");
 
-			WaveSector rightBounce = createSplitedSector (firstImpactAngle,angleB);	
-			rightBounce.setTotalInmunity();
-			rightBounce.setReshape ("DestroyFromRight",timeToEndShape);
-
-			WaveSector rightBounceMirror = rightBounce.createClone ();
-			rightBounceMirror.gameObject.transform.position = wall.getMirrorPosition (rightBounce.gameObject.transform.position); 
-			rightBounceMirror.gameObject.transform.rotation = wall.getMirrorRotation (rightBounce.gameObject.transform.rotation); 
-			rightBounceMirror.setInmunityToObstacle (wallCollider.gameObject);
-
-
-			rightBounceMirror.setReshape ("CreateFromRight",timeToEndShape);
 		}
-		//Debug.Break();
-		Destroy (gameObject);
+		FullDestroy();
+	}
+
+	private void generateBouncingColisioningPair ( float leftAngle,float rightAngle,string direction){
+		float distanceToEndShape = Mathf.Max(wall.getDistanceFromCircunferenceToWall(rightAngle),wall.getDistanceFromCircunferenceToWall(leftAngle));
+		float timeToEndShape = distanceToEndShape  * reshapeFactor / traslationSpeed;
+
+		WaveSector colisioner = createSplitedSector (leftAngle,rightAngle);	
+
+		WaveSector bouncer = colisioner.createClone ();
+		bouncer.gameObject.transform.position = wall.getMirrorPosition (colisioner.gameObject.transform.position); 
+		bouncer.gameObject.transform.rotation = wall.getMirrorRotation (colisioner.gameObject.transform.rotation); 
+		bouncer.setInmunityToObstacle (wall.gameObject);
+		bouncer.remainingAliveTime = bouncer.remainingAliveTime - 1;
+
+		if (direction == "Right") {
+			colisioner.setReshape ("DestroyFromRight", timeToEndShape);
+			bouncer.setReshape ("CreateFromLeft", timeToEndShape);
+		} else if (direction == "Right") {
+			colisioner.setReshape ("DestroyFromLeft", timeToEndShape);
+			bouncer.setReshape ("CreateFromRight", timeToEndShape);
+		}
+		colisioner.setTotalInmunity ();
 	}
 
 	public void constructor(float pointsDistance,float newPointsDispersionAngle, float newSpeed, float newRemainingTime){
@@ -156,7 +159,7 @@ public class WaveSector : MonoBehaviour {
 
 		GameObject newWaveSector = Instantiate(waveSectorPrefab,newPosition,  Quaternion.Euler(0, 0, globalAngle));
 		WaveSector waveSectorInterface = newWaveSector.GetComponent<WaveSector> ();
-		waveSectorInterface.constructor ((newPointA-newPointB).magnitude,angleFromSelf,traslationSpeed,remainingAliveTime);
+		waveSectorInterface.constructor ((newPointA-newPointB).magnitude,angleFromSelf,traslationSpeed,remainingAliveTime );
 		return waveSectorInterface;
 	}
 
@@ -188,21 +191,21 @@ public class WaveSector : MonoBehaviour {
 		switch (reshapeMode) {
 			case "DestroyFromLeft":
 				if (reshapePercent == 1) {
-				Destroy (gameObject);
+					FullDestroy ();
 				} 
 				leftLimit = reshapePercent;
 				break;
 			case "DestroyFromRight":
-				if (reshapePercent == 1) {
-					Destroy (gameObject);
+				if (reshapePercent == 1) {	
+					FullDestroy ();
 				} 
 				rightLimit = 1 - reshapePercent;
 				
 				break;
-			case "CreateFromLeft":
+			case "CreateFromRight":
 				leftLimit = 1 - reshapePercent;
 				break;
-			case "CreateFromRight":
+			case "CreateFromLeft":
 				rightLimit =  reshapePercent;
 				break;
 			case "undefined":
@@ -221,7 +224,7 @@ public class WaveSector : MonoBehaviour {
 	}
 
 	private float getReshapePercent (){
-		float percent = Mathf.Min(1, Mathf.Max(0, currentReshapeTime / totalRechapeTime));
+		float percent = Mathf.Pow( Mathf.Min(1, Mathf.Max(0, currentReshapeTime / totalRechapeTime)),0.4f);
 		currentReshapeTime += Time.deltaTime;
 		//Debug.Log ("percent:" + percent + "   cosPercent : " + Mathf.Cos ((1 - percent) * Mathf.PI / 2));
 		return  Mathf.Cos ((1 - percent) * Mathf.PI / 2);
@@ -244,19 +247,22 @@ public class WaveSector : MonoBehaviour {
 
 	private void controlRemainingTime(){
 		if (remainingAliveTime < 0) {
-			Destroy(gameObject);
+			FullDestroy ();
 		} else {
 			remainingAliveTime = remainingAliveTime - Time.deltaTime;
 		}
 	}
 
 	private Vector2[] calculateCirucnferencePoints (float startAnglePercent , float endAnglePercent){
-		int numberOfPoints = 2 + (int)Mathf.Floor (colliderPointDensityFactor * Mathf.Abs (pointA.x * 2));
+		float  startAngle =  ((startAnglePercent * 2) - 1)  * pointsDispersionAngle;
+
+
+		int numberOfPoints = 2 + (int)Mathf.Floor (colliderPointDensityFactor * Mathf.Abs (pointA.x * 2) * (endAnglePercent - startAnglePercent));
 		Vector2[] circunferencePoints = new Vector2[numberOfPoints + 1];
 
 		float angleStep = (pointsDispersionAngle * 2) / (float)numberOfPoints;
 		angleStep = angleStep * (endAnglePercent - startAnglePercent);
-		float  startAngle =  ((startAnglePercent * 2) - 1)  * pointsDispersionAngle;
+
 		for (int i = 0; i <= numberOfPoints; i++) {
 			float sectorProportionAngle = startAngle +  i * angleStep ;
 			Vector2 pointInSector = Trigonometrics.GetCircunferencePoint (circunferenceCenter,circunferenceRadius,sectorProportionAngle);
@@ -267,9 +273,33 @@ public class WaveSector : MonoBehaviour {
 			}
 		}
 
+		numberOfPoints = 2 + (int)Mathf.Floor (spritesDensityFactor * Mathf.Abs (pointA.x * 2)* (endAnglePercent - startAnglePercent));
+
+		angleStep = (pointsDispersionAngle * 2) / (float)numberOfPoints;
+		angleStep = angleStep * (endAnglePercent - startAnglePercent);
+
+		for (int i = 0; i <= numberOfPoints; i++) {
+			if (i >= dots.Count) {
+				GameObject newDot = Instantiate (waveImage);
+				dots.Add(newDot);
+			}
+			float sectorProportionAngle = startAngle +  i * angleStep ;
+			Vector2 pointInSector = Trigonometrics.GetCircunferencePoint (circunferenceCenter,circunferenceRadius,sectorProportionAngle);
+			Vector2 globalPoint = Trigonometrics.localPointToGlobal (gameObject,pointInSector);
+			((GameObject)dots [i]).transform.position = new Vector3 (globalPoint.x, globalPoint.y, 0);
+
+
+		}
+
+
 		return circunferencePoints;
 	}
-
+	private void FullDestroy(){
+		foreach (Object dot in dots) {
+			Destroy ((GameObject)dot);
+		}
+		Destroy (gameObject);
+	}
 	private void DrawSegment(Vector2 point1,Vector2 point2){
 		Debug.DrawLine(Trigonometrics.localPointToGlobal(gameObject,point1), Trigonometrics.localPointToGlobal(gameObject,point2),selfColor);
 	}
@@ -308,6 +338,14 @@ public class WaveSector : MonoBehaviour {
 	}
 
 	private void setTotalInmunity(){
-		noCollision = true;
+		gameObject.layer = 8;
+	}
+
+	public float getImpulso (){
+		return 5;
+	}
+	public Vector2 getDireccion(Vector2 position){
+		Vector2 centroGlobal = Trigonometrics.localPointToGlobal (gameObject, circunferenceCenter);
+		return (position - centroGlobal).normalized; 
 	}
 }

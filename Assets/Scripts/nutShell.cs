@@ -22,6 +22,8 @@ public class nutShell : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
+		Debug.Log ("pushed by wave");
+
 		if (collider.tag == "Wave") {
 			RecibirimpulsoDeOla (collider);
 		}
@@ -36,27 +38,29 @@ public class nutShell : MonoBehaviour {
 	}
 
 	void RecibirimpulsoDeOla (Collider2D collider){
-		WaveFragment interfaz = (WaveFragment)collider.GetComponent(typeof(WaveFragment));
+		WaveSector interfaz = (WaveSector)collider.GetComponent(typeof(WaveSector));
+		//TODO
 		float impulso = interfaz.getImpulso ();
-		Vector3 direccion = interfaz.getDireccion ();
+		Vector2 direccion = interfaz.getDireccion (new Vector2(transform.position.x,transform.position.y) );
 		rigidBody.AddForce (direccion * impulso);
-		//MusicManager.Instance.playSound (sound + ".wav");
+
 	}
 
 	void OrientarHaciaDireccion() {
 		if (rigidBody.velocity.x > 0 || rigidBody.velocity.y > 0) {
-			double anguloPropio = gameObject.transform.rotation.eulerAngles.z / 180 * Mathf.PI ;
+			float anguloPropio = gameObject.transform.rotation.eulerAngles.z * Mathf.Deg2Rad ;
 			Vector2 direccionActual = rigidBody.velocity.normalized;
-			double anguloObjetivo = Mathf.Atan2 (direccionActual.y, direccionActual.x);
-			float anguloDiferencia = (float)(anguloObjetivo - anguloPropio);
+			Vector2 orientacion = new Vector2 (Mathf.Cos (anguloPropio), Mathf.Sin (anguloPropio));
 
-			if (anguloDiferencia > Mathf.PI) {
-				anguloDiferencia -= 2 * Mathf.PI;
+			float anguloDiferencia = Vector2.Angle(orientacion , direccionActual);
+			Vector3 cross = Vector3.Cross(orientacion, direccionActual);
+
+			if (cross.z < 0) {
+				anguloDiferencia = -1 * anguloDiferencia;
 			}
-			if (anguloDiferencia < Mathf.PI) {
-				anguloDiferencia += 2 * Mathf.PI;
-			}
+				
 			float torque = (float)(anguloDiferencia / (peso * Mathf.PI));
+
 			rigidBody.AddTorque (torque);
 		}
 
