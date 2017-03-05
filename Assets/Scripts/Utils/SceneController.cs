@@ -30,14 +30,14 @@ public class SceneController : MonoBehaviour {
     /// <summary>
     /// //Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
     /// </summary>
-    void OnEnable() { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
+    void OnEnable() {
 		SceneManager.sceneLoaded += OnLevelFinishedLoading;
 	}
 
 	/// <summary>
 	//Tell our 'OnLevelFinishedLoading' function to stop listening for a scene change as soon as this script is disabled. Remember to always have an unsubscription for every delegate you subscribe to!
 	/// </summary>
-	void OnDisable() { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
+	void OnDisable() { 
 		SceneManager.sceneLoaded -= OnLevelFinishedLoading;
 	}
 
@@ -47,17 +47,12 @@ public class SceneController : MonoBehaviour {
 	/// <param name="scene">Escena.</param>
 	/// <param name="mode">Modo de carga de la escena <value>4: Single</value>.</param>
 	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
-		Debug.Log("Level Loaded");
-		Debug.Log(scene.name);
-		Debug.Log(mode);
-
-		string sceneName = scene.name;
-		Debug.Log (sceneName);
+        string sceneName = scene.name;
 
 		if (sceneName == "MenuPrincipal") { //TODO TRANQUILIDAD, ESTO SE PLANTEARA DE OTRA FORMA
 			StartCoroutine (AudioManager.Instance.playMainMenuMusic ());
-		} else if(sceneName.Contains("Nivel_")) {
-			AudioManager.Instance.playMusic ("NIVEL GENERICO NUEVO");
+		} else if(IsSceneLevel()) {
+            AudioManager.Instance.playMusic ("NIVEL GENERICO NUEVO");
 		}
 
 		Analytics.CustomEvent ("Escenas Visitadas", new Dictionary<string, object> { { "nombre", sceneName } }); // ENVIA INFORMACION PERSONALIZADA PARA LAS ESTADISTICAS
