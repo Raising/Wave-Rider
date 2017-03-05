@@ -31,9 +31,6 @@ public class AdsController : MonoBehaviour {
     }
 
 #if UNITY_ADS
-    
-
-
     public void ShowAd() {
         if (Advertisement.IsReady()) {
             Advertisement.Show();
