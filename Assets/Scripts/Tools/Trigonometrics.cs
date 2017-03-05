@@ -43,9 +43,31 @@ public static class Trigonometrics {
 		float y = (A1 * C2 - A2 * C1) / delta;
 
 		return new Vector2 (x, y);
+	}
 
+	public static bool pointIsInSemiSegment (Vector2 segmentStartPoint, Vector2 segmentDirection, Vector2 checkedPoint){
+		if (segmentDirection.x > 0 && segmentStartPoint.x < checkedPoint.x) {
+			return true;
+		} else if (segmentDirection.x < 0 && segmentStartPoint.x > checkedPoint.x) {
+			return true; 
+		} else if (segmentDirection.y > 0 && segmentStartPoint.y < checkedPoint.y) {
+			return true;
+		} else if (segmentDirection.y < 0 && segmentStartPoint.y > checkedPoint.y) {
+			return true;
+		} 
+		return false;
+	}
 
-
-
+	public static bool pointIsInSegment (Vector2 segmentStartPoint, Vector2 segmentEndPoint, Vector2 checkedPoint){
+		float minY = Mathf.Min (segmentStartPoint.y, segmentEndPoint.y);
+		float maxY = Mathf.Max (segmentStartPoint.y, segmentEndPoint.y);
+		float minX = Mathf.Min (segmentStartPoint.x, segmentEndPoint.x);
+		float maxX = Mathf.Max (segmentStartPoint.x, segmentEndPoint.x);
+		 
+		if (checkedPoint.x <= maxX && checkedPoint.x >= minX && checkedPoint.y >= minY && checkedPoint.y <= maxY) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
