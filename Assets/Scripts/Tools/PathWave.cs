@@ -23,13 +23,15 @@ public class PathWave {
 		return World.findNextSubPath (subPath);
 	}
 	*/
-	public Vector2 setInfluenceInPosition(float time){
-		SubPathWave currentSubPath = getCurrentSubPath (time);
-		Vector2 position = currentSubPath.getPosition(time);
-		if (position.y < 5 && position.y > -5 && position.x < 10 && position.x > -10) {
-			World.addInfluence (position, currentSubPath.velocity);
+	public void setInfluenceInPosition(float time, float timeStep){
+		while (time > 0) {
+			SubPathWave currentSubPath = getCurrentSubPath (time);
+			Vector2 position = currentSubPath.getPosition (time);
+			if (position.y < 4.2f && position.y > -4.2f && position.x < 9 && position.x > -9) {
+				World.addInfluence (position, currentSubPath.velocity);
+			}
+			time -= timeStep;
 		}
-		return position;
 	}
 
 	private SubPathWave getCurrentSubPath(float time){

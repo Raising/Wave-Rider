@@ -29,6 +29,7 @@ public static class Trigonometrics {
 	}
 
 	public static Vector2 linesIntersection (Vector2 point1 ,Vector2 vector1,Vector2 point2, Vector2 vector2){
+		
 		float A1 = vector1.y;
 		float B1 = -1 * vector1.x;
 		float C1 = point1.x* A1 + point1.y * B1;
@@ -64,10 +65,20 @@ public static class Trigonometrics {
 		float minX = Mathf.Min (segmentStartPoint.x, segmentEndPoint.x);
 		float maxX = Mathf.Max (segmentStartPoint.x, segmentEndPoint.x);
 		 
-		if (checkedPoint.x <= maxX && checkedPoint.x >= minX && checkedPoint.y >= minY && checkedPoint.y <= maxY) {
+		if ((checkedPoint.x < maxX && checkedPoint.x > minX) || (checkedPoint.y > minY && checkedPoint.y <maxY)) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	public static bool areParallels(Vector2 vectorA ,Vector2 vectorB){
+		Vector2 normalicedA = vectorA.normalized;
+		Vector2 normalicedB = vectorB.normalized;
+
+		if (normalicedA == normalicedB || normalicedA == -1 * normalicedB) {
+			return true;
+		}
+		return false;
 	}
 }

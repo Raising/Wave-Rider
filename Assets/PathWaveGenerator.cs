@@ -27,8 +27,8 @@ public class PathWaveGenerator : MonoBehaviour {
 
 	public GameObject waveDisplayObject;
 	private Texture2D waveTexture;
-	public static int textureWidth = 1024;
-	public static int textureHeight = 600;
+	public static int textureWidth = 1920;
+	public static int textureHeight = 1080;
 
 	private Color32[] colorMatrix = new Color32[textureWidth*textureHeight];
 	private Color32[] resetColorArray = new Color32[textureWidth*textureHeight];
@@ -62,27 +62,11 @@ public class PathWaveGenerator : MonoBehaviour {
 	}
 
 	private void calculateWavePositions(){
-		float iterationTime = 0;
-		PathWave actualRute = null;
-
-		waveTexture.SetPixels32( resetColorArray );
+		//waveTexture.SetPixels32( resetColorArray );
 		for (int i = 0; i < pathsAmount; i++) {
-			actualRute = paths [i];
-			iterationTime = instanteCreacionGeneradorOndas;
-			while (iterationTime > 0) {
-				Vector2 position = actualRute.setInfluenceInPosition (iterationTime);
-				int X = textureWidth/2 + (int)(position.x * 50);
-				int Y = textureHeight/2 + (int)(position.y * 50);
-				X = Mathf.Min (Mathf.Max (1, X), textureWidth - 1);
-				Y = Mathf.Min (Mathf.Max (1, Y), textureHeight - 1);
-
-				drawMediumPoint (X,Y);
-				iterationTime -= tiempoEntreOnda;
-			}
+			paths [i].setInfluenceInPosition (instanteCreacionGeneradorOndas,tiempoEntreOnda);
 		}
-		waveTexture.Apply ();
-
-
+		//waveTexture.Apply ();
 	}
 
 
@@ -91,12 +75,13 @@ public class PathWaveGenerator : MonoBehaviour {
 		Vector2 position = new Vector2 (transform.position.x, transform.position.y);
 		for (int i = 0; i < pathsAmount; i++) {
 			float angle = i * Mathf.PI * 2 / pathsAmount;
+
 			newPaths[i] = new PathWave(position,new Vector2 (Mathf.Cos(angle), Mathf.Sin(angle))); 
 		}
 		return newPaths;
 	}
 
-	private Sprite createWavesprite(){
+	private Sprite 	createWavesprite 	(){
 		waveTexture = new Texture2D(textureWidth,textureHeight);
 		return Sprite.Create(waveTexture, new Rect(0.0f,0.0f,waveTexture.width,waveTexture.height), new Vector2(0.5f,0.5f), 100.0f);
 	}

@@ -1,11 +1,11 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(Line))]
+//[CustomEditor(typeof(Line))]
 public class LineInspector : Editor {
 	
 	private void OnSceneGUI () {
-		Line line = target as Line;
+		/*Line line = target as Line;
 		Transform handleTransform = line.transform;
 		Quaternion handleRotation = Tools.pivotRotation == PivotRotation.Local ?
 			handleTransform.rotation : Quaternion.identity;
@@ -30,7 +30,7 @@ public class LineInspector : Editor {
 			Undo.RecordObject(line, "Move Point");
 			EditorUtility.SetDirty(line);
 			line.p1 = handleTransform.InverseTransformPoint(p1);
-		}
+		}*/
 	}
 
 

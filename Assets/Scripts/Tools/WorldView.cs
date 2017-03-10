@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Line : MonoBehaviour {
-	
-
-	public Vector3 p0, p1;
+public class WorldView : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
