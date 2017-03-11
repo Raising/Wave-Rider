@@ -47,9 +47,9 @@ public class PathWaveGenerator : MonoBehaviour {
 		sound = GetComponent<AudioSource> ();
 
 		paths = generatePaths ();
-		SpriteRenderer waveRenderer = waveDisplayObject.GetComponent<SpriteRenderer> ();
-		waveRenderer.sprite = createWavesprite ();
-		resetColorArray = setResetTexture ();
+		//SpriteRenderer waveRenderer = waveDisplayObject.GetComponent<SpriteRenderer> ();
+		//waveRenderer.sprite = createWavesprite ();
+		//resetColorArray = setResetTexture ();
 	}
 
 
