@@ -30,10 +30,7 @@ public class PathWaveGenerator : MonoBehaviour {
 	public static int textureWidth = 1920;
 	public static int textureHeight = 1080;
 
-	private Color32[] colorMatrix = new Color32[textureWidth*textureHeight];
-	private Color32[] resetColorArray = new Color32[textureWidth*textureHeight];
-	private Color32[] mediumDot = new Color32[9];
-	public int pathsAmount = 10;
+	private int pathsAmount = 256;
 
 	private PathWave[] paths = null;
 
@@ -62,11 +59,9 @@ public class PathWaveGenerator : MonoBehaviour {
 	}
 
 	private void calculateWavePositions(){
-		//waveTexture.SetPixels32( resetColorArray );
 		for (int i = 0; i < pathsAmount; i++) {
 			paths [i].setInfluenceInPosition (instanteCreacionGeneradorOndas,tiempoEntreOnda);
 		}
-		//waveTexture.Apply ();
 	}
 
 
@@ -80,47 +75,5 @@ public class PathWaveGenerator : MonoBehaviour {
 		}
 		return newPaths;
 	}
-
-	private Sprite 	createWavesprite 	(){
-		waveTexture = new Texture2D(textureWidth,textureHeight);
-		return Sprite.Create(waveTexture, new Rect(0.0f,0.0f,waveTexture.width,waveTexture.height), new Vector2(0.5f,0.5f), 100.0f);
-	}
-
-	private Color32[] setResetTexture (){
-		Color32[] resetColorArrayTemp =  new Color32[textureWidth*textureHeight];
-
-
-		for(var i = 0; i < textureWidth*textureHeight ; ++i){
-			resetColorArrayTemp[i] = Color.clear;
-		}
-
-		Color color = Color.red;
-		Color color2 = Color.magenta;
-
-		mediumDot [0] = color;
-		mediumDot [1] = color2;
-		mediumDot [2] = color;
-		mediumDot [3] = color2;
-		mediumDot [4] = color2;
-		mediumDot [5] = color2;
-		mediumDot [6] = color;
-		mediumDot [7] = color2;
-		mediumDot [8] = color;
-
-		return resetColorArrayTemp;
-	}
-
-	void drawMediumPoint(int X,int Y){
-		if (X <= 0 ) {X = 1;}
-		if (Y <= 0 ) {Y = 1;}
-		if (X >= (textureWidth-2)  ) {X = textureWidth-3;}
-		if (Y >= (textureHeight-2) ) {Y = textureHeight-3;}
-		waveTexture.SetPixels32(X-1,Y-1,3,3,mediumDot);
-		//waveTexture.SetPixel (X,Y,Color.green);
-
-	}
-
-
-
 
 }

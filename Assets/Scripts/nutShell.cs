@@ -20,7 +20,7 @@ public class nutShell : MonoBehaviour {
 	void FixedUpdate () {
 		OrientarHaciaDireccion();
 		ApplyWorldForce ();
-		World.setReadyNextInfluentMatrix ();
+		
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {

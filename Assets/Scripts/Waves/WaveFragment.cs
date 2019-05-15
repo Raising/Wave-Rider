@@ -21,7 +21,7 @@ public class WaveFragment : MonoBehaviour {
 	private bool visible = true;
 	// Use this for initialization
 	void Start () {
-		hijoVisibilidad = transform.FindChild ("waveFragmentVision").gameObject;
+		hijoVisibilidad = transform.Find ("waveFragmentVision").gameObject;
 		thisrigidbody = GetComponent<Rigidbody2D> ();
 		thisrigidbody.AddForce (direccion);
 	}

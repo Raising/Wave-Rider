@@ -24,17 +24,19 @@ public class PathWave {
 	}
 	*/
 	public void setInfluenceInPosition(float time, float timeStep){
-		while (time > 0) {
+         while (time > 0) {
 			SubPathWave currentSubPath = getCurrentSubPath (time);
 			Vector2 position = currentSubPath.getPosition (time);
+            
 			if (position.y < 4.2f && position.y > -4.2f && position.x < 9 && position.x > -9) {
-				World.addInfluence (position, currentSubPath.velocity);
+				World.addInfluence (position,  currentSubPath.velocity * ((10 - time)/10));
 			}
-			time -= timeStep;
+        	time -= timeStep;
 		}
 	}
 
 	private SubPathWave getCurrentSubPath(float time){
+        //perfoermance optimizar las llamadas, no es necesario llamar tantas veces a esta funcion ya que se puede ir acumulando
 		int currentSubPath = 0;
 		int subPathCuantity = subPaths.Count;
 		for (int i = 1; i < subPathCuantity; i++)
