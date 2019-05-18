@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class PathWave {
 	private List<SubPathWave> subPaths = new List<SubPathWave> ();
-
+    private int limiteRebotes = 3;
 	public PathWave (Vector2 initialPosition,Vector2 velocity){
 		SubPathWave currentSubPath = new SubPathWave (initialPosition, velocity, 0);
 		subPaths.Add (currentSubPath );
 
-		while (currentSubPath != null && currentSubPath.startTime < 10) {
+		while (currentSubPath != null && currentSubPath.startTime < 10 && subPaths.Count < limiteRebotes) {
 			SubPathWave nextSubPath = World.findNextSubPath (currentSubPath);
-			if (nextSubPath != null) {
-				subPaths.Add (nextSubPath);
+          
+            if (nextSubPath != null) {
+                if (subPaths.Count == limiteRebotes - 1)
+                {
+                    nextSubPath.velocity = Vector2.zero;
+                }
+                subPaths.Add (nextSubPath);
 			}
 			currentSubPath = nextSubPath;
 		}
-	}
+    }
 
 	/*
 	private SubPathWave findNextSubPath (SubPathWave subPath){
@@ -26,8 +31,12 @@ public class PathWave {
 	public void setInfluenceInPosition(float time, float timeStep){
          while (time > 0) {
 			SubPathWave currentSubPath = getCurrentSubPath (time);
+            if(currentSubPath.velocity == Vector2.zero)
+            {
+                time -= timeStep;
+                continue;
+            }
 			Vector2 position = currentSubPath.getPosition (time);
-            
 			if (position.y < 4.2f && position.y > -4.2f && position.x < 9 && position.x > -9) {
 				World.addInfluence (position,  currentSubPath.velocity * ((10 - time)/10));
 			}
@@ -41,7 +50,7 @@ public class PathWave {
 		int subPathCuantity = subPaths.Count;
 		for (int i = 1; i < subPathCuantity; i++)
 		{
-			if (subPaths [i].startTime < time) {
+            if (subPaths[i].startTime < time) {
 				currentSubPath = i;
 			} else {
 				break;

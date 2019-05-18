@@ -30,7 +30,7 @@ public class PathWaveGenerator : MonoBehaviour {
 	public static int textureWidth = 1920;
 	public static int textureHeight = 1080;
 
-	private int pathsAmount = 256;
+	private int pathsAmount = 64;
 
 	private PathWave[] paths = null;
 
