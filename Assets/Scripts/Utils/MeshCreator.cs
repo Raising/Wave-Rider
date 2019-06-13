@@ -7,6 +7,19 @@ public class MeshCreator
 {
     static float angleResolution = 2;
 
+    public static Mesh WaveFragment (float width, float height)
+    {
+        Mesh waveFramgment = new Mesh
+        {
+            vertices = new Vector3[] { new Vector3(width/-2,height/-2, 0) , new Vector3(0,height/2, 0) , new Vector3(width / 2 , height/-2, 0) },
+            uv = new Vector2[] { new Vector2(0, 0) , new Vector2(0.5f,1) , new Vector2(1, 0) },
+            triangles = new int[] {0,1,2}
+        };
+
+
+        return waveFramgment;
+    }
+
     public static Mesh Water(float width,float height,int horizontalResolution,int verticalResolution)
     {
         List<Vector3> vertices = CreateGridPoints(width, height, horizontalResolution, verticalResolution);

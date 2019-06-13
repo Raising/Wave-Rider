@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
 	private GameObject splashObject;
 	[SerializeField]
-	private EmitterSelectorButton currentButton = null;
 	private GameObject waveGenerator;
 	[SerializeField]
 	private GameObject menuPrincipal;
@@ -71,7 +70,7 @@ public class GameManager : MonoBehaviour {
 
 	void AplicarInteraccion () {
 		
-		AplicarRaton ();
+		//AplicarRaton ();
 	}
 
 	public void winLevel () {
@@ -98,7 +97,7 @@ public class GameManager : MonoBehaviour {
 		yield return new WaitForSeconds (AudioManager.Instance.SoundResources("Loose.wav").length);
 		CambiaEscena ( SceneManager.GetActiveScene ().name);
 	}
-
+    /*
 	void AplicarRaton () {
 
 		if (Input.GetButtonDown ("Fire1") ) {
@@ -125,7 +124,7 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 		}
-	}
+	}*/
 
 	private void PauseResumeGame() {
 		if (gameState == GameState.paused) {

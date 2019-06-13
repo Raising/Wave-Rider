@@ -25,12 +25,7 @@ public class PathWaveGenerator : MonoBehaviour {
 
 	private int ondasLanzadas;
 
-	public GameObject waveDisplayObject;
-	private Texture2D waveTexture;
-	public static int textureWidth = 1920;
-	public static int textureHeight = 1080;
-
-	private int pathsAmount = 64;
+	private int pathsAmount = 128;
 
 	private PathWave[] paths = null;
 
@@ -39,7 +34,7 @@ public class PathWaveGenerator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		this.instanteCreacionGeneradorOndas = 0;
+		this.instanteCreacionGeneradorOndas = 0.1f;
 		this.ondasLanzadas = 0;
 		sound = GetComponent<AudioSource> ();
 
