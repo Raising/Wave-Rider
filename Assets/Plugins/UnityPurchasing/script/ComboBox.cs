@@ -39,7 +39,7 @@ namespace Unibill.Demo
 
             switch (Event.current.GetTypeForControl(controlId))
             {
-                case EventType.MouseUp:
+                case EventType.mouseUp:
                 {
                     if (m_IsClickedComboButton)
                         done = true;

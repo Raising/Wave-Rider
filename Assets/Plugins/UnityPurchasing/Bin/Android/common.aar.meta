@@ -1,15 +1,14 @@
 fileFormatVersion: 2
 guid: 3419c00222876481ca0d7314c37dad87
+timeCreated: 1444211128
+licenseType: Pro
 PluginImporter:
-  externalObjects: {}
-  serializedVersion: 2
+  serializedVersion: 1
   iconMap: {}
   executionOrder: {}
-  defineConstraints: []
   isPreloaded: 0
-  isOverridable: 0
-  isExplicitlyReferenced: 0
   platformData:
+<<<<<<< HEAD
   - first:
       '': Any
     second:
@@ -84,6 +83,11 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: AnyCPU
+=======
+    Any:
+      enabled: 1
+      settings: {}
+>>>>>>> parent of 0dbfbfc... working renderizado de olas
   userData: 
   assetBundleName: 
   assetBundleVariant: 

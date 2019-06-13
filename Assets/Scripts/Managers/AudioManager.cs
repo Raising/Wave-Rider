@@ -159,7 +159,7 @@ public class AudioManager : MonoBehaviour {
 		}
 
 		print ("Done Loading: " + name);
-        soundResources.Add(name, www.GetAudioClip());
+        soundResources.Add(name, www.audioClip);
 	}
 
 	/// <summary>
