@@ -21,16 +21,9 @@ public class nutShell : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
-<<<<<<< HEAD:Assets/Scripts/Waves/nutShell.cs
         rigidBody.AddForce(wavesAcumulatedForce);
         wavesAcumulatedForce.x = 0;
         wavesAcumulatedForce.y = 0;
-=======
-		OrientarHaciaDireccion();
-		ApplyWorldForce ();
-		World.setReadyNextInfluentMatrix ();
-	}
->>>>>>> parent of 0dbfbfc... working renderizado de olas:Assets/Scripts/nutShell.cs
 
         currentPosition = new Vector2(transform.position.x, transform.position.y);
         OrientarHaciaDireccion();
