@@ -177,8 +177,8 @@ public class AudioManager : MonoBehaviour {
 	/// Reproduce la música de la intro + menú principal
 	/// </summary>
 	public IEnumerator playMainMenuMusic() { //TODO TRASLADAR TODO ESTO A SCENECONTROLLER
-		playMusic ("CABECERA", false);
-		yield return new WaitForSeconds (musicResources ["CABECERA"].length);
+		playMusic ("MainTheme", false);
+		yield return new WaitForSeconds (musicResources ["MainTheme"].length);
 		playMusic ("NIVEL 1 + MENÚ");
 	}
 

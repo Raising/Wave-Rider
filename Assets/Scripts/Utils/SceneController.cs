@@ -66,7 +66,7 @@ public class SceneController : MonoBehaviour {
     }
 
     public bool IsSceneLevel() {
-        if(SceneManager.GetActiveScene().name.Contains("Nivel_")) {
+        if(SceneManager.GetActiveScene().name.Contains("Level_")) {
             return true;
         } else {
             return false;
