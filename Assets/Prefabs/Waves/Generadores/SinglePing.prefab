@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeafcc909c479994ea9ef7b0ff0ae8a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numeroOndas: 3
-  tiempoEntreOnda: 200
-  delayInicial: 1
+  WaveRepetitions: 1
+  RepetitionDelay: 0
+  InitialDelay: 0
 --- !u!212 &4813398783999750021
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -62,6 +62,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -73,6 +74,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

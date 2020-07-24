@@ -28,8 +28,10 @@ public class PathWave {
 		return World.findNextSubPath (subPath);
 	}
 	*/
-	public void setInfluenceInPosition(float time, float timeStep){
-         while (time > 0) {
+	public void setInfluenceInPosition(float time,  float timeStep, float minTime = 0)
+    {
+        minTime = Mathf.Max(minTime, 0);
+         while (time >= minTime ) {
 			SubPathWave currentSubPath = getCurrentSubPath (time);
             if(currentSubPath.velocity == Vector2.zero)
             {

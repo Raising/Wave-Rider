@@ -9,11 +9,15 @@ public class nutShell : MonoBehaviour {
 	private AudioSource sound;
     private Vector2 currentPosition = new Vector2();
     private Vector2 wavesAcumulatedForce = new Vector2();
+
+    private static List<nutShell> InGameNutShells = new List<nutShell>();
+
     // Use this for initialization
     void Start () {
 		rigidBody = GetComponent<Rigidbody2D>();
-		//sound = GetComponent<AudioSource> ();
-	}
+        InGameNutShells.Add(this);
+        //sound = GetComponent<AudioSource> ();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -21,15 +25,14 @@ public class nutShell : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
-        rigidBody.AddForce(wavesAcumulatedForce);
+       // rigidBody.velocity = rigidBody.velocity + wavesAcumulatedForce * (1 - Vector2.Dot(rigidBody.velocity.normalized, wavesAcumulatedForce.normalized));
+       rigidBody.AddForce(wavesAcumulatedForce);
         wavesAcumulatedForce.x = 0;
         wavesAcumulatedForce.y = 0;
 
         currentPosition = new Vector2(transform.position.x, transform.position.y);
         OrientarHaciaDireccion();
-		//ApplyWorldForce ();
-        //World.setReadyNextInfluentMatrix();
-
+		
     }
 
 	
@@ -41,14 +44,22 @@ public class nutShell : MonoBehaviour {
 		AudioManager.Instance.playSound("Loose.wav");
 		GameManager.Instance.loseLevel ();
 	}
+    
+    public void SelfDestroy()
+    {
+        InGameNutShells.Remove(this);
+        Destroy(gameObject);
+    }
 
-	private void ApplyWorldForce(){
-	/*	Vector2 selfPosition = new Vector2 (transform.position.x,transform.position.y);
-		Vector2 worlfInfluenceVector = World.getWorldInfluenceInArea (selfPosition);
-		rigidBody.AddForce (worlfInfluenceVector);*/
-	}
-
-	void OrientarHaciaDireccion() {
+    public static bool AnyAlive()
+    {
+        return InGameNutShells.Count > 0;
+    }
+    public static void Reset()
+    {
+        InGameNutShells.Clear();
+    }
+    void OrientarHaciaDireccion() {
 		if (rigidBody.velocity.x > 0 || rigidBody.velocity.y > 0) {
 			float anguloPropio = gameObject.transform.rotation.eulerAngles.z * Mathf.Deg2Rad ;
 			Vector2 direccionActual = rigidBody.velocity.normalized;
@@ -70,8 +81,8 @@ public class nutShell : MonoBehaviour {
 
     internal void AddWaveFragmentForce(Vector2 fragmentPosition, Vector2 direction)
     {
-        float fragmentDistance = (currentPosition - fragmentPosition).magnitude;
-        if (fragmentDistance  < 0.2f){
+        float fragmentDistance = (currentPosition - fragmentPosition).sqrMagnitude;
+        if (fragmentDistance  < 0.34f){
             wavesAcumulatedForce += direction / (0.5f + fragmentDistance/2);
         }
     }

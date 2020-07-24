@@ -6,42 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
     path: Assets/Scenes/Nivel_x3D.unity
     guid: 59fb1ad132f1c90418d3663a257b0516
   - enabled: 0
@@ -50,10 +14,28 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MenuPrincipal.unity
     guid: 6b453ac66c466aa4c8f5b0059e3c129b
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/SeleccionNivel.unity
     guid: 8e5220e1c907e98469087f0b58a82830
   - enabled: 1
     path: Assets/Scenes/NoCanvasScene.unity
     guid: 89fbfeff353e3b745882a5cdffd8316b
+  - enabled: 1
+    path: Assets/Scenes/TestLevel.unity
+    guid: ec8cfc4f2e40b5149b7983a392840aa2
+  - enabled: 1
+    path: Assets/Scenes/Level1.unity
+    guid: 8bba06ca5de2f9f4e8ede832f534efc6
+  - enabled: 1
+    path: Assets/Scenes/Level2.unity
+    guid: ccba0ae5bdcf53a499a08e26066a8823
+  - enabled: 1
+    path: Assets/Scenes/Level3.unity
+    guid: 3da7231d92b4aa44491686a815f12e4d
+  - enabled: 1
+    path: Assets/Scenes/Level4.unity
+    guid: 27bfb7db5c510fa459c1ee78c9d9a815
+  - enabled: 1
+    path: Assets/Scenes/Level5.unity
+    guid: 249b471752a4f07449dae5bafec9e931
   m_configObjects: {}

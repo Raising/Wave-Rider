@@ -10,12 +10,7 @@ public enum GameState {
 }
 public class GameManager : MonoBehaviour {
     public static GameManager Instance = null;
-    [SerializeField]
-	private GameObject splashObject;
-	[SerializeField]
-	private GameObject waveGenerator;
-	[SerializeField]
-	private GameObject menuPrincipal;
+
 	[SerializeField] private GameState gameState;
 
     void Awake() {
@@ -50,7 +45,7 @@ public class GameManager : MonoBehaviour {
 			if (InputController.CheckUserInput()) {
 				GameObject pressStart = GameObject.FindGameObjectWithTag ("PressStart");
 				if (pressStart.activeInHierarchy) {
-					CambiaEscena ("SeleccionNivel");
+					LoadScene ("SeleccionNivel");
 				}
 			}
 		}
@@ -60,7 +55,7 @@ public class GameManager : MonoBehaviour {
 		
 	}
 		
-	public void CambiaEscena(string nombreEscena) {
+	public void LoadScene(string nombreEscena) {
 		SceneManager.LoadScene(nombreEscena);
 	}
 		
@@ -73,30 +68,42 @@ public class GameManager : MonoBehaviour {
 		//AplicarRaton ();
 	}
 
-	public void winLevel () {
-		
-	
-		StartCoroutine (returnToLevelSelection());
-
+	public void WinLevel() {
+        StartCoroutine (returnToLevelSelection());
+        ResetLevelVariables();
 	}
 
 	IEnumerator returnToLevelSelection () {
-		yield return new WaitForSeconds (AudioManager.Instance.SoundResources("Win.wav").length);
-		CambiaEscena ("SeleccionNivel");
+        yield return new WaitForSeconds (AudioManager.Instance.SoundResources("Win.wav").length);
+		LoadScene ("SeleccionNivel");
 	}
 
 
 
-	public void loseLevel() {
-		
-		StartCoroutine (repeatLevel());
+    public void loseLevel()
+    {
 
+        StartCoroutine(repeatLevel());
+
+    }
+
+    public void ResetLevelVariables()
+    {
+        nutShell.Reset();
+
+    }
+
+    IEnumerator repeatLevel () {
+        yield return new WaitForSeconds (AudioManager.Instance.SoundResources("Loose.wav").length);
+        ResetLevelVariables();
+        LoadScene ( SceneManager.GetActiveScene ().name);
 	}
 
-	IEnumerator repeatLevel () {
-		yield return new WaitForSeconds (AudioManager.Instance.SoundResources("Loose.wav").length);
-		CambiaEscena ( SceneManager.GetActiveScene ().name);
-	}
+    public void RestartLevel()
+    {
+        ResetLevelVariables();
+        LoadScene(SceneManager.GetActiveScene().name);
+    }
     /*
 	void AplicarRaton () {
 
@@ -126,7 +133,7 @@ public class GameManager : MonoBehaviour {
 		}
 	}*/
 
-	private void PauseResumeGame() {
+    public void PauseResumeGame() {
 		if (gameState == GameState.paused) {
 			Resume ();		
 		} else if (gameState == GameState.playing) {

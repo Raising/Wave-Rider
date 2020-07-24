@@ -134,7 +134,7 @@ public class AudioManager : MonoBehaviour {
 
     public void LoadSoundResources(string path) {
 		var info = new DirectoryInfo(path);
-		audioFiles = info.GetFiles ()
+        audioFiles = info.GetFiles("*.*", SearchOption.AllDirectories)
 			.Where(f => isValidSoundFile(f.Name))
 			.ToArray ();
 
@@ -150,7 +150,6 @@ public class AudioManager : MonoBehaviour {
 	/// <param name="name">Nombre del sonido.</param>
 
 	IEnumerator LoadSoundFile(string path, string name) {
-		
 		WWW www = new WWW("file://"+path);
 		print ("Loading " + path);
 		yield return www;
@@ -202,7 +201,10 @@ public class AudioManager : MonoBehaviour {
 	public void playSound(string soundKey) {   
 		if (soundResources.ContainsKey(soundKey)) {
 			AudioClip soundClip = soundResources [soundKey];
-			audioSource.PlayOneShot (soundClip);
+           /* audioSource.clip = soundClip;
+        
+            audioSource.Play();*/
+            audioSource.PlayOneShot (soundClip);
 		}
 	}
 

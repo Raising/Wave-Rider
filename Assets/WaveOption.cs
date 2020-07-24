@@ -5,21 +5,30 @@ using UnityEngine;
 public class WaveOption : MonoBehaviour
 {
     public GameObject WavePrefab;
-    // Start is called before the first frame update
+    private Vector3 Origin = Vector3.zero;
     void Start()
     {
-        VerificableAction unListenAction = EventManager.StartListening("WATERAREA:Touch", (hitPoint) => OnPlacement((Vector3)hitPoint));
-        
+       EventManager.StartListening("WATERAREA:Touch", (hitPoint) => SetOrigin((Vector3)hitPoint));
+       EventManager.StartListening("WATERAREA:UnTouch", (hitPoint) => ReleaseWave((Vector3)hitPoint));
     }
 
-    // Update is called once per frame
     void Update()
     {
         
     }
 
-    void OnPlacement(Vector3 point)
+    void SetOrigin(Vector3 point)
     {
-        GameObject generator = Instantiate(WavePrefab, new Vector3(point.x, point.y, 0), Quaternion.identity) as GameObject;
+        Origin = new Vector3(point.x, point.y, 0);
+    }
+
+    void ReleaseWave(Vector3 point)
+    {
+        if (Origin != Vector3.zero)
+        {
+            GameObject generator = Instantiate(WavePrefab, Origin, Quaternion.identity) as GameObject;
+            generator.GetComponent<PathWaveGenerator>().SetDireciton(new Vector2(point.x- Origin.x, point.y- Origin.y));
+            Origin = Vector3.zero;
+        }
     }
 }

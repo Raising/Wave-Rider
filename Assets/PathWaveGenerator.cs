@@ -1,14 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PathWaveGenerator : MonoBehaviour {
 	[SerializeField]
-	private int numeroOndas;
+	private int WaveRepetitions;
 	[SerializeField]
-	private float tiempoEntreOnda;
+	private float RepetitionDelay;
 	[SerializeField]
-	private float delayInicial;
+	private float InitialDelay;
 	/*
 	[SerializeField]
 	private float fuerzaImpulso = 3;
@@ -23,9 +24,16 @@ public class PathWaveGenerator : MonoBehaviour {
 	private float instanteCreacionGeneradorOndas;
 	private float instanteUltimaOndaLanzada;
 
-	private int ondasLanzadas;
+    private float LastTimeToEmitWave = 0;
+    private float MaxWaveDuration = 10;
+    private Vector2 Direction;
 
-	private int pathsAmount = 128;
+    internal void SetDireciton(Vector2 direction)
+    {
+        Direction = direction.normalized *  Mathf.Lerp(0, 1f, Mathf.InverseLerp(0.00f, 8, Mathf.Min(8, direction.magnitude))); 
+    }
+
+    private int pathsAmount = 128;
 
 	private PathWave[] paths = null;
 
@@ -34,8 +42,9 @@ public class PathWaveGenerator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		this.instanteCreacionGeneradorOndas = 0.1f;
-		this.ondasLanzadas = 0;
+        RepetitionDelay = RepetitionDelay <= 0 ? 10 : RepetitionDelay;
+        instanteCreacionGeneradorOndas = 0.001f - InitialDelay;
+        LastTimeToEmitWave = -0.001f - InitialDelay - ((WaveRepetitions-1) * RepetitionDelay);
 		sound = GetComponent<AudioSource> ();
 
 		paths = generatePaths ();
@@ -47,15 +56,25 @@ public class PathWaveGenerator : MonoBehaviour {
 
 	void FixedUpdate () {
 		instanteCreacionGeneradorOndas += Time.deltaTime;
-		if (instanteCreacionGeneradorOndas > 10) {
-			instanteCreacionGeneradorOndas -= tiempoEntreOnda;
-		}
-		calculateWavePositions ();
+        LastTimeToEmitWave += Time.deltaTime;
+
+
+        if (instanteCreacionGeneradorOndas > MaxWaveDuration) {
+			instanteCreacionGeneradorOndas -= RepetitionDelay;
+        }
+        if (instanteCreacionGeneradorOndas > 0) //para esperar al delay
+        {
+		 calculateWavePositions ();
+        }
+        if (LastTimeToEmitWave > MaxWaveDuration)
+        {
+            Destroy(gameObject);
+        }
 	}
 
 	private void calculateWavePositions(){
 		for (int i = 0; i < pathsAmount; i++) {
-			paths [i].setInfluenceInPosition (instanteCreacionGeneradorOndas,tiempoEntreOnda);
+			paths [i].setInfluenceInPosition (instanteCreacionGeneradorOndas,RepetitionDelay,LastTimeToEmitWave);
 		}
 	}
 
@@ -65,8 +84,9 @@ public class PathWaveGenerator : MonoBehaviour {
 		Vector2 position = new Vector2 (transform.position.x, transform.position.y);
 		for (int i = 0; i < pathsAmount; i++) {
 			float angle = i * Mathf.PI * 2 / pathsAmount;
-
-			newPaths[i] = new PathWave(position,new Vector2 (Mathf.Cos(angle), Mathf.Sin(angle))); 
+            Vector2 directionVector = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) + Direction ;
+            
+            newPaths[i] = new PathWave(position,directionVector); 
 		}
 		return newPaths;
 	}
