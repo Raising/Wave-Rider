@@ -41,7 +41,7 @@ public class PathWave {
 			Vector2 position = currentSubPath.getPosition (time);
 		//	if (position.y < 5f && position.y > -5f && position.x < 9.6f && position.x > -9.6) {
                 //se está usando indistintamente intensidad como velocidad
-				World.addInfluence (position,  currentSubPath.velocity * ((10 - time)/10));
+				World.addInfluence (position,  currentSubPath.velocity * ((20 - time)*0.01f));
 		//	}
         	time -= timeStep;
 		}

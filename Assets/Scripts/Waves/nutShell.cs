@@ -82,7 +82,7 @@ public class nutShell : MonoBehaviour {
     internal void AddWaveFragmentForce(Vector2 fragmentPosition, Vector2 direction)
     {
         float fragmentDistance = (currentPosition - fragmentPosition).sqrMagnitude;
-        if (fragmentDistance  < 0.34f){
+        if (fragmentDistance  < 0.2f){
             wavesAcumulatedForce += direction / (0.5f + fragmentDistance/2);
         }
     }

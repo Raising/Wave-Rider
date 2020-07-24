@@ -1,8 +1,6 @@
-﻿using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+﻿using System.Collections;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 
 public enum GameState {
@@ -57,7 +55,7 @@ public class GameManager : MonoBehaviour {
 		
 	public void LoadScene(string nombreEscena) {
 		SceneManager.LoadScene(nombreEscena);
-	}
+    }
 		
 	public void ExitGame() {
 		Application.Quit ();
@@ -70,7 +68,6 @@ public class GameManager : MonoBehaviour {
 
 	public void WinLevel() {
         StartCoroutine (returnToLevelSelection());
-        ResetLevelVariables();
 	}
 
 	IEnumerator returnToLevelSelection () {
@@ -87,21 +84,20 @@ public class GameManager : MonoBehaviour {
 
     }
 
-    public void ResetLevelVariables()
+    public static void ResetLevelVariables()
     {
         nutShell.Reset();
-
+        World.fillObstaclePoints();
     }
 
     IEnumerator repeatLevel () {
         yield return new WaitForSeconds (AudioManager.Instance.SoundResources("Loose.wav").length);
-        ResetLevelVariables();
+       
         LoadScene ( SceneManager.GetActiveScene ().name);
 	}
 
     public void RestartLevel()
     {
-        ResetLevelVariables();
         LoadScene(SceneManager.GetActiveScene().name);
     }
     /*

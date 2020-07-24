@@ -59,7 +59,7 @@ public class SceneController : MonoBehaviour {
 		Analytics.Transaction("12345abcde", 0.99m, "USD", null, null); // ENVIA ESTADISTICAS DE COMPRAS EN APP
 		int birthYear = 2014;
 		Analytics.SetUserBirthYear(birthYear);
-
+        GameManager.ResetLevelVariables();
 #if UNITY_ADS
         AdsController.Instance.CheckAdCondition(sceneName);
 #endif
