@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WaveRepetitions: 1
   RepetitionDelay: 0
-  InitialDelay: 0
+  InitialDelay: -0.2
 --- !u!212 &4813398783999750021
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -63,6 +63,7 @@ SpriteRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

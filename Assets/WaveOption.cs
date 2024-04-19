@@ -8,6 +8,7 @@ public class WaveOption : MonoBehaviour
     private Vector3 Origin = Vector3.zero;
     void Start()
     {
+       
        EventManager.StartListening("WATERAREA:Touch", (hitPoint) => SetOrigin((Vector3)hitPoint));
        EventManager.StartListening("WATERAREA:UnTouch", (hitPoint) => ReleaseWave((Vector3)hitPoint));
     }
