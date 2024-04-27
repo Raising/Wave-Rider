@@ -2815,7 +2815,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Level5
+          m_StringArgument: Level1_X
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &983804664
@@ -4081,7 +4081,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 5
+  m_Text: X
 --- !u!222 &1521338719
 CanvasRenderer:
   m_ObjectHideFlags: 0

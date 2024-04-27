@@ -6,9 +6,10 @@ public class WaveOption : MonoBehaviour
 {
     public GameObject WavePrefab;
     private Vector3 Origin = Vector3.zero;
+    private World world;
     void Start()
     {
-       
+       world = GetComponent<World>();  
        EventManager.StartListening("WATERAREA:Touch", (hitPoint) => SetOrigin((Vector3)hitPoint));
        EventManager.StartListening("WATERAREA:UnTouch", (hitPoint) => ReleaseWave((Vector3)hitPoint));
     }

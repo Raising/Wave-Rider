@@ -25,7 +25,7 @@ public class PathWaveGenerator : MonoBehaviour {
 	private float instanteUltimaOndaLanzada;
 
     private float LastTimeToEmitWave = 0;
-    private float MaxWaveDuration = 10;
+    private float MaxWaveDuration = 15;
     private Vector2 Direction;
 
     internal void SetDireciton(Vector2 direction)
