@@ -31,6 +31,7 @@ public class nutShell : MonoBehaviour
     {
         // rigidBody.velocity = rigidBody.velocity + wavesAcumulatedForce * (1 - Vector2.Dot(rigidBody.velocity.normalized, wavesAcumulatedForce.normalized));
         rigidBody.AddForce(wavesAcumulatedForce);
+        
         wavesAcumulatedForce.x = 0;
         wavesAcumulatedForce.y = 0;
 
@@ -92,9 +93,9 @@ public class nutShell : MonoBehaviour
     {
         float fragmentDistance = (currentPosition - fragmentPosition).sqrMagnitude;
 
-        if (fragmentDistance < 0.2f)
+        if (fragmentDistance < 0.1f)
         {
-            float maxSpeed = direction.magnitude * 6f;
+            float maxSpeed = 1f;
             float dot = Vector2.Dot(direction.normalized, rigidBody.velocity.normalized);
             float velocityRatio = rigidBody.velocity.magnitude / maxSpeed;
             float forceFactor = 1 - Mathf.Clamp(dot * velocityRatio, -0.2f, 1);

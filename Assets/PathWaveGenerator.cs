@@ -34,11 +34,7 @@ public class PathWaveGenerator : MonoBehaviour {
     }
 
     private int pathsAmount = 128;
-
 	private PathWave[] paths = null;
-
-
-
 
 	// Use this for initialization
 	void Start () {
