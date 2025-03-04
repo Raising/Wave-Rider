@@ -181,8 +181,13 @@ namespace Shapes {
 			get => arcEndCaps;
 			set => SetIntNow( ShapesMaterialUtils.propRoundCaps, (int)( arcEndCaps = value ) );
 		}
+		public void ForceSetAllMaterialProperties()
+		{
+			SetAllMaterialProperties();
+        }
 
-		private protected override void SetAllMaterialProperties() {
+
+        private protected override void SetAllMaterialProperties() {
 			SetInt( ShapesMaterialUtils.propAlignment, (int)geometry );
 			SetFloat( ShapesMaterialUtils.propRadius, radius );
 			SetInt( ShapesMaterialUtils.propRadiusSpace, (int)radiusSpace );

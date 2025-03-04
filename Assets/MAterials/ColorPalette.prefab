@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7353864800022611864
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8840764983043169499}
+  - component: {fileID: 6307414640718335389}
+  m_Layer: 0
+  m_Name: ColorPalette
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8840764983043169499
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7353864800022611864}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6307414640718335389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7353864800022611864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab1a89b09f81d38459c043ca12c09f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  background: {r: 1, g: 1, b: 0.9411765, a: 1}
+  primaryDark: {r: 0.18431373, g: 0.11764706, b: 0.101960786, a: 1}
+  primaryMedium: {r: 0.8490566, g: 0.7315525, b: 0, a: 1}
+  primaryLight: {r: 0.75294125, g: 0.5411765, b: 0.3921569, a: 1}
+  secondaryDark: {r: 0.9490197, g: 0.6117647, b: 0.3647059, a: 1}
+  secondaryMedium: {r: 0.91372555, g: 0.7372549, b: 0.7254902, a: 1}
+  colorText: {r: 0.7686275, g: 0.7686275, b: 0.7686275, a: 1}
+  waveMaterial: {fileID: 2100000, guid: 009a61b14ed392b4f8ae8d34a5f4fffe, type: 2}
+  nutShellPrefab: {fileID: 1175137014960554, guid: 269c3130f09c4d04f9cfbbd06dc24338,
+    type: 3}
+  protoObstacle: {fileID: 1376085592002242, guid: 39b147860d865e342ad4d4d09208c876,
+    type: 3}
+  backgroundPrefab: {fileID: 162413124265871859, guid: ac9ecef1cda94d94aaa7d5b28593541c,
+    type: 3}

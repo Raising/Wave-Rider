@@ -20,7 +20,9 @@ public class ExitBeacon : MonoBehaviour {
             collider.GetComponent<nutShell>().SelfDestroy();
             if (!nutShell.AnyAlive())
             {
-			    GameManager.Instance.WinLevel();
+				EventManager.TriggerEvent("OnLevelCompletion");
+
+                //GameManager.Instance.WinLevel();
             }
 		}
 	}

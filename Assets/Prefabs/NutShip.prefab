@@ -28,14 +28,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1175137014960554}
-  m_LocalRotation: {x: -0, y: -0, z: -0.07691621, w: 0.99703765}
+  m_LocalRotation: {x: 0, y: 0, z: -0.07691922, w: 0.9970374}
   m_LocalPosition: {x: -726.61945, y: -941.7676, z: -122.04004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4726238013910885589}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -8.823}
 --- !u!212 &212115578203243622
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -73,8 +73,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 657592619
+  m_SortingLayer: 3
   m_SortingOrder: 270
   m_Sprite: {fileID: 21300000, guid: 60814ce34c82a254c841968902310e4d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -157,7 +157,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 0.77698183
+  MinDistance: 0.5844121
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -280,7 +280,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 0
   scaleMode: 0
-  color: {r: 0.5943396, g: 0.21674287, b: 0, a: 1}
+  color: {r: 0.6981132, g: 0.5202919, b: 0.19428623, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -294,9 +294,9 @@ MonoBehaviour:
   stencilWriteMask: 255
   type: 0
   colorMode: 1
-  colorOuterStart: {r: 0.6792453, g: 0.40325934, b: 0.021787068, a: 1}
-  colorInnerEnd: {r: 1, g: 1, b: 1, a: 1}
-  colorOuterEnd: {r: 1, g: 1, b: 1, a: 1}
+  colorOuterStart: {r: 1, g: 0.85490197, b: 0.6901961, a: 1}
+  colorInnerEnd: {r: 0.10980392, g: 0.07058824, b: 0.0627451, a: 1}
+  colorOuterEnd: {r: 0.65882355, g: 0.4862745, b: 0.30980393, a: 1}
   geometry: 0
   angUnitInput: 1
   angRadiansStart: 0

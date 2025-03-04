@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9871acb69a2228540ab02d3d55c2d44e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fragmentMaterial: {fileID: 2100000, guid: 009a61b14ed392b4f8ae8d34a5f4fffe, type: 2}
   waveFragmentShader: {fileID: 4800000, guid: 09bc7e1deaa35a44990fd6f81b85956c, type: 3}
 --- !u!114 &7377427135386436536
 MonoBehaviour:

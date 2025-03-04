@@ -1,17 +1,21 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public enum GameState {
-	ready, playing, paused, win, gameOver
+public enum GameState
+{
+    ready, playing, paused, win, gameOver
 }
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
     public static GameManager Instance = null;
 
-	[SerializeField] private GameState gameState;
+    [SerializeField] private GameState gameState;
 
-    void Awake() {
+    void Awake()
+    {
         //Check if instance already exists
         if (Instance == null)
 
@@ -29,51 +33,70 @@ public class GameManager : MonoBehaviour {
     }
 
 
-        // Use this for initialization
-        void Start () {
-		gameState = GameState.playing;
+    // Use this for initialization
+    void Start()
+    {
+        gameState = GameState.playing;
     }
-	
-	// Update is called once per frame
-	void Update () {
-		string currentScene = SceneManager.GetActiveScene ().name;
-		if (currentScene.Contains ("Nivel")) {
-			AplicarInteraccion ();
-		} else if (currentScene == "MenuPrincipal") {
-			if (InputController.CheckUserInput()) {
-				GameObject pressStart = GameObject.FindGameObjectWithTag ("PressStart");
-				if (pressStart.activeInHierarchy) {
-					LoadScene ("SeleccionNivel");
-				}
-			}
-		}
-	}
 
-	public void MenuPrincipal() {
-		
-	}
-		
-	public void LoadScene(string nombreEscena) {
-		SceneManager.LoadScene(nombreEscena);
+    // Update is called once per frame
+    void Update()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+        if (currentScene.Contains("Nivel"))
+        {
+            AplicarInteraccion();
+        }
+        else if (currentScene == "MenuPrincipal")
+        {
+            if (InputController.CheckUserInput())
+            {
+                GameObject pressStart = GameObject.FindGameObjectWithTag("PressStart");
+                if (pressStart.activeInHierarchy)
+                {
+                    LoadScene("SeleccionNivel");
+                }
+            }
+        }
     }
-		
-	public void ExitGame() {
-		Application.Quit ();
-	}
 
-	void AplicarInteraccion () {
-		
-		//AplicarRaton ();
-	}
+    public void MenuPrincipal()
+    {
 
-	public void WinLevel() {
-        StartCoroutine (returnToLevelSelection());
-	}
+    }
 
-	IEnumerator returnToLevelSelection () {
-        yield return new WaitForSeconds (AudioManager.Instance.SoundResources("Win.wav").length);
-		LoadScene ("SeleccionNivel");
-	}
+    public void LoadScene(string nombreEscena)
+    {
+        SceneManager.LoadScene(nombreEscena);
+    }
+    public void NextLevel()
+    {
+        string thisSceneName = SceneManager.GetActiveScene().name;
+        int currentlevelIndex = Int32.Parse(thisSceneName.Split('_')[1]);
+        SceneManager.LoadScene(thisSceneName.Split('_')[0] + "_" + (currentlevelIndex + 1).ToString());
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
+    void AplicarInteraccion()
+    {
+
+        //AplicarRaton ();
+    }
+
+    public void WinLevel()
+    {
+        StartCoroutine(returnToLevelSelection());
+    }
+
+    IEnumerator returnToLevelSelection()
+    {
+        yield return new WaitForSeconds(AudioManager.Instance.SoundResources("Win.wav").length);
+        LoadScene("SeleccionNivel");
+    }
 
 
 
@@ -90,11 +113,12 @@ public class GameManager : MonoBehaviour {
         World.fillObstaclePoints();
     }
 
-    IEnumerator repeatLevel () {
-        yield return new WaitForSeconds (AudioManager.Instance.SoundResources("Loose.wav").length);
-       
-        LoadScene ( SceneManager.GetActiveScene ().name);
-	}
+    IEnumerator repeatLevel()
+    {
+        yield return new WaitForSeconds(AudioManager.Instance.SoundResources("Loose.wav").length);
+
+        LoadScene(SceneManager.GetActiveScene().name);
+    }
 
     public void RestartLevel()
     {
@@ -129,21 +153,27 @@ public class GameManager : MonoBehaviour {
 		}
 	}*/
 
-    public void PauseResumeGame() {
-		if (gameState == GameState.paused) {
-			Resume ();		
-		} else if (gameState == GameState.playing) {
-			Pause ();
-		}
-	}
+    public void PauseResumeGame()
+    {
+        if (gameState == GameState.paused)
+        {
+            Resume();
+        }
+        else if (gameState == GameState.playing)
+        {
+            Pause();
+        }
+    }
 
-	private void Pause() {
-		Time.timeScale = 0;
-		gameState = GameState.paused;
-	}
+    private void Pause()
+    {
+        Time.timeScale = 0;
+        gameState = GameState.paused;
+    }
 
-	private void Resume() {
-		Time.timeScale = 1;
-		gameState = GameState.playing;
-	}
+    private void Resume()
+    {
+        Time.timeScale = 1;
+        gameState = GameState.playing;
+    }
 }

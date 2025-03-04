@@ -11,7 +11,7 @@ public class nutShell : MonoBehaviour
     private Vector2 currentPosition = new Vector2();
     private Vector2 wavesAcumulatedForce = new Vector2();
 
-    private static List<nutShell> InGameNutShells = new List<nutShell>();
+    public static List<nutShell> InGameNutShells = new List<nutShell>();
 
     // Use this for initialization
     void Start()
@@ -93,7 +93,7 @@ public class nutShell : MonoBehaviour
     {
         float fragmentDistance = (currentPosition - fragmentPosition).sqrMagnitude;
 
-        if (fragmentDistance < 0.1f)
+        if (rigidBody != null && fragmentDistance < 0.1f)
         {
             float maxSpeed = 1f;
             float dot = Vector2.Dot(direction.normalized, rigidBody.velocity.normalized);
