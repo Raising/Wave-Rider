@@ -18,7 +18,7 @@ public class waveBelt : MonoBehaviour
     }
     private void Update()
     {
-        line.DashOffset += force.y * 0.005f;
+        line.DashOffset += force.y * 0.01f;
     }
     private void OnTriggerStay2D(Collider2D other)
     {

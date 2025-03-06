@@ -201,10 +201,10 @@ public class AudioManager : MonoBehaviour {
 	public void playSound(string soundKey) {   
 		if (soundResources.ContainsKey(soundKey)) {
 			AudioClip soundClip = soundResources [soundKey];
-           /* audioSource.clip = soundClip;
-        
-            audioSource.Play();*/
-            audioSource.PlayOneShot (soundClip);
+			//audioSource.clip = soundClip;
+
+			 //audioSource.Play();
+			//audioSource.PlayOneShot (soundClip);
 		}
 	}
 

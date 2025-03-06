@@ -16,13 +16,13 @@ public class ExitBeacon : MonoBehaviour {
 	void OnTriggerEnter2D (Collider2D collider) {
 		if (collider.tag == "NutShip") {
             //sound.Play ();
-            //AudioManager.Instance.playSound("Win.wav"); //TODO TEMPORALMENTE ROTO, PUES NO ESPERA QUE SE ACABE DE REPRODUCIR EL SONIDO
+            AudioManager.Instance.playSound("Win.wav"); //TODO TEMPORALMENTE ROTO, PUES NO ESPERA QUE SE ACABE DE REPRODUCIR EL SONIDO
             collider.GetComponent<nutShell>().SelfDestroy();
             if (!nutShell.AnyAlive())
             {
 				EventManager.TriggerEvent("OnLevelCompletion");
 
-                //GameManager.Instance.WinLevel();
+               
             }
 		}
 	}

@@ -43,7 +43,7 @@ public class nutShell : MonoBehaviour
 
     void OnBecameInvisible()
     {
-        //		gameOver ();
+        gameOver();
     }
     void gameOver()
     {

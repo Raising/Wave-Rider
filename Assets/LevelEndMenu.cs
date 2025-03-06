@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.UI;
 
 public class LevelEndMenu : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class LevelEndMenu : MonoBehaviour
     public Shapes.Polygon winStar;
     public Shapes.Polygon timeStar;
     public Shapes.Polygon waveStar;
+    public Text text;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +33,7 @@ public class LevelEndMenu : MonoBehaviour
         if (levelResult == EnumLevelResult.Win)
         {
             LevelState levelstate = LevelManager.GetLevelState();
+            text.text = "WIN!!";
             float elapsedTime = Time.time - levelstate.timeStart;
             bool waveSuccess = LevelManager.Instance.maxWavesStar >= levelstate.generatedWaves;
             bool timeSuccess = LevelManager.Instance.maxTimeStar > elapsedTime;
@@ -60,6 +63,7 @@ public class LevelEndMenu : MonoBehaviour
         }
         else
         {
+            text.text = "LOSE!!";
             waveStar.FillColorEnd = Color.gray;
             waveStar.FillColorStart = Color.gray;
 

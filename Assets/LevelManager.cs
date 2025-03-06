@@ -24,6 +24,7 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(StartLevel());
         EventManager.StartListening("OnWaveCreation", (waveInfo) => levelState.generatedWaves = levelState.generatedWaves + 1);
         EventManager.StartListening("OnLevelCompletion", (waveInfo) => HandleLevelCompletion());
+        EventManager.StartListening("OnLevelFail", (waveInfo) => HandleLevelFail());
     }
     void Start()
     {
@@ -59,6 +60,11 @@ public class LevelManager : MonoBehaviour
     {
         EventManager.TriggerEvent("OnEndLevel", EnumLevelResult.Win);
     }
+    public static void HandleLevelFail()
+    {
+        EventManager.TriggerEvent("OnEndLevel", EnumLevelResult.Lose);
+    }
+    
 }
 
 
