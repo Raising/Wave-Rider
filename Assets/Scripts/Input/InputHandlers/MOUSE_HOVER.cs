@@ -7,13 +7,13 @@ namespace InputHandler
     public class MOUSE_HOVER : MOUSE
     {
 
-        public MOUSE_HOVER(string param) : base(param) { }
+        public MOUSE_HOVER(string param,int filter) : base(param,filter) { }
 
         public override bool CheckInput(out object inputInfo)
         {
             inputInfo = new object();
 
-            RaycastHit[] hits = GetHitsFromMouseRay(layer);
+            RaycastHit2D[] hits = GetHitsFromMouseRay(layer,filter);
             if (hits.Length > 0)
             {
                 inputInfo = (object)hits[0];

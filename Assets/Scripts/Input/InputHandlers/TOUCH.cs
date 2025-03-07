@@ -6,20 +6,38 @@ namespace InputHandler
     public class TOUCH
     {
         protected int layer;
-        public TOUCH(string param)
+        protected int filter;
+        public TOUCH(string param, int filter)
         {
             layer = Int32.Parse(param);
+            this.filter = filter;
         }
 
 
-        protected static RaycastHit[] GetHitsFromTouchRay(int layer)
+        protected static RaycastHit[] GetHitsFromTouchRay(int layer, int filter)
         {
             if (Input.touchCount > 0)
             {
                 Touch touch = Input.GetTouch(0);
 
                 Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                return Physics.RaycastAll(ray, Mathf.Infinity, 1 << layer);
+                RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, filter + (1 << layer));
+                if (hits.Length > 0)
+                {
+                    int hitLayer = hits[0].collider.gameObject.layer;
+                    if (hitLayer == layer)
+                    {
+                        return new RaycastHit[] { hits[0] };
+                    }
+                    else
+                    {
+                        return new RaycastHit[0];
+                    }
+                }
+                else
+                {
+                    return hits;
+                }
             }
             return new RaycastHit[0];
         }
@@ -43,11 +61,11 @@ namespace InputHandler
     public class TOUCH_DOWN : TOUCH, IInputHandler
     {
         private static object PreviouslyTouched = null;
-        public TOUCH_DOWN(string param) : base(param)
+        public TOUCH_DOWN(string param, int filter) : base(param, filter)
         {
         }
 
-        public  bool CheckInput(out object inputInfo)
+        public bool CheckInput(out object inputInfo)
         {
             inputInfo = new object();
 
@@ -55,7 +73,7 @@ namespace InputHandler
             {
                 if (Input.touchCount > 0)
                 {
-                    RaycastHit[] hits = GetHitsFromTouchRay(layer);
+                    RaycastHit[] hits = GetHitsFromTouchRay(layer, filter);
                     if (hits.Length > 0)
                     {
                         inputInfo = (object)hits[0];
@@ -76,7 +94,7 @@ namespace InputHandler
     {
         private static object PreviouslyTouched = null;
 
-        public TOUCH_UP(string param) : base(param)
+        public TOUCH_UP(string param, int filter) : base(param, filter)
         {
         }
 
@@ -88,12 +106,12 @@ namespace InputHandler
                 inputInfo = PreviouslyTouched;
                 PreviouslyTouched = null;
                 return true;
-                
+
             }
 
             if (Input.touchCount > 0)
             {
-                RaycastHit[] hits = GetHitsFromTouchRay(layer);
+                RaycastHit[] hits = GetHitsFromTouchRay(layer, filter);
                 if (hits.Length > 0)
                 {
                     PreviouslyTouched = (object)hits[0];

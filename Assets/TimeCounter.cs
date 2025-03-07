@@ -31,10 +31,18 @@ public class TimeCounter : MonoBehaviour
     {
         if (isTracking)
         {
-            float elapsedTime = Time.time - LevelManager.GetLevelState().timeStart;
-            float seconds = Mathf.Floor(elapsedTime);
-            float decimals = Mathf.Floor((elapsedTime - seconds) * 10);
-            timeTextDisplay.text = seconds.ToString() + "." + decimals.ToString();
+            float startTime = LevelManager.GetLevelState().timeStart;
+            if (startTime == 0)
+            {
+                timeTextDisplay.text = "0";
+            }
+            else
+            {
+                float elapsedTime = Time.time - LevelManager.GetLevelState().timeStart;
+                float seconds = Mathf.Floor(elapsedTime);
+                float decimals = Mathf.Floor((elapsedTime - seconds) * 10);
+                timeTextDisplay.text = seconds.ToString() + "." + decimals.ToString();
+            }
         }
     }
 }

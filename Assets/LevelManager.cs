@@ -20,7 +20,7 @@ public class LevelManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-      
+
         StartCoroutine(StartLevel());
         EventManager.StartListening("OnWaveCreation", (waveInfo) => levelState.generatedWaves = levelState.generatedWaves + 1);
         EventManager.StartListening("OnLevelCompletion", (waveInfo) => HandleLevelCompletion());
@@ -42,7 +42,7 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Instance.levelState = new LevelState
         {
-            timeStart = Time.time,
+            timeStart = 0,//Time.time,
             timeEnd = 0,
             level = 0,
             generatedWaves = 0,
@@ -55,6 +55,13 @@ public class LevelManager : MonoBehaviour
     {
         return Instance.levelState;
     }
+    public static void StartTimer()
+    {
+        if (Instance.levelState.timeStart == 0)
+        {
+            Instance.levelState.timeStart = Time.time;
+        }
+    }
 
     public static void HandleLevelCompletion()
     {
@@ -64,7 +71,7 @@ public class LevelManager : MonoBehaviour
     {
         EventManager.TriggerEvent("OnEndLevel", EnumLevelResult.Lose);
     }
-    
+
 }
 
 

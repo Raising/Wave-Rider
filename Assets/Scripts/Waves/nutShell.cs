@@ -31,7 +31,7 @@ public class nutShell : MonoBehaviour
     {
         // rigidBody.velocity = rigidBody.velocity + wavesAcumulatedForce * (1 - Vector2.Dot(rigidBody.velocity.normalized, wavesAcumulatedForce.normalized));
         rigidBody.AddForce(wavesAcumulatedForce);
-        
+
         wavesAcumulatedForce.x = 0;
         wavesAcumulatedForce.y = 0;
 
@@ -41,16 +41,16 @@ public class nutShell : MonoBehaviour
     }
 
 
-    void OnBecameInvisible()
-    {
-        gameOver();
-    }
-    void gameOver()
-    {
+    //void OnBecameInvisible()
+    //{
+    //    gameOver();
+    //}
+    //void gameOver()
+    //{
 
-        AudioManager.Instance.playSound("Loose.wav");
-        GameManager.Instance.loseLevel();
-    }
+    //    AudioManager.Instance.playSound("Loose.wav");
+    //    GameManager.Instance.loseLevel();
+    //}
 
     public void SelfDestroy()
     {
@@ -64,6 +64,10 @@ public class nutShell : MonoBehaviour
     }
     public static void Reset()
     {
+        InGameNutShells.ForEach((nut) =>
+        {
+            Destroy(nut);
+        });
         InGameNutShells.Clear();
     }
     void OrientarHaciaDireccion()
@@ -95,7 +99,7 @@ public class nutShell : MonoBehaviour
 
         if (rigidBody != null && fragmentDistance < 0.1f)
         {
-            float maxSpeed = 1f;
+            float maxSpeed = 1.2f;
             float dot = Vector2.Dot(direction.normalized, rigidBody.velocity.normalized);
             float velocityRatio = rigidBody.velocity.magnitude / maxSpeed;
             float forceFactor = 1 - Mathf.Clamp(dot * velocityRatio, -0.2f, 1);

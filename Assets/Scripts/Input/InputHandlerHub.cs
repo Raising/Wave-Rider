@@ -16,7 +16,7 @@ public class InputHandlerHub
 
     private static IInputHandler GetInputHandler(InputDescriptor inputDescriptor)
     {
-        IInputHandler handler = (IInputHandler)Activator.CreateInstance(inputDescriptor.handler, inputDescriptor.param);
+        IInputHandler handler = (IInputHandler)Activator.CreateInstance(inputDescriptor.handler, inputDescriptor.param, inputDescriptor.filterParam);
         return handler;
     }
 }

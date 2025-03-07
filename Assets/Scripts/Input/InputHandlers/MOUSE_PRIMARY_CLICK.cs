@@ -6,14 +6,14 @@ namespace InputHandler
 {
     public class MOUSE_PRIMARY_CLICK : MOUSE
     {
-        public MOUSE_PRIMARY_CLICK(string param) : base(param) { }
+        public MOUSE_PRIMARY_CLICK(string param, int filter) : base(param, filter) { }
 
         public override bool CheckInput(out object inputInfo)
         {
             inputInfo = new object();
             if (Input.GetMouseButtonUp(0))
             {
-                RaycastHit[] hits = GetHitsFromMouseRay(layer);
+                RaycastHit2D[] hits = GetHitsFromMouseRay(layer, filter);
                 if (hits.Length > 0)
                 {
                     inputInfo = (object)hits[0];
@@ -26,13 +26,13 @@ namespace InputHandler
 
     public class MOUSE_PRIMARY_DOWN : MOUSE
     {
-        public MOUSE_PRIMARY_DOWN(string param) : base(param) { }
+        public MOUSE_PRIMARY_DOWN(string param, int filter) : base(param, filter) { }
         public override bool CheckInput(out object inputInfo)
         {
             inputInfo = new object();
             if (Input.GetMouseButtonDown(0))
             {
-                RaycastHit[] hits = GetHitsFromMouseRay(layer);
+                RaycastHit2D[] hits = GetHitsFromMouseRay(layer, filter);
                 if (hits.Length > 0)
                 {
                     inputInfo = (object)hits[0];
@@ -45,13 +45,13 @@ namespace InputHandler
     }
     public class MOUSE_PRIMARY_UP : MOUSE
     {
-        public MOUSE_PRIMARY_UP(string param) : base(param) { }
+        public MOUSE_PRIMARY_UP(string param, int filter) : base(param, filter) { }
         public override bool CheckInput(out object inputInfo)
         {
             inputInfo = new object();
             if (Input.GetMouseButtonUp(0))
             {
-                RaycastHit[] hits = GetHitsFromMouseRay(layer);
+                RaycastHit2D[] hits = GetHitsFromMouseRay(layer, filter);
                 if (hits.Length > 0)
                 {
                     inputInfo = (object)hits[0];

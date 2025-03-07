@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         string currentScene = SceneManager.GetActiveScene().name;
-        if (currentScene.Contains("Nivel"))
+        if (currentScene.Contains("Nivel") || currentScene.Contains("Intro"))
         {
             AplicarInteraccion();
         }
@@ -122,6 +122,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
+        ResetLevelVariables();
         LoadScene(SceneManager.GetActiveScene().name);
     }
     /*

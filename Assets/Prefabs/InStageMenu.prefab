@@ -2752,7 +2752,6 @@ GameObject:
   - component: {fileID: 4436079944804451728}
   - component: {fileID: 8933507887308036296}
   - component: {fileID: 367772937}
-  - component: {fileID: 2354314790650857256}
   m_Layer: 5
   m_Name: OnEndMenu
   m_TagString: Untagged
@@ -2807,22 +2806,7 @@ MonoBehaviour:
   winStar: {fileID: 7469025272437286375}
   timeStar: {fileID: 786420561755247279}
   waveStar: {fileID: 1089071818133447014}
---- !u!114 &2354314790650857256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8978983413071301772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2301a57b486a81446b843cf49aa24c92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GameObject: {fileID: 0}
-  winStar: {fileID: 7469025272437286375}
-  timeStar: {fileID: 786420561755247279}
-  waveStar: {fileID: 1089071818133447014}
+  text: {fileID: 1634947083766914226}
 --- !u!1 &8990965558271665306
 GameObject:
   m_ObjectHideFlags: 0
@@ -3468,7 +3452,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!114 &8990965559744137424
 MonoBehaviour:

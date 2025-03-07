@@ -7,7 +7,7 @@ namespace InputHandler
     public class MOUSE_SECONDARY_CLICK : MOUSE
     {
 
-        public MOUSE_SECONDARY_CLICK(string param) : base(param) { }
+        public MOUSE_SECONDARY_CLICK(string param, int filter) : base(param, filter) { }
 
         public override bool CheckInput(out object inputInfo)
         {
@@ -15,7 +15,7 @@ namespace InputHandler
 
             if (Input.GetMouseButtonUp(1))
             {
-                RaycastHit[] hits = GetHitsFromMouseRay(layer);
+                RaycastHit2D[] hits = GetHitsFromMouseRay(layer, filter);
                 if (hits.Length > 0)
                 {
                     inputInfo = (object)hits[0];

@@ -47,7 +47,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level1_3.unity
     guid: ef310e825ab55a14e837b2127c7cb4fd
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level1_X.unity
     guid: b4d66f79f655d064c8119f738b2b5a59
   - enabled: 1
@@ -65,4 +65,28 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level1_8.unity
     guid: 00662476a1e7fd9449e39295b1eaa725
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_1.unity
+    guid: 7ec86f10317296142b7eac7ee2f93334
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_2.unity
+    guid: 581be4f4c212c064fa3751d5f7adbfad
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_3.unity
+    guid: b3dd7e8511b76514fb216cde874e68fc
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_4.unity
+    guid: a15b6ecbd17c14a4daf3527c5658a53e
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_5b.unity
+    guid: ae9388e2d0a9ba3439a1f3839b9184b5
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_6.unity
+    guid: 14de7306d17900b41ba57e90426185f2
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_7.unity
+    guid: 7877cf6754dbb4d45bd62c15cc0876d3
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_8.unity
+    guid: ea45ebb4ad0a18e429ecfd61ab234b25
   m_configObjects: {}

@@ -5,7 +5,7 @@ namespace InputHandler
     public class KEY_UP : IInputHandler
     {
         private string key;
-        public KEY_UP(string param)
+        public KEY_UP(string param,int filter)
         {
             key = param;
         }

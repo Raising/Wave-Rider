@@ -363,7 +363,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -432,7 +432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4534444674497018, guid: 39b147860d865e342ad4d4d09208c876, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 4534444674497018, guid: 39b147860d865e342ad4d4d09208c876, type: 3}
       propertyPath: m_LocalPosition.y
@@ -901,7 +901,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4534444674497018, guid: 39b147860d865e342ad4d4d09208c876, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4534444674497018, guid: 39b147860d865e342ad4d4d09208c876, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1512,7 +1512,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4534444674497018, guid: 39b147860d865e342ad4d4d09208c876, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4534444674497018, guid: 39b147860d865e342ad4d4d09208c876, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2237,7 +2237,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4534444674497018, guid: 39b147860d865e342ad4d4d09208c876, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 4534444674497018, guid: 39b147860d865e342ad4d4d09208c876, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2800,5 +2800,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 638392950}
+    - target: {fileID: 8990965559744137427, guid: 3bff2b6dc335fc544a84178f6910fa27,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3bff2b6dc335fc544a84178f6910fa27, type: 3}

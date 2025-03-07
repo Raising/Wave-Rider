@@ -110,7 +110,7 @@ Material:
     - Vector2_D7230387: {r: 0, g: 0, b: 0, a: 0}
     - Vector2_D8C435F: {r: 0.5, g: 0.5, b: 0, a: 0}
     - Vector2_FC38D06D: {r: 0, g: 0, b: 0, a: 0}
-    - _BaseColor: {r: 0.9622642, g: 0.75293094, b: 0.11347453, a: 1}
+    - _BaseColor: {r: 0.75294125, g: 0.5411765, b: 0.3921569, a: 1}
     - _BaseColorAddSubDiff: {r: -1, g: 1, b: 0, a: 0}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}

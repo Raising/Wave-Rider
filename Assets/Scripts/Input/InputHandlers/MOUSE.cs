@@ -1,14 +1,15 @@
-﻿
-using System;
+﻿using System;
 using UnityEngine;
 namespace InputHandler
 {
     public abstract class MOUSE : IInputHandler
     {
         protected int layer;
-        public MOUSE(string param)
+        protected int filter;
+        public MOUSE(string param, int filter)
         {
             layer = Int32.Parse(param);
+            this.filter = filter;
         }
 
         public virtual bool CheckInput(out object inputInfo)
@@ -17,10 +18,22 @@ namespace InputHandler
             return false;
         }
 
-        protected static RaycastHit[] GetHitsFromMouseRay(int layer)
+        protected static RaycastHit2D[] GetHitsFromMouseRay(int layer, int filter)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            return Physics.RaycastAll(ray, Mathf.Infinity, 1 << layer);
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, filter + (1 << layer));
+            RaycastHit2D[] hits = Physics2D.RaycastAll(mousePosition,Vector2.zero, Mathf.Infinity, filter + (1 << layer));
+            if (hits.Length > 0)
+            {
+                Debug.Log("HITS = " + hits.Length);
+                int hitLayer = hits[0].collider.gameObject.layer;
+                if (hitLayer == layer)
+                {
+                    return new RaycastHit2D[] { hits[0] };
+                }
+            }
+            return new RaycastHit2D[0];
         }
     }
 }

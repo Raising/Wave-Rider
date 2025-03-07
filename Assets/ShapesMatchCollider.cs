@@ -2,9 +2,10 @@ using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.PlayerSettings;
+
 
 #if UNITY_EDITOR
+using static UnityEditor.PlayerSettings;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
