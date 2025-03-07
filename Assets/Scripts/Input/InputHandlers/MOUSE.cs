@@ -20,17 +20,22 @@ namespace InputHandler
 
         protected static RaycastHit2D[] GetHitsFromMouseRay(int layer, int filter)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            //RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, filter + (1 << layer));
-            RaycastHit2D[] hits = Physics2D.RaycastAll(mousePosition,Vector2.zero, Mathf.Infinity, filter + (1 << layer));
+
+            RaycastHit2D[] hits = Physics2D.RaycastAll(mousePosition, Vector2.zero, Mathf.Infinity, filter + (1 << layer));
+
             if (hits.Length > 0)
             {
                 Debug.Log("HITS = " + hits.Length);
-                int hitLayer = hits[0].collider.gameObject.layer;
-                if (hitLayer == layer)
+                if (filter == 0 || hits.Length == 1)
                 {
-                    return new RaycastHit2D[] { hits[0] };
+                    int hitLayer = hits[0].collider.gameObject.layer;
+
+                    if (hitLayer == layer)
+                    {
+                        return new RaycastHit2D[] { hits[0] };
+                    }
                 }
             }
             return new RaycastHit2D[0];

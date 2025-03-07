@@ -14,32 +14,30 @@ namespace InputHandler
         }
 
 
-        protected static RaycastHit[] GetHitsFromTouchRay(int layer, int filter)
+        protected static RaycastHit2D[] GetHitsFromTouchRay(int layer, int filter)
         {
             if (Input.touchCount > 0)
             {
-                Touch touch = Input.GetTouch(0);
+                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-                Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, filter + (1 << layer));
+                RaycastHit2D[] hits = Physics2D.RaycastAll(mousePosition, Vector2.zero, Mathf.Infinity, filter + (1 << layer));
+
                 if (hits.Length > 0)
                 {
-                    int hitLayer = hits[0].collider.gameObject.layer;
-                    if (hitLayer == layer)
+                    Debug.Log("HITS = " + hits.Length);
+                    if (filter == 0 || hits.Length == 1)
                     {
-                        return new RaycastHit[] { hits[0] };
-                    }
-                    else
-                    {
-                        return new RaycastHit[0];
+                        int hitLayer = hits[0].collider.gameObject.layer;
+
+                        if (hitLayer == layer)
+                        {
+                            return new RaycastHit2D[] { hits[0] };
+                        }
                     }
                 }
-                else
-                {
-                    return hits;
-                }
+
             }
-            return new RaycastHit[0];
+            return new RaycastHit2D[0];
         }
 
         /*public bool CheckInput(out object inputInfo)
@@ -47,7 +45,7 @@ namespace InputHandler
             inputInfo = new object();
             if (Input.touchCount > 0)
             {
-                RaycastHit[] hits = GetHitsFromTouchRay(layer);
+                RaycastHit2D[] hits = GetHitsFromTouchRay(layer);
                 if (hits.Length > 0)
                 {
                     inputInfo = (object)hits[0];
@@ -73,7 +71,7 @@ namespace InputHandler
             {
                 if (Input.touchCount > 0)
                 {
-                    RaycastHit[] hits = GetHitsFromTouchRay(layer, filter);
+                    RaycastHit2D[] hits = GetHitsFromTouchRay(layer, filter);
                     if (hits.Length > 0)
                     {
                         inputInfo = (object)hits[0];
@@ -111,7 +109,7 @@ namespace InputHandler
 
             if (Input.touchCount > 0)
             {
-                RaycastHit[] hits = GetHitsFromTouchRay(layer, filter);
+                RaycastHit2D[] hits = GetHitsFromTouchRay(layer, filter);
                 if (hits.Length > 0)
                 {
                     PreviouslyTouched = (object)hits[0];

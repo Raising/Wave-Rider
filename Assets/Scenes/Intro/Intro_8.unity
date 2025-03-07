@@ -1366,6 +1366,11 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 50776426290562292, guid: 269c3130f09c4d04f9cfbbd06dc24338,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 82571586214544624, guid: 269c3130f09c4d04f9cfbbd06dc24338,
         type: 3}
       propertyPath: MinDistance
@@ -2655,6 +2660,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8904537700242787127, guid: 39b147860d865e342ad4d4d09208c876,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904537700242787127, guid: 39b147860d865e342ad4d4d09208c876,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904537700242787127, guid: 39b147860d865e342ad4d4d09208c876,
+        type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
       value: 0.1
       objectReference: {fileID: 0}
@@ -3300,6 +3315,11 @@ PrefabInstance:
     - target: {fileID: 4421527209707832, guid: 269c3130f09c4d04f9cfbbd06dc24338, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 50776426290562292, guid: 269c3130f09c4d04f9cfbbd06dc24338,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 82571586214544624, guid: 269c3130f09c4d04f9cfbbd06dc24338,
         type: 3}

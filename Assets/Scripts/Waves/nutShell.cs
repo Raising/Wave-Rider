@@ -18,6 +18,7 @@ public class nutShell : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody2D>();
         InGameNutShells.Add(this);
+        
         //sound = GetComponent<AudioSource> ();
     }
 
@@ -39,18 +40,6 @@ public class nutShell : MonoBehaviour
         OrientarHaciaDireccion();
 
     }
-
-
-    //void OnBecameInvisible()
-    //{
-    //    gameOver();
-    //}
-    //void gameOver()
-    //{
-
-    //    AudioManager.Instance.playSound("Loose.wav");
-    //    GameManager.Instance.loseLevel();
-    //}
 
     public void SelfDestroy()
     {

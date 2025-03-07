@@ -19,9 +19,9 @@ public struct InputDescriptor
     }
 
 
-    public InputDescriptor(Type handler, string param = "", UnityAction<object> callback = null, UnityAction<object> failCallback = null)
+    public InputDescriptor(Type handler, string param = "", int filterParam = 0, UnityAction<object> callback = null, UnityAction<object> failCallback = null)
     {
-        this.filterParam = 0;
+        this.filterParam = filterParam;
         this.param = param;
         this.handler = handler;
         this.callback = callback;
