@@ -64,7 +64,6 @@ PolygonCollider2D:
       - {x: 1, y: -1}
       - {x: -1, y: -1}
       - {x: -1, y: 1}
-      - {x: 1, y: 1}
 --- !u!114 &496939708154077235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,7 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 1
   scaleMode: 0
-  color: {r: 0.40000004, g: 0.5019608, b: 0.043137256, a: 1}
+  color: {r: 0.18431373, g: 0.11764706, b: 0.101960786, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -141,11 +140,10 @@ MonoBehaviour:
   stencilReadMask: 255
   stencilWriteMask: 255
   points:
-  - {x: 0.94343144, y: 0.94343144}
-  - {x: 0.94343144, y: -0.94343144}
-  - {x: -0.94343144, y: -0.94343144}
-  - {x: -0.94343144, y: 0.94343144}
-  - {x: 0.94343144, y: 0.94343144}
+  - {x: 0.98814815, y: 0.996}
+  - {x: 0.98814815, y: -0.996}
+  - {x: -0.98814815, y: -0.996}
+  - {x: -0.98814815, y: 0.996}
   triangulation: 1
   fill:
     type: 1
@@ -253,7 +251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 1
   scaleMode: 0
-  color: {r: 0.5294118, g: 0.6039216, b: 0.22352943, a: 1}
+  color: {r: 0.8509804, g: 0.73333335, b: 0, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -270,7 +268,6 @@ MonoBehaviour:
   - {x: 1, y: -1}
   - {x: -1, y: -1}
   - {x: -1, y: 1}
-  - {x: 1, y: 1}
   triangulation: 1
   fill:
     type: 1
@@ -378,7 +375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 1
   scaleMode: 0
-  color: {r: 0.81568635, g: 0.63529414, b: 0.08235294, a: 1}
+  color: {r: 0.7529412, g: 0.5411765, b: 0.39215687, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -391,11 +388,10 @@ MonoBehaviour:
   stencilReadMask: 255
   stencilWriteMask: 255
   points:
-  - {x: 0.97171575, y: 0.97171575}
-  - {x: 0.97171575, y: -0.97171575}
-  - {x: -0.97171575, y: -0.97171575}
-  - {x: -0.97171575, y: 0.97171575}
-  - {x: 0.97171575, y: 0.97171575}
+  - {x: 0.99407405, y: 0.998}
+  - {x: 0.99407405, y: -0.998}
+  - {x: -0.99407405, y: -0.998}
+  - {x: -0.99407405, y: 0.998}
   triangulation: 1
   fill:
     type: 0

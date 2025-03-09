@@ -55,5 +55,7 @@ MonoBehaviour:
     type: 3}
   protoObstacle: {fileID: 1376085592002242, guid: 39b147860d865e342ad4d4d09208c876,
     type: 3}
+  protoObstacle2: {fileID: 6441810957552832883, guid: ba2b689e280b0694bbab8d96d9a10ded,
+    type: 3}
   backgroundPrefab: {fileID: 162413124265871859, guid: ac9ecef1cda94d94aaa7d5b28593541c,
     type: 3}

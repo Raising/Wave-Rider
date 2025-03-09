@@ -21,6 +21,7 @@ public class ColorPalette : MonoBehaviour
 
     public GameObject nutShellPrefab;
     public GameObject protoObstacle;
+    public GameObject protoObstacle2;
     public GameObject backgroundPrefab;
 
     void Start()
@@ -48,6 +49,12 @@ public class ColorPalette : MonoBehaviour
         obstacleScript.polygonBody.Color = primaryDark;
         obstacleScript.baseBorderColor.Color = primaryLight;
         obstacleScript.whiteBorderColor.Color = primaryMedium;
+
+        ShapesMatchCollider obstacleScript2 = protoObstacle2.GetComponent<ShapesMatchCollider>();
+
+        obstacleScript2.polygonBody.Color = primaryDark;
+        obstacleScript2.baseBorderColor.Color = primaryLight;
+        obstacleScript2.whiteBorderColor.Color = primaryMedium;
 
         Shapes.Rectangle backgroundShape = backgroundPrefab.GetComponent<Shapes.Rectangle>();
 

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1238050757575508806}
   - component: {fileID: 1238050757575508807}
   - component: {fileID: 1238050757575508804}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 1238050758110976101}
   - component: {fileID: 1238050758110976098}
   - component: {fileID: 1238050758110976099}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Rectangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: 1238050758250638828}
   - component: {fileID: 1238050758250638830}
   - component: {fileID: 1238050758250638831}
-  m_Layer: 12
+  m_Layer: 4
   m_Name: Flow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

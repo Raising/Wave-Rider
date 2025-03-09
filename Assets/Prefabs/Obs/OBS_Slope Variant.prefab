@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1376085592002242, guid: 39b147860d865e342ad4d4d09208c876, type: 3}
       propertyPath: m_Name
-      value: OBS_Slope
+      value: OBS_Slope Variant
       objectReference: {fileID: 0}
     - target: {fileID: 1376085592002242, guid: 39b147860d865e342ad4d4d09208c876, type: 3}
       propertyPath: m_TagString
