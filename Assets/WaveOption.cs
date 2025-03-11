@@ -41,9 +41,9 @@ public class WaveOption : MonoBehaviour
 
     void ReleaseWave(Vector3 point)
     {
-        LevelManager.StartTimer();
         if (Origin != Vector3.zero)
         {
+            LevelManager.StartTimer();
             GameObject generator = Instantiate(WavePrefab, Origin, Quaternion.identity) as GameObject;
             generator.GetComponent<PathWaveGenerator>().SetDireciton(new Vector2(point.x - Origin.x, point.y - Origin.y));
             Origin = Vector3.zero;

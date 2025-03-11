@@ -10,5 +10,6 @@
     FloatingBall = 9,
     Meta = 10,
     SelectablWastedWave = 11,
-    TouchableWater = 12
+    TouchableWater = 12,
+    WaterBlock = 13,
 }

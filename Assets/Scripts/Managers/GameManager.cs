@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public enum GameState
 {
     ready, playing, paused, win, gameOver

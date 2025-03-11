@@ -22,7 +22,6 @@ public class ExitBeacon : MonoBehaviour {
             {
 				EventManager.TriggerEvent("OnLevelCompletion");
 
-               
             }
 		}
 	}

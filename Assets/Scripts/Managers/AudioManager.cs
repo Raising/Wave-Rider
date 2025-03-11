@@ -151,13 +151,13 @@ public class AudioManager : MonoBehaviour {
 
 	IEnumerator LoadSoundFile(string path, string name) {
 		WWW www = new WWW("file://"+path);
-		print ("Loading " + path);
+		//print ("Loading " + path);
 		yield return www;
 		if (!string.IsNullOrEmpty(www.error)) {
 			Debug.Log(www.error);
 		}
 
-		print ("Done Loading: " + name);
+		//print ("Done Loading: " + name);
         soundResources.Add(name, www.GetAudioClip());
 	}
 

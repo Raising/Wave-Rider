@@ -50,8 +50,8 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Level1_X.unity
     guid: b4d66f79f655d064c8119f738b2b5a59
-  - enabled: 1
-    path: Assets/Scenes/Level1_4.unity
+  - enabled: 0
+    path: Assets/Scenes/Intro/Level1_4.unity
     guid: 3bcc35d655009184cb8f622a2ddcb082
   - enabled: 1
     path: Assets/Scenes/Level1_5.unity
@@ -76,10 +76,10 @@ EditorBuildSettings:
     guid: b3dd7e8511b76514fb216cde874e68fc
   - enabled: 1
     path: Assets/Scenes/Intro/Intro_4.unity
-    guid: a15b6ecbd17c14a4daf3527c5658a53e
+    guid: bd79257b2b5e37f45b3a0550184de2d4
   - enabled: 1
-    path: Assets/Scenes/Intro/Intro_5b.unity
-    guid: ae9388e2d0a9ba3439a1f3839b9184b5
+    path: Assets/Scenes/Intro/Intro_5.unity
+    guid: a5bb1e542cd351b40bc3234b61aae9b7
   - enabled: 1
     path: Assets/Scenes/Intro/Intro_6.unity
     guid: 14de7306d17900b41ba57e90426185f2
@@ -90,12 +90,24 @@ EditorBuildSettings:
     path: Assets/Scenes/Intro/Intro_8.unity
     guid: ea45ebb4ad0a18e429ecfd61ab234b25
   - enabled: 1
-    path: Assets/Scenes/Intro/Intro_11.unity
-    guid: f43bff5275e752e4a8736519d04d9222
-  - enabled: 1
     path: Assets/Scenes/Intro/Intro_9.unity
     guid: 61f7b6b24e15fbd449255ee666a52fc4
   - enabled: 1
     path: Assets/Scenes/Intro/Intro_10.unity
     guid: 33970b683e4bdd64a8e5cf8ae3e67c5d
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_11.unity
+    guid: f43bff5275e752e4a8736519d04d9222
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_12.unity
+    guid: 5cf2d48c932e038448fcd26ba75a5ecb
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_13.unity
+    guid: 8ca0440046347d2448d0cffc42ff88b9
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_14.unity
+    guid: ce258a38abc048e4e82e2fab2d82776d
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_15.unity
+    guid: a427f8a05e6a95748adbb0ae91c17b96
   m_configObjects: {}

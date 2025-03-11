@@ -41,6 +41,7 @@ public class LevelEndMenu : MonoBehaviour
             {
                 waveStar.FillColorEnd = Color.yellow;
                 waveStar.FillColorStart = Color.green;
+              
             }
             else
             {
