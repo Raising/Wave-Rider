@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class SaveManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            //DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -117,6 +118,7 @@ public class SaveManager : MonoBehaviour
             {
                 string json = File.ReadAllText(path);
                 Data = JsonUtility.FromJson<PlayerData>(json);
+                Data.RestoreFromSerialization();
                 //Debug.Log($"📂 Datos cargados - Nivel: {Data.nivel}, Vida: {Data.vida}, Nombre: {Data.nombre}");
             }
             catch (System.Exception e)
@@ -137,6 +139,8 @@ public class SaveManager : MonoBehaviour
     {
         Instance.Data = new PlayerData();
         SaveGame();
+        string currentScene = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentScene);
         Debug.Log("🔄 Datos reseteados a valores predeterminados.");
     }
 

@@ -30,6 +30,7 @@ public class PlayerData
         worlds.Clear();
         foreach (var entry in worldsList)
         {
+            entry.levels.RestoreFromSerialization();
             worlds[entry.worldName] = entry.levels;
         }
     }
