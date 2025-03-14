@@ -58,13 +58,36 @@ public class SaveManager : MonoBehaviour
                 inTime = false,
                 inWaves = false
             },
-            bests = new Bests()
+            performance = new Performance()
             {
+                attempts = 0,
+                totalTime = 0,
                 bestTime = 999,
                 bestWaves = 999,
 
             }
         };
+    }
+    public static void IncreaseAttempts(LevelState levelState)
+    {
+        string world = levelState.levelName.Split('_')[0];  // e.g. "intro"
+        string level = levelState.levelName.Split('_')[1]; // e.g. "1"
+
+        // Asegurar que el mundo existe en el diccionario
+        if (!Instance.Data.worlds.ContainsKey(world))
+        {
+            Instance.Data.worlds[world] = new Levels();
+        }
+
+        // Asegurar que el nivel existe en el diccionario
+        if (!Instance.Data.worlds[world].levels.ContainsKey(level))
+        {
+            Instance.Data.worlds[world].levels[level] = new Level();
+        }
+        Performance performance = Instance.Data.worlds[world].levels[level].performance;
+        performance.attempts = performance.attempts + 1;
+        Instance.Data.worlds[world].levels[level].performance = performance;
+        SaveGame();
     }
     public static void SaveLevel(LevelState levelState)
     {
@@ -82,15 +105,20 @@ public class SaveManager : MonoBehaviour
         {
             Instance.Data.worlds[world].levels[level] = new Level();
         }
+        float time = levelState.timeEnd - levelState.timeStart;
         Stars stars = Instance.Data.worlds[world].levels[level].stars;
         stars.completed = levelState.winned || stars.completed;
         stars.inTime = levelState.timeSuccess || stars.inTime;
         stars.inWaves = levelState.waveSuccess || stars.inWaves;
         stars.inAll = (levelState.timeSuccess && levelState.waveSuccess) || stars.inAll;
-
-
+        Performance performance = Instance.Data.worlds[world].levels[level].performance;
+        //performance.attempts = performance.attempts + 1;
+        performance.totalTime = performance.totalTime + (levelState.timeEnd - levelState.realStart);
+        performance.bestTime = performance.bestTime < time ? performance.bestTime : time;
+        performance.bestWaves = performance.bestWaves < time ? performance.bestWaves : levelState.generatedWaves;
         // Guardar los datos en el nivel correspondiente
         Instance.Data.worlds[world].levels[level].stars = stars;
+        Instance.Data.worlds[world].levels[level].performance = performance;
         SaveGame();
 
         Debug.Log($"✅ Nivel guardado: {levelState.levelName}");

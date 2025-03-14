@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 2119732354455877994}
   - component: {fileID: 5931604402254727965}
   m_Layer: 5
-  m_Name: Polygon (1)
+  m_Name: PolygonWave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -793,8 +793,8 @@ MonoBehaviour:
   button: {fileID: 6886682569513084877}
   text: {fileID: 6886682569361901679}
   winStar: {fileID: 6717773514080173751}
-  timeStar: {fileID: 7654393533736022368}
-  waveStar: {fileID: 3939819506793425489}
+  timeStar: {fileID: 3939819506793425489}
+  waveStar: {fileID: 7654393533736022368}
 --- !u!1 &7149972601490286772
 GameObject:
   m_ObjectHideFlags: 0
@@ -943,7 +943,7 @@ GameObject:
   - component: {fileID: 8835530937652267463}
   - component: {fileID: 7109125611117956917}
   m_Layer: 5
-  m_Name: Polygon (1)
+  m_Name: PolygonTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -10,6 +10,7 @@ public class nutShell : MonoBehaviour
     private AudioSource sound;
     private Vector2 currentPosition = new Vector2();
     private Vector2 wavesAcumulatedForce = new Vector2();
+    public GameObject sail;
 
     public static List<nutShell> InGameNutShells = new List<nutShell>();
 
@@ -18,7 +19,7 @@ public class nutShell : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody2D>();
         InGameNutShells.Add(this);
-        
+
         //sound = GetComponent<AudioSource> ();
     }
 
@@ -74,7 +75,8 @@ public class nutShell : MonoBehaviour
             {
                 anguloDiferencia = -1 * anguloDiferencia;
             }
-
+            //float targetAngle = (sail.transform.rotation.eulerAngles.z * 2 + anguloDiferencia) / 3;
+            //sail.transform.rotation = Quaternion.Euler(0, 0, -anguloDiferencia);
             float torque = (float)(anguloDiferencia / (peso * Mathf.PI));
 
             rigidBody.AddTorque(torque);

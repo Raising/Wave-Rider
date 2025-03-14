@@ -45,13 +45,16 @@ public class LevelManager : MonoBehaviour
         Instance.levelState = new LevelState
         {
             levelName = SceneManager.GetActiveScene().name,
+            realStart = Time.time,
             timeStart = 0,//Time.time,
             timeEnd = 0,
             level = 0,
             generatedWaves = 0,
             timeSuccess = false,
             waveSuccess = false,
+            winned = false,
         };
+        SaveManager.IncreaseAttempts(Instance.levelState);
         EventManager.TriggerEvent("OnStartLevel");
     }
 
@@ -69,7 +72,8 @@ public class LevelManager : MonoBehaviour
 
     public static void HandleLevelCompletion()
     {
-        float elapsedTime = Time.time - Instance.levelState.timeStart;
+        Instance.levelState.timeEnd = Time.time;
+        float elapsedTime = Instance.levelState.timeEnd - Instance.levelState.timeStart;
         Instance.levelState.waveSuccess = Instance.maxWavesStar >= Instance.levelState.generatedWaves;
         Instance.levelState.timeSuccess = Instance.maxTimeStar > elapsedTime;
         Instance.levelState.winned = true;
@@ -78,6 +82,11 @@ public class LevelManager : MonoBehaviour
     }
     public static void HandleLevelFail()
     {
+        Instance.levelState.timeEnd = Time.time;
+        Instance.levelState.waveSuccess = false;
+        Instance.levelState.timeSuccess = false;
+        Instance.levelState.winned = false;
+        SaveManager.SaveLevel(Instance.levelState);
         EventManager.TriggerEvent("OnEndLevel", EnumLevelResult.Lose);
     }
 
@@ -87,6 +96,7 @@ public class LevelManager : MonoBehaviour
 public struct LevelState
 {
     public string levelName;
+    public float realStart;
     public float timeStart;
     public float timeEnd;
     public bool winned;

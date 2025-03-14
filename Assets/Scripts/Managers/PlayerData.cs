@@ -86,7 +86,7 @@ public class Level
     [SerializeField]
     public Stars stars = new Stars();
     [SerializeField]
-    public Bests bests = new Bests();
+    public Performance performance = new Performance();
 }
 [System.Serializable]
 public class Stars
@@ -101,8 +101,12 @@ public class Stars
     public bool inAll = false;
 }
 [System.Serializable]
-public class Bests
+public class Performance
 {
+    [SerializeField]
+    public int attempts = 0;
+    [SerializeField]
+    public float totalTime = 0;
     [SerializeField]
     public int bestWaves = 99;
     [SerializeField]

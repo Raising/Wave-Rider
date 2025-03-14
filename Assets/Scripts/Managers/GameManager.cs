@@ -10,6 +10,7 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance = null;
+    private static float speed = 1.0f;
 
     [SerializeField] private GameState gameState;
 
@@ -124,34 +125,6 @@ public class GameManager : MonoBehaviour
         ResetLevelVariables();
         LoadScene(SceneManager.GetActiveScene().name);
     }
-    /*
-	void AplicarRaton () {
-
-		if (Input.GetButtonDown ("Fire1") ) {
-			
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			RaycastHit2D hit;
-			hit = Physics2D.GetRayIntersection(ray);
-
-			if (hit.collider != null){
-				Debug.Log (hit.collider.tag);
-				if (currentButton != null && (hit.collider.tag == "Terrain" || hit.collider.tag == "Wave"))  {
-					GameObject emitter = currentButton.getEmitter ();
-					if (emitter != null) {
-						Instantiate (emitter, hit.point, Quaternion.identity);
-						currentButton.reduceAmmo ();
-					} 
-									}
-				else if(hit.collider.tag == "EmitterSelector"){
-					if (currentButton != null ){
-						currentButton.deselect();
-					}
-					currentButton = (EmitterSelectorButton)hit.collider.GetComponent(typeof(EmitterSelectorButton));
-					currentButton.select();
-				}
-			}
-		}
-	}*/
 
     public void PauseResumeGame()
     {
@@ -159,10 +132,33 @@ public class GameManager : MonoBehaviour
         {
             Resume();
         }
-        else if (gameState == GameState.playing)
+        else
         {
             Pause();
         }
+    }
+
+
+    public void SpeedUpGame()
+    {
+        if (speed == 1)
+        {
+            speed = 1.5f;
+        }
+        else if (speed == 1.5f)
+        {
+            speed = 2f;
+        }
+        else if (speed == 2f)
+        {
+            speed = 3f;
+        }
+        else
+        {
+            speed = 1;
+        }
+        Time.timeScale = speed;
+        gameState = GameState.playing;
     }
 
     private void Pause()
@@ -171,9 +167,10 @@ public class GameManager : MonoBehaviour
         gameState = GameState.paused;
     }
 
+
     private void Resume()
     {
-        Time.timeScale = 1;
+        Time.timeScale = speed;
         gameState = GameState.playing;
     }
 }

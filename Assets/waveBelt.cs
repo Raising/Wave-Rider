@@ -18,7 +18,7 @@ public class waveBelt : MonoBehaviour
     }
     private void Update()
     {
-        line.DashOffset += force.y * 0.005f;
+        line.DashOffset += force.y * 0.005f * Time.timeScale;
     }
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -27,7 +27,7 @@ public class waveBelt : MonoBehaviour
         if (rb != null)
         {
             // Apply a constant force
-            rb.AddForce(rotatedForce);
+            rb.AddForce(rotatedForce * Time.deltaTime * 30);
         }
     }
 }
