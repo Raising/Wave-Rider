@@ -3,6 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum BallType
+{
+    normal,
+    killer,
+    dumper,
+    banger,
+}
+
+[System.Serializable]
+public class BallData
+{
+    public BallType type = BallType.normal;
+    public Vector2 position = new Vector2();
+    public Vector2 scale = new Vector2();
+    public float rotation = 0;
+    public Vector2 initialVelocity = new Vector2(0, 0);
+}
+
 public class nutShell : MonoBehaviour
 {
     private Rigidbody2D rigidBody;
@@ -11,6 +30,7 @@ public class nutShell : MonoBehaviour
     private Vector2 currentPosition = new Vector2();
     private Vector2 wavesAcumulatedForce = new Vector2();
     public GameObject sail;
+    public BallType ballType = BallType.normal;
 
     public static List<nutShell> InGameNutShells = new List<nutShell>();
 
@@ -99,5 +119,25 @@ public class nutShell : MonoBehaviour
             Vector2 adjustedForce = direction * forceFactor / (0.5f + fragmentDistance / 2);
             wavesAcumulatedForce += adjustedForce;
         }
+    }
+
+    internal BallData AsLevelData()
+    {
+        return new BallData
+        {
+            type = ballType,
+            position = this.transform.position,
+            scale = this.transform.localScale,
+            rotation = this.transform.eulerAngles.z,
+            initialVelocity = new Vector2()
+        };
+    }
+
+    internal void LoadFromLevelData(BallData data)
+    {
+        this.transform.position = data.position;
+        this.transform.localScale = data.scale;
+        this.transform.rotation = Quaternion.Euler(0, 0, data.rotation);
+        this.ballType = data.type;
     }
 }

@@ -2,6 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ExitType
+{
+    normal,
+    trigger,
+}
+[System.Serializable]
+public class ExitData
+{
+    public ExitType type = ExitType.normal;
+    public Vector2 position = new Vector2();
+    public Vector2 scale = new Vector2();
+    public float rotation = 0;
+    
+}
 public class ExitBeacon : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
@@ -25,4 +39,21 @@ public class ExitBeacon : MonoBehaviour {
             }
 		}
 	}
+
+    internal ExitData AsLevelData()
+    {
+        return new ExitData
+        {
+           position = this.transform.position,
+           scale = this.transform.localScale,
+            rotation = this.transform.eulerAngles.z
+        };
+    }
+
+    internal void LoadFromLevelData(ExitData data)
+    {
+        this.transform.position = data.position;
+        this.transform.localScale = data.scale;
+        this.transform.rotation = Quaternion.Euler(0, 0, data.rotation);
+    }
 }

@@ -44,13 +44,13 @@ public class ColorPalette : MonoBehaviour
         nutshellShape.ColorOuter = primaryMedium;
         nutshellShape.ColorInner = primaryDark;
 
-        ShapesMatchCollider obstacleScript = protoObstacle.GetComponent<ShapesMatchCollider>();
+        ObstacleCollider obstacleScript = protoObstacle.GetComponent<ObstacleCollider>();
 
         obstacleScript.polygonBody.Color = primaryDark;
         obstacleScript.baseBorderColor.Color = primaryLight;
         obstacleScript.whiteBorderColor.Color = primaryMedium;
 
-        ShapesMatchCollider obstacleScript2 = protoObstacle2.GetComponent<ShapesMatchCollider>();
+        ObstacleCollider obstacleScript2 = protoObstacle2.GetComponent<ObstacleCollider>();
 
         obstacleScript2.polygonBody.Color = primaryDark;
         obstacleScript2.baseBorderColor.Color = primaryLight;

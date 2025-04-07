@@ -1,6 +1,15 @@
 using System.Collections;
 using UnityEngine;
 
+[System.Serializable]
+public class BlockData
+{
+    public Vector2 size = new Vector2();
+    public Vector2 position = new Vector2();
+    public Vector2 scale = new Vector2();
+    public float rotation = 0;
+}
+
 public class WaterBlock : MonoBehaviour
 {
     public Shapes.Rectangle Rectangle;
@@ -48,5 +57,32 @@ public class WaterBlock : MonoBehaviour
         }
 
         Rectangle.Color = originalColor; // Restore the original color
+    }
+
+    internal BlockData AsLevelData()
+    {
+        return new BlockData
+        {
+            size = new Vector2(this.Rectangle.Width, this.Rectangle.Height),
+            position = this.transform.position,
+            scale = this.transform.localScale,
+            rotation = this.transform.eulerAngles.z
+        };
+    }
+
+    internal void LoadFromLevelData(BlockData data)
+    {
+        this.Rectangle.Width = data.size.x;
+        this.Rectangle.Height = data.size.y;
+        this.transform.position = data.position;
+        this.transform.localScale = data.scale;
+        this.transform.rotation = Quaternion.Euler(0, 0, data.rotation);
+        PolygonCollider2D collider = GetComponent<PolygonCollider2D>();
+        collider.points = new Vector2[4] {
+            new Vector2(data.size.x / (-2), data.size.y / (2)),
+            new Vector2(data.size.x / (2), data.size.y / (2)),
+            new Vector2(data.size.x / (2), data.size.y / (-2)),
+            new Vector2(data.size.x / (-2), data.size.y / (-2)), };
+
     }
 }

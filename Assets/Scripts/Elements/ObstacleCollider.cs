@@ -2,7 +2,9 @@ using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using System.Collections.Generic;
+using System.Reflection;
+using UnityEngine.UIElements;
 
 #if UNITY_EDITOR
 using static UnityEditor.PlayerSettings;
@@ -10,12 +12,31 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
 
-public class ShapesMatchCollider : MonoBehaviour
+public enum ObstacleType
+{
+    normal,
+    killer,
+    dumper,
+    banger,
+}
+
+[System.Serializable]
+public class ObstacleData
+{
+    public ObstacleType type = ObstacleType.normal;
+    public Vector2[] points = new Vector2[0];
+    public Vector2 position = new Vector2();
+    public Vector2 scale = new Vector2();
+}
+
+
+public class ObstacleCollider : MonoBehaviour
 {
     public PolygonCollider2D polygonCollider;
     public Shapes.Polygon polygonBody;
     public Shapes.Polygon baseBorderColor;
     public Shapes.Polygon whiteBorderColor;
+    public ObstacleType type = ObstacleType.normal;
     private Boolean privateDirty = false;
     // Start is called before the first frame update
 
@@ -29,7 +50,7 @@ public class ShapesMatchCollider : MonoBehaviour
 
     }
 
-    void ApplyPolygonChanges()
+    public void ApplyPolygonChanges()
     {
         if (polygonCollider == null)
         {
@@ -124,5 +145,26 @@ public class ShapesMatchCollider : MonoBehaviour
     {
         ApplyPolygonChanges();
     }
+
 #endif
+    internal ObstacleData AsLevelData()
+    {
+        return new ObstacleData
+        {
+            points = this.polygonCollider.points,
+            position = this.transform.position,
+            type = this.type,
+            scale = this.transform.localScale,
+        };
+    }
+
+    internal void LoadFromLevelData(ObstacleData data)
+    {
+        this.polygonCollider.points = data.points;
+        this.transform.position = data.position;
+        this.type = data.type;
+        this.transform.localScale = data.scale;
+
+        this.ApplyPolygonChanges();
+    }
 }
