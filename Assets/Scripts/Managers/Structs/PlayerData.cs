@@ -7,11 +7,13 @@ public class PlayerData
     [SerializeField]
     public Unlocks unlocks = new Unlocks();
 
-   
+    public LevelData[] createdLevelList = new LevelData[0];
     [SerializeField]
     private List<WorldEntry> worldsList = new List<WorldEntry>();
 
     public Dictionary<string, Levels> worlds = new Dictionary<string, Levels>();
+
+
 
     // Convert Dictionary to List before saving
     public void PrepareForSerialization()
@@ -34,6 +36,8 @@ public class PlayerData
             worlds[entry.worldName] = entry.levels;
         }
     }
+
+
 }
 
 [System.Serializable]

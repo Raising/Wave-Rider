@@ -5,10 +5,10 @@ public class LevelData
 {
     public string name;
     public string world;
-    public int levelId;
+    public string levelId;
 
-    public int starsTarget;
-    public int timeTarget;
+    public int waveTarget;
+    public float timeTarget;
 
     public ObstacleData[] obstacleList = new ObstacleData[0];
     public BallData[] ballList = new BallData[0];
@@ -17,6 +17,4 @@ public class LevelData
     public BlockData[] blockList = new BlockData[0];
 
 }
-
-
 

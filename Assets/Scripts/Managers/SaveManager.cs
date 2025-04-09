@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Analytics;
@@ -37,7 +38,7 @@ public class SaveManager : MonoBehaviour
         string json = JsonUtility.ToJson(Instance.Data, true);
         Instance.StartCoroutine(Instance.SaveToFile(json));
     }
-    static public Level GetLevelData(string levelName)
+    static public Level GetLevelHistory(string levelName)
     {
         string world = levelName.Split('_')[0];  // e.g. "intro"
         string level = levelName.Split('_')[1]; // e.g. "1"
@@ -89,7 +90,7 @@ public class SaveManager : MonoBehaviour
         Instance.Data.worlds[world].levels[level].performance = performance;
         SaveGame();
     }
-    public static void SaveLevel(LevelState levelState)
+    public static void SaveLevelHistory(LevelState levelState)
     {
         string world = levelState.levelName.Split('_')[0];  // e.g. "intro"
         string level = levelState.levelName.Split('_')[1]; // e.g. "1"
@@ -122,6 +123,25 @@ public class SaveManager : MonoBehaviour
         SaveGame();
 
         Debug.Log($"✅ Nivel guardado: {levelState.levelName}");
+    }
+
+    public static void SaveLevelData(LevelData levelData)
+    {
+        int index = -1;
+        for (int i = 0;i<Instance.Data.createdLevelList.Length;i++) { 
+            if (Instance.Data.createdLevelList[i].levelId == levelData.levelId)
+            {
+                index = i; break;
+            }
+        }
+
+        if (index > 0) {
+            Instance.Data.createdLevelList[index] = levelData;
+        }
+        else
+        {
+            Instance.Data.createdLevelList = Instance.Data.createdLevelList.Append(levelData).ToArray();
+        }
     }
 
     private IEnumerator SaveToFile(string json)

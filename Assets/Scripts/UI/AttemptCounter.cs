@@ -24,7 +24,7 @@ public class AttemptCounter : MonoBehaviour
     void UpdateCount()
     {
         string scene = SceneManager.GetActiveScene().name;
-        Level level = SaveManager.GetLevelData(scene);
+        Level level = SaveManager.GetLevelHistory(scene);
         int attempts = level.performance.attempts;
         attemptCount.text = attempts.ToString();
     }

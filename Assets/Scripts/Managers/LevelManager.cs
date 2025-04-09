@@ -77,7 +77,7 @@ public class LevelManager : MonoBehaviour
         Instance.levelState.waveSuccess = Instance.maxWavesStar >= Instance.levelState.generatedWaves;
         Instance.levelState.timeSuccess = Instance.maxTimeStar > elapsedTime;
         Instance.levelState.winned = true;
-        SaveManager.SaveLevel(Instance.levelState);
+        SaveManager.SaveLevelHistory(Instance.levelState);
         EventManager.TriggerEvent("OnEndLevel", EnumLevelResult.Win);
     }
     public static void HandleLevelFail()
@@ -86,7 +86,7 @@ public class LevelManager : MonoBehaviour
         Instance.levelState.waveSuccess = false;
         Instance.levelState.timeSuccess = false;
         Instance.levelState.winned = false;
-        SaveManager.SaveLevel(Instance.levelState);
+        SaveManager.SaveLevelHistory(Instance.levelState);
         EventManager.TriggerEvent("OnEndLevel", EnumLevelResult.Lose);
     }
 

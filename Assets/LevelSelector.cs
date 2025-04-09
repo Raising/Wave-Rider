@@ -18,7 +18,7 @@ public class LevelSelector : MonoBehaviour
     {
         text.text = scene.Split('_')[1];
         button.onClick.AddListener(() => LoadScene(scene));
-        Level level = SaveManager.GetLevelData(scene);
+        Level level = SaveManager.GetLevelHistory(scene);
         //starAmount.text = ((level.stars.inTime ? 1 : 0) + (level.stars.inWaves ? 1 : 0) + (level.stars.completed ? 1 : 0) + (level.stars.inAll ? 1 : 0)).ToString();
         winStar.FillColorEnd = level.stars.completed ? Color.yellow : Color.gray;
         winStar.FillColorStart = level.stars.completed ? Color.yellow : Color.gray;

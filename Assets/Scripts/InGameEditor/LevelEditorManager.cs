@@ -3,14 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
 
-public enum ElementType
-{
-    obstacle,
-    block,
-    ball,
-    exit,
-    flow,
-}
+
 public class LevelEditorManager : MonoBehaviour
 {
     public GameObject InteractionHolder;
@@ -19,7 +12,8 @@ public class LevelEditorManager : MonoBehaviour
     public GameObject ballPrefab;
     public GameObject exitPrefab;
     public GameObject flowPrefab;
-    private GameObject selectedElement;
+    public LevelData levelData;
+    //private GameObject 
     public GameObject CanvasInteractionArea;
     // Start is called before the first frame update
     void Start()
@@ -41,29 +35,63 @@ public class LevelEditorManager : MonoBehaviour
 
     public void CreateObstacle()
     {
-        GameObject go =Instantiate(obstaclePrefab, Vector3.zero, Quaternion.identity,InteractionHolder.transform);
-        selectedElement = go ;
+        GameObject go = Instantiate(obstaclePrefab, Vector3.zero, Quaternion.identity, InteractionHolder.transform);
+        
         ObstacleCollider obstacleCollider = go.GetComponent<ObstacleCollider>();
-        CanvasInteractionArea.GetComponent<CanvasInteractionArea>().ShowTraslationGizmo(go,CanvasInteractionArea);
+        CanvasInteractionArea.GetComponent<CanvasInteractionArea>().ShowGizmo(go);
     }
     public void CreateSurface()
     {
         GameObject go = Instantiate(surfacePrefab, Vector3.zero, Quaternion.identity, InteractionHolder.transform);
-        selectedElement = go;
+        
     }
     public void CreateBall()
     {
         GameObject go = Instantiate(ballPrefab, Vector3.zero, Quaternion.identity, InteractionHolder.transform);
-        selectedElement = go;
+        
     }
     public void CreateFlow()
     {
         GameObject go = Instantiate(flowPrefab, Vector3.zero, Quaternion.identity, InteractionHolder.transform);
-        selectedElement = go;
+        
     }
     public void CreateExit()
     {
         GameObject go = Instantiate(exitPrefab, Vector3.zero, Quaternion.identity, InteractionHolder.transform);
-        selectedElement = go;
+        
+    }
+
+
+    public void ShowSelection()
+    {
+        List<GameObject> allCurrentElements = new List<GameObject>();
+        foreach (Transform child in InteractionHolder.transform)
+        {
+            allCurrentElements.Add(child.gameObject);
+
+        }
+
+
+        CanvasInteractionArea.GetComponent<CanvasInteractionArea>().ShowSelectGizmo(allCurrentElements);
+    }
+
+    public void SaveLevel()
+    {
+        List<GameObject> allCurrentElements = new List<GameObject>();
+        foreach (Transform child in InteractionHolder.transform)
+        {
+            allCurrentElements.Add(child.gameObject);
+
+        }
+
+        LevelData levelData = InteractionHolder.GetComponent<MetaLevel>().PortLevelToData();
+        SaveManager.SaveLevelData(levelData);
+        SaveManager.SaveGame();
+    }
+
+
+    public void Undo()
+    {
+
     }
 }

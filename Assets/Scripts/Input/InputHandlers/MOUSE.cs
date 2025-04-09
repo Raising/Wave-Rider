@@ -27,7 +27,7 @@ namespace InputHandler
 
             if (hits.Length > 0)
             {
-                Debug.Log("HITS = " + hits.Length);
+                //Debug.Log("HITS = " + hits.Length);
                 if (filter == 0 || hits.Length == 1)
                 {
                     int hitLayer = hits[0].collider.gameObject.layer;
