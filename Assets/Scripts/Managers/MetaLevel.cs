@@ -4,7 +4,40 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.Progress;
 using static UnityEngine.GraphicsBuffer;
+
+
+public class ElementData
+{
+    public string type;
+    public object data;
+}
+public interface ILevelElement
+{
+    string Type();
+    ElementData AsLevelData();
+    void LoadFromLevelData(ElementData levelData);
+    void SetInert();
+}
+
+public abstract class LevelElementBase : MonoBehaviour, ILevelElement
+{
+    // Shared properties
+    public GameObject UIPrefab;
+
+    public abstract string Type();
+    public abstract ElementData AsLevelData();
+    public abstract void LoadFromLevelData(ElementData levelData);
+
+    // Provide a shared implementation
+    public virtual void SetInert()
+    {
+
+    }
+
+}
+
 
 public class MetaLevel : MonoBehaviour
 {
@@ -16,11 +49,12 @@ public class MetaLevel : MonoBehaviour
     public float timeTarget = 0;
     private LevelData tempLevelData;
 
-    public GameObject obstaclePrefab;
-    public GameObject blockPrefab;
-    public GameObject ballPrefab;
-    public GameObject exitPrefab;
-    public GameObject flowPrefab;
+    public GameObject[] elementPrefabs;
+    //public GameObject obstaclePrefab;
+    //public GameObject blockPrefab;
+    //public GameObject ballPrefab;
+    //public GameObject exitPrefab;
+    //public GameObject flowPrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,12 +80,7 @@ public class MetaLevel : MonoBehaviour
             name = levelId,
             waveTarget = waveTarget,
             timeTarget = timeTarget,
-
-            obstacleList = GetComponentsInChildren<ObstacleCollider>().Select(obc => obc.AsLevelData()).ToArray(),
-            blockList = GetComponentsInChildren<WaterBlock>().Select(obc => obc.AsLevelData()).ToArray(),
-            exitList = GetComponentsInChildren<ExitBeacon>().Select(obc => obc.AsLevelData()).ToArray(),
-            flowList = GetComponentsInChildren<WaveFlow>().Select(obc => obc.AsLevelData()).ToArray(),
-            ballList = GetComponentsInChildren<nutShell>().Select(obc => obc.AsLevelData()).ToArray(),
+            levelElements = GetComponentsInChildren<ILevelElement>().Select(el => el.AsLevelData()).ToArray(),
         };
 
         return levelData;
@@ -64,45 +93,28 @@ public class MetaLevel : MonoBehaviour
 
     public void LoadLevelFromJson()
     {
-        foreach (var item in tempLevelData.obstacleList)
+        foreach (GameObject elementGo in GetComponentsInChildren<ILevelElement>().Select(el => ((MonoBehaviour)el).gameObject))
         {
-            Instantiate(obstaclePrefab, this.transform);
-            ObstacleCollider obsC = obstaclePrefab.GetComponent<ObstacleCollider>();
-            obsC.LoadFromLevelData(item);
+            Destroy(elementGo);
         }
-        foreach (var item in tempLevelData.blockList)
+        foreach (GameObject prefab in elementPrefabs)
         {
-            Instantiate(blockPrefab, this.transform);
-            WaterBlock waterBlock = obstaclePrefab.GetComponent<WaterBlock>();
-            waterBlock.LoadFromLevelData(item);
-        }
-        foreach (var item in tempLevelData.exitList)
-        {
-            Instantiate(exitPrefab, this.transform);
-            ExitBeacon exitBeacon = exitPrefab.GetComponent<ExitBeacon>();
-            exitBeacon.LoadFromLevelData(item);
-        }
-        foreach (var item in tempLevelData.flowList)
-        {
-            Instantiate(flowPrefab, this.transform);
-            WaveFlow waveFlow = flowPrefab.GetComponent<WaveFlow>();
-            waveFlow.LoadFromLevelData(item);
-        }
-        foreach (var item in tempLevelData.ballList)
-        {
-            Instantiate(ballPrefab, this.transform);
-            nutShell ball = obstaclePrefab.GetComponent<nutShell>();
-            ball.LoadFromLevelData(item);
-        }
+            string type = prefab.GetComponent<ILevelElement>().Type();
+            foreach (ElementData item in tempLevelData.levelElements.Where(el => el.type == type))
+            {
+                GameObject ob = Instantiate(prefab, this.transform);
+                ILevelElement script = ob.GetComponent<ILevelElement>();
+                script.LoadFromLevelData(item);
 
+            }
+        }
     }
 
     private void saveToFile(LevelData levelData)
     {
-        jsonPath = Path.Combine(Application.persistentDataPath, "levels/" + worldName + "/" + levelId + ".json");
+        jsonPath = Path.Combine(Application.persistentDataPath, "levels/" + levelId + ".json");
         string json = JsonUtility.ToJson(levelData, true);
         File.WriteAllText(jsonPath, json);
-
     }
 
     private IEnumerator SaveToFile(string json)

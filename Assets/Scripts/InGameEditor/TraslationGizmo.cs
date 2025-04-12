@@ -32,8 +32,7 @@ public class TraslationGizmo : MonoBehaviour, IGizmoHandler, IPointerDownHandler
             // Convertir posición de pantalla a mundo real
             Vector3 worldPos = eventData.pressEventCamera.ScreenToWorldPoint(eventData.position);
             worldPos.z = target.transform.position.z;
-            worldPos.x = worldPos.x - 0.4f;
-            worldPos.y = worldPos.y + 0.4f;
+            
             
 
             // Mover el objeto en la escena

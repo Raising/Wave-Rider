@@ -1,17 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Purchasing;
 
 
 public class LevelEditorManager : MonoBehaviour
 {
     public GameObject InteractionHolder;
-    public GameObject obstaclePrefab;
-    public GameObject surfacePrefab;
-    public GameObject ballPrefab;
-    public GameObject exitPrefab;
-    public GameObject flowPrefab;
     public LevelData levelData;
     //private GameObject 
     public GameObject CanvasInteractionArea;
@@ -32,35 +29,6 @@ public class LevelEditorManager : MonoBehaviour
     {
         go.GetComponent<MenuAnimator>().ToggleMenu();
     }
-
-    public void CreateObstacle()
-    {
-        GameObject go = Instantiate(obstaclePrefab, Vector3.zero, Quaternion.identity, InteractionHolder.transform);
-        
-        ObstacleCollider obstacleCollider = go.GetComponent<ObstacleCollider>();
-        CanvasInteractionArea.GetComponent<CanvasInteractionArea>().ShowGizmo(go);
-    }
-    public void CreateSurface()
-    {
-        GameObject go = Instantiate(surfacePrefab, Vector3.zero, Quaternion.identity, InteractionHolder.transform);
-        
-    }
-    public void CreateBall()
-    {
-        GameObject go = Instantiate(ballPrefab, Vector3.zero, Quaternion.identity, InteractionHolder.transform);
-        
-    }
-    public void CreateFlow()
-    {
-        GameObject go = Instantiate(flowPrefab, Vector3.zero, Quaternion.identity, InteractionHolder.transform);
-        
-    }
-    public void CreateExit()
-    {
-        GameObject go = Instantiate(exitPrefab, Vector3.zero, Quaternion.identity, InteractionHolder.transform);
-        
-    }
-
 
     public void ShowSelection()
     {
@@ -93,5 +61,14 @@ public class LevelEditorManager : MonoBehaviour
     public void Undo()
     {
 
+    }
+
+    internal GameObject CreateElement(GameObject elementPrefab, PointerEventData eventData)
+    {
+        GameObject go = Instantiate(elementPrefab, Vector3.zero, Quaternion.identity, InteractionHolder.transform);
+
+        CanvasInteractionArea.GetComponent<CanvasInteractionArea>().ShowGizmo(go);
+        go.GetComponent<LevelElementBase>().SetInert();
+        return go;
     }
 }

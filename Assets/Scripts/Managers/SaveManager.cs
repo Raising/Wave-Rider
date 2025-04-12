@@ -40,8 +40,19 @@ public class SaveManager : MonoBehaviour
     }
     static public Level GetLevelHistory(string levelName)
     {
-        string world = levelName.Split('_')[0];  // e.g. "intro"
-        string level = levelName.Split('_')[1]; // e.g. "1"
+        string world;
+        string level;
+        string[] worldName = levelName.Split('_');
+        if (worldName.Length == 2)
+        {
+            world = levelName.Split('_')[0];  // e.g. "intro"
+            level = levelName.Split('_')[1]; // e.g. "1"
+        }
+        else
+        {
+            level = levelName;
+            world = "test";
+        }
 
         if (Instance.Data.worlds.ContainsKey(world))
         {
@@ -71,8 +82,19 @@ public class SaveManager : MonoBehaviour
     }
     public static void IncreaseAttempts(LevelState levelState)
     {
-        string world = levelState.levelName.Split('_')[0];  // e.g. "intro"
-        string level = levelState.levelName.Split('_')[1]; // e.g. "1"
+        string world;
+        string level;
+        string[] worldName = levelState.levelName.Split('_');
+        if (worldName.Length == 2)
+        {
+        world = levelState.levelName.Split('_')[0];  // e.g. "intro"
+        level = levelState.levelName.Split('_')[1]; // e.g. "1"
+        }
+        else
+        {
+            level = levelState.levelName;
+            world = "test";
+        }
 
         // Asegurar que el mundo existe en el diccionario
         if (!Instance.Data.worlds.ContainsKey(world))
@@ -92,8 +114,19 @@ public class SaveManager : MonoBehaviour
     }
     public static void SaveLevelHistory(LevelState levelState)
     {
-        string world = levelState.levelName.Split('_')[0];  // e.g. "intro"
-        string level = levelState.levelName.Split('_')[1]; // e.g. "1"
+        string world;
+        string level;
+        string[] worldName = levelState.levelName.Split('_');
+        if (worldName.Length == 2)
+        {
+            world = levelState.levelName.Split('_')[0];  // e.g. "intro"
+            level = levelState.levelName.Split('_')[1]; // e.g. "1"
+        }
+        else
+        {
+            level = levelState.levelName;
+            world = "test";
+        }
 
         // Asegurar que el mundo existe en el diccionario
         if (!Instance.Data.worlds.ContainsKey(world))
@@ -128,20 +161,36 @@ public class SaveManager : MonoBehaviour
     public static void SaveLevelData(LevelData levelData)
     {
         int index = -1;
-        for (int i = 0;i<Instance.Data.createdLevelList.Length;i++) { 
+        for (int i = 0; i < Instance.Data.createdLevelList.Length; i++)
+        {
             if (Instance.Data.createdLevelList[i].levelId == levelData.levelId)
             {
                 index = i; break;
             }
         }
 
-        if (index > 0) {
+        if (index > 0)
+        {
             Instance.Data.createdLevelList[index] = levelData;
         }
         else
         {
             Instance.Data.createdLevelList = Instance.Data.createdLevelList.Append(levelData).ToArray();
         }
+    }
+
+    public static void DeleteLevelData(LevelData levelData)
+    {
+        LevelData[] newLevels = new LevelData[Instance.Data.createdLevelList.Length - 1];
+        int j = 0;
+        for (int i = 0; i < Instance.Data.createdLevelList.Length; i++)
+        {
+            if (Instance.Data.createdLevelList[i].levelId != levelData.levelId)
+            {
+                newLevels[j++] = Instance.Data.createdLevelList[i];
+            }
+        }
+
     }
 
     private IEnumerator SaveToFile(string json)

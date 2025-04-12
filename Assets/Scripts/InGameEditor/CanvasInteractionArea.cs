@@ -10,8 +10,11 @@ public class CanvasInteractionArea : MonoBehaviour
     //public GameObject ScaleGizmoPrefab;
     public GameObject SelectionGizmoPrefab;
     public GameObject ElementGizmoPrefab;
+    public GameObject PointGizmoPrefab;
+
     private List<GameObject> gizmoList = new List<GameObject>();
     private RectTransform rt;
+    private GameObject latestIndividualSelection;
     void Start()
     {
         rt = GetComponent<RectTransform>();
@@ -37,13 +40,42 @@ public class CanvasInteractionArea : MonoBehaviour
     {
         CleanGizmos();
         GameObject gizmo = Instantiate(ElementGizmoPrefab, this.transform);
-        gizmo.GetComponent<GizmoController>().SetTarget(go, rt);
+        gizmo.GetComponent<TransformGizmoController>().SetTarget(go, rt);
         gizmoList.Add(gizmo);
+        latestIndividualSelection = go;
     }
+
+    public void ChangeToTransformGizmo()
+    {
+        if (latestIndividualSelection != null)
+        {
+            CleanGizmos();
+            GameObject gizmo = Instantiate(ElementGizmoPrefab, this.transform);
+
+            gizmo.GetComponent<TransformGizmoController>().SetTarget(latestIndividualSelection, rt);
+            gizmoList.Add(gizmo);
+        }
+
+    }
+    public void ChangeToPointsGizmo()
+    {
+        if (latestIndividualSelection != null)
+        {
+            CleanGizmos();
+            GameObject gizmo = Instantiate(PointGizmoPrefab, this.transform);
+
+            gizmo.GetComponent<PointGizmoController>().SetTarget(latestIndividualSelection, rt);
+            gizmoList.Add(gizmo);
+        }
+
+    }
+
+
 
     public void ShowSelectGizmo(List<GameObject> gos)
     {
         CleanGizmos();
+        latestIndividualSelection = null;
         foreach (GameObject go in gos)
         {
             GameObject gizmo = Instantiate(SelectionGizmoPrefab, this.transform);
@@ -51,7 +83,7 @@ public class CanvasInteractionArea : MonoBehaviour
             gizmoList.Add(gizmo);
         }
     }
-     
+
     //public void ShowTraslationGizmo(GameObject go)
     //{
     //    CleanGizmos();

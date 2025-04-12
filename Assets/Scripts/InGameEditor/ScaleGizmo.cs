@@ -29,7 +29,7 @@ public class ScaleGizmo: MonoBehaviour, IGizmoHandler, IPointerDownHandler, IDra
         if (!dragging || target == null) return;
 
         float deltaY = eventData.position.y - initialMouseY;
-        int steps = Mathf.FloorToInt(deltaY / 30f);
+        int steps = Mathf.FloorToInt(deltaY / 10f);
         float factor = Mathf.Pow(1.05f, steps);
 
         target.transform.localScale = new Vector3(initialScale.x * factor, initialScale.y * factor, initialScale.z);

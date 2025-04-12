@@ -380,7 +380,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 264213009}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94137e1af0302a942b9a8a139562e837, type: 3}
+  m_Script: {fileID: 11500000, guid: 09b1660b919b3d745a3378acde405bfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &264213012
@@ -1739,7 +1739,6 @@ GameObject:
   - component: {fileID: 1218399503}
   - component: {fileID: 1218399502}
   - component: {fileID: 1218399501}
-  - component: {fileID: 1218399500}
   m_Layer: 5
   m_Name: Create
   m_TagString: Untagged
@@ -1768,24 +1767,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1218399500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1218399498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbc4356fe6347c14291752041df880a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scene: Intro_1
-  button: {fileID: 1218399502}
-  text: {fileID: 272548620}
-  winStar: {fileID: 0}
-  timeStar: {fileID: 0}
-  waveStar: {fileID: 0}
 --- !u!114 &1218399501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1850,10 +1831,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1277465156}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 5
+      - m_Target: {fileID: 264213011}
+        m_TargetAssemblyTypeName: ActivitiySelectionScreen, Assembly-CSharp
+        m_MethodName: LoadCreationMenu
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2460,7 +2441,6 @@ GameObject:
   - component: {fileID: 1394865491}
   - component: {fileID: 1394865490}
   - component: {fileID: 1394865489}
-  - component: {fileID: 1394865493}
   m_Layer: 5
   m_Name: SeleccionNivel
   m_TagString: Untagged
@@ -2553,10 +2533,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1277465156}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 5
+      - m_Target: {fileID: 264213011}
+        m_TargetAssemblyTypeName: ActivitiySelectionScreen, Assembly-CSharp
+        m_MethodName: LoadMainGame
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2603,24 +2583,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394865487}
   m_CullTransparentMesh: 0
---- !u!114 &1394865493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394865487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbc4356fe6347c14291752041df880a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scene: Intro_1
-  button: {fileID: 1394865490}
-  text: {fileID: 1545640688}
-  winStar: {fileID: 0}
-  timeStar: {fileID: 0}
-  waveStar: {fileID: 0}
 --- !u!1 &1501016919
 GameObject:
   m_ObjectHideFlags: 0
@@ -3127,7 +3089,6 @@ GameObject:
   - component: {fileID: 1725923003}
   - component: {fileID: 1725923002}
   - component: {fileID: 1725923001}
-  - component: {fileID: 1725923000}
   m_Layer: 5
   m_Name: Comunity
   m_TagString: Untagged
@@ -3157,24 +3118,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1725923000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1725922998}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbc4356fe6347c14291752041df880a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scene: Intro_1
-  button: {fileID: 1725923002}
-  text: {fileID: 1361615005}
-  winStar: {fileID: 0}
-  timeStar: {fileID: 0}
-  waveStar: {fileID: 0}
 --- !u!114 &1725923001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3238,7 +3181,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1725923003}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 264213011}
+        m_TargetAssemblyTypeName: ActivitiySelectionScreen, Assembly-CSharp
+        m_MethodName: LoadComunityMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1725923003
 MonoBehaviour:
   m_ObjectHideFlags: 0

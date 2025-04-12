@@ -22,7 +22,7 @@ public class OutOfScreenCollider : MonoBehaviour
         {
             //sound.Play ();
             //AudioManager.Instance.playSound("Win.wav"); //TODO TEMPORALMENTE ROTO, PUES NO ESPERA QUE SE ACABE DE REPRODUCIR EL SONIDO
-            collider.GetComponent<nutShell>().SelfDestroy();
+            collider.GetComponent<NutShell>().SelfDestroy();
             //if (!nutShell.AnyAlive())
             //{
                 EventManager.TriggerEvent("OnLevelFail");

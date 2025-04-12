@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/Nivel_x3D.unity
+    path: 
     guid: 59fb1ad132f1c90418d3663a257b0516
   - enabled: 0
-    path: Assets/Scenes/Clean.unity
+    path: 
     guid: b2a260a3c8d521b4180231709bfcac99
   - enabled: 0
     path: Assets/Scenes/Main/MenuPrincipal.unity
@@ -18,10 +18,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Main/SeleccionNivel.unity
     guid: 8e5220e1c907e98469087f0b58a82830
   - enabled: 0
-    path: Assets/Scenes/NoCanvasScene.unity
+    path: 
     guid: 89fbfeff353e3b745882a5cdffd8316b
   - enabled: 0
-    path: Assets/Scenes/TestLevel.unity
+    path: 
     guid: ec8cfc4f2e40b5149b7983a392840aa2
   - enabled: 0
     path: Assets/Scenes/Level1.unity
@@ -110,4 +110,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Intro/Intro_15.unity
     guid: a427f8a05e6a95748adbb0ae91c17b96
+  - enabled: 1
+    path: Assets/Scenes/Meta/LevelLoader.unity
+    guid: 82b847bb07b89744cb762bc3c1672418
+  - enabled: 1
+    path: Assets/Scenes/Meta/LevelEditor.unity
+    guid: 4c6ad637cdc340343bb0fcd111da47b6
+  - enabled: 1
+    path: Assets/Scenes/Main/CreationInterface.unity
+    guid: 33a77c18243bc384585c923e3c3c7c82
+  - enabled: 1
+    path: Assets/Scenes/Main/SeleccionActividad.unity
+    guid: 0f2304afd07cc644697874576dcd8e9b
   m_configObjects: {}

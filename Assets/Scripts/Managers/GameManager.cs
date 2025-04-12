@@ -10,7 +10,8 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance = null;
-    private static float speed = 1.0f;
+    public static string TargetLevel = String.Empty;
+    private static float speed = 1.5f;
 
     [SerializeField] private GameState gameState;
 
@@ -67,6 +68,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadScene(string nombreEscena)
     {
+        World.clearObs();
         SceneManager.LoadScene(nombreEscena);
     }
     public void NextLevel()
@@ -109,7 +111,7 @@ public class GameManager : MonoBehaviour
 
     public static void ResetLevelVariables()
     {
-        nutShell.Reset();
+        NutShell.Reset();
         World.fillObstaclePoints();
     }
 
@@ -126,6 +128,10 @@ public class GameManager : MonoBehaviour
         LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    static public void SetTargetLevel(string levelId)
+    {
+        TargetLevel = levelId;
+    }
     public void PauseResumeGame()
     {
         if (gameState == GameState.paused)

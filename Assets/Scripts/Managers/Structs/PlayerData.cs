@@ -13,8 +13,6 @@ public class PlayerData
 
     public Dictionary<string, Levels> worlds = new Dictionary<string, Levels>();
 
-
-
     // Convert Dictionary to List before saving
     public void PrepareForSerialization()
     {
