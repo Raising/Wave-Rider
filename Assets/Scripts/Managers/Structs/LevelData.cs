@@ -74,5 +74,5 @@ public class SerializableVector3
         z = 0;
     }
 
-    public Vector3 ToVector2() => new Vector3(x, y, z);
+    public Vector3 ToVector3() => new Vector3(x, y, z);
 }

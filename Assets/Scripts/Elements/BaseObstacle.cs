@@ -26,7 +26,7 @@ public enum ObstacleType
 public class ObstacleData
 {
     public SerializableVector2[] points = new SerializableVector2[0];
-    public SerializableVector2 position = new SerializableVector2();
+    public SerializableVector3 position = new SerializableVector3();
     public SerializableVector2 scale = new SerializableVector2();
     public float rotation = 0;
 }
@@ -167,7 +167,7 @@ public class BaseObstacle : LevelElementBase, PolyEdit
             data = JsonConvert.SerializeObject(new ObstacleData()
             {
                 points = this.polygonCollider.points.Select(p => new SerializableVector2(p)).ToArray(),
-                position = new SerializableVector2(this.transform.position),
+                position = new SerializableVector3(this.transform.position),
                 scale = new SerializableVector2(this.transform.localScale),
                 rotation = this.transform.rotation.z,
             }),
@@ -179,7 +179,7 @@ public class BaseObstacle : LevelElementBase, PolyEdit
     {
         ObstacleData data = JsonUtility.FromJson<ObstacleData>(elementData.data); 
         this.polygonCollider.points = data.points.Select(p => p.ToVector2()).ToArray();
-        this.transform.position = data.position.ToVector2();
+        this.transform.position = data.position.ToVector3();
         this.transform.rotation = Quaternion.Euler(0, 0, data.rotation);
         this.transform.localScale = data.scale.ToVector2();
 

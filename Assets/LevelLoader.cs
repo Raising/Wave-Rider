@@ -7,6 +7,7 @@ public class LevelLoader : MonoBehaviour
 {
     private string levelId = string.Empty;
     private MetaLevel metalevel;
+    public bool editMode = false;
     //public GameObject[] elementPrefabs;
     // Start is called before the first frame update
     void Start()
@@ -48,6 +49,9 @@ public class LevelLoader : MonoBehaviour
                 try
                 {
                     script.LoadFromLevelData(item);
+                    if (editMode) { 
+                        script.SetInert();
+                    }
                 }
                 catch (System.Exception ex)
                 {

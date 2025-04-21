@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 public enum FlowType
@@ -14,7 +15,7 @@ public enum FlowType
 [System.Serializable]
 public class WaterFlowData
 {
-    public SerializableVector2 position = new SerializableVector2();
+    public SerializableVector3 position = new SerializableVector3();
     public SerializableVector2 scale = new SerializableVector2();
     public float rotation = 0;
     public float strength = 1;
@@ -25,6 +26,7 @@ public class WaterFlow : LevelElementBase
     public FlowType flowType = FlowType.lineal;
     private Vector2 rotatedForce = new Vector2(0, 0);
     private Shapes.Line line;
+    private bool inert = false;
 
     public override string Type()
     {
@@ -40,10 +42,15 @@ public class WaterFlow : LevelElementBase
     }
     private void Update()
     {
+
         line.DashOffset += force.y * 0.005f * Time.timeScale;
     }
     private void OnTriggerStay2D(Collider2D other)
     {
+        if (inert)
+        {
+            return;
+        }
         // Check if the collider has a Rigidbody2D component
         Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
         if (rb != null)
@@ -60,7 +67,7 @@ public class WaterFlow : LevelElementBase
             type = this.Type(),
             data = JsonConvert.SerializeObject(new WaterFlowData()
             {
-                position = new SerializableVector2(this.transform.position),
+                position = new SerializableVector3(this.transform.position),
                 scale = new SerializableVector2(this.transform.localScale),
                 rotation = this.transform.eulerAngles.z,
                 strength = force.y,
@@ -71,7 +78,7 @@ public class WaterFlow : LevelElementBase
     public override void LoadFromLevelData(ElementData elementData)
     {
         WaterFlowData data = JsonUtility.FromJson<WaterFlowData>(elementData.data);
-        this.transform.position = data.position.ToVector2();
+        this.transform.position = data.position.ToVector3();
         this.transform.localScale = data.scale.ToVector2();
         this.transform.rotation = Quaternion.Euler(0, 0, data.rotation);
         this.force = new Vector2(0, data.strength);
@@ -82,5 +89,6 @@ public class WaterFlow : LevelElementBase
     public override void SetInert()
     {
         GetComponent<PolygonCollider2D>().enabled = false;
+        inert = true;
     }
 }

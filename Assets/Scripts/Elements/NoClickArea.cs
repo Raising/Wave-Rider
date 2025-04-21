@@ -7,7 +7,7 @@ using UnityEngine.Purchasing.MiniJSON;
 public class NoCLickZoneData 
 {
     public SerializableVector2 size = new SerializableVector2();
-    public SerializableVector2 position = new SerializableVector2();
+    public SerializableVector3 position = new SerializableVector3();
     public SerializableVector2 scale = new SerializableVector2();
     public float rotation = 0;
 }
@@ -76,7 +76,7 @@ public class NoClickArea : LevelElementBase
             data = JsonConvert.SerializeObject(new NoCLickZoneData()
             {
                 size = new SerializableVector2(this.Rectangle.Width, this.Rectangle.Height),
-                position = new SerializableVector2(this.transform.position),
+                position = new SerializableVector3(this.transform.position),
                 scale = new SerializableVector2(this.transform.localScale),
                 rotation = this.transform.eulerAngles.z
             })
@@ -89,7 +89,7 @@ public class NoClickArea : LevelElementBase
         NoCLickZoneData data = JsonUtility.FromJson<NoCLickZoneData>(elementData.data);
         this.Rectangle.Width = data.size.x;
         this.Rectangle.Height = data.size.y;
-        this.transform.position = data.position.ToVector2();
+        this.transform.position = data.position.ToVector3();
         this.transform.localScale = data.scale.ToVector2();
         this.transform.rotation = Quaternion.Euler(0, 0, data.rotation);
         PolygonCollider2D collider = GetComponent<PolygonCollider2D>();

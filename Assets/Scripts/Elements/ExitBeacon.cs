@@ -11,7 +11,7 @@ public enum ExitType
 [System.Serializable]
 public class ExitBeaconData
 {
-    public SerializableVector2 position = new SerializableVector2();
+    public SerializableVector3 position = new SerializableVector3();
     public SerializableVector2 scale = new SerializableVector2();
     public float rotation = 0;
 }
@@ -59,7 +59,7 @@ public class ExitBeacon : LevelElementBase
             data = JsonConvert.SerializeObject(new ExitBeaconData()
             {
 
-                position = new SerializableVector2(this.transform.position),
+                position = new SerializableVector3(this.transform.position),
                 scale = new SerializableVector2(this.transform.localScale),
                 rotation = this.transform.eulerAngles.z
             })
@@ -69,7 +69,7 @@ public class ExitBeacon : LevelElementBase
     public override void LoadFromLevelData(ElementData elementData)
     {
         ExitBeaconData data = JsonUtility.FromJson<ExitBeaconData>(elementData.data); 
-        this.transform.position = data.position.ToVector2();
+        this.transform.position = data.position.ToVector3();
         this.transform.localScale = data.scale.ToVector2();
         this.transform.rotation = Quaternion.Euler(0, 0, data.rotation);
     }

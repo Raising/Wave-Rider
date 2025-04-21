@@ -16,7 +16,7 @@ public enum BallType
 [System.Serializable]
 public class BallData
 {
-    public SerializableVector2 position = new SerializableVector2();
+    public SerializableVector3 position = new SerializableVector3();
     public SerializableVector2 scale = new SerializableVector2();
     public float rotation = 0;
     public SerializableVector2 initialVelocity = new SerializableVector2(0, 0);
@@ -132,7 +132,7 @@ public class NutShell : LevelElementBase
             type = this.Type(),
             data = JsonConvert.SerializeObject(new BallData()
             {
-                position = new SerializableVector2(this.transform.position),
+                position = new SerializableVector3(this.transform.position),
                 scale = new SerializableVector2(this.transform.localScale),
                 rotation = this.transform.eulerAngles.z,
                 initialVelocity = new SerializableVector2()
@@ -143,7 +143,7 @@ public class NutShell : LevelElementBase
     public override void LoadFromLevelData(ElementData elementData)
     {
         BallData data = JsonUtility.FromJson<BallData>(elementData.data);
-        this.transform.position = data.position.ToVector2();
+        this.transform.position = data.position.ToVector3();
         this.transform.localScale = data.scale.ToVector2();
         this.transform.rotation = Quaternion.Euler(0, 0, data.rotation);
 
