@@ -78,6 +78,13 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.0.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.postprocessing": {
       "version": "2.3.0",
       "depth": 1,
@@ -91,11 +98,11 @@
       "source": "registry",
       "dependencies": {
         "com.unity.ugui": "1.0.0",
-        "com.unity.modules.unityanalytics": "1.0.0",
-        "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.services.core": "1.0.1",
         "com.unity.modules.androidjni": "1.0.0",
-        "com.unity.services.core": "1.0.1"
+        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.modules.unityanalytics": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -115,8 +122,8 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.render-pipelines.universal": "10.7.0",
-        "com.unity.postprocessing": "2.1.7"
+        "com.unity.postprocessing": "2.1.7",
+        "com.unity.render-pipelines.universal": "10.7.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -126,8 +133,8 @@
       "source": "registry",
       "dependencies": {
         "com.unity.mathematics": "1.1.0",
-        "com.unity.render-pipelines.core": "10.7.0",
-        "com.unity.shadergraph": "10.7.0"
+        "com.unity.shadergraph": "10.7.0",
+        "com.unity.render-pipelines.core": "10.7.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -152,8 +159,8 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.render-pipelines.core": "10.7.0",
-        "com.unity.searcher": "4.3.2"
+        "com.unity.searcher": "4.3.2",
+        "com.unity.render-pipelines.core": "10.7.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -182,9 +189,9 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {
+        "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.director": "1.0.0",
         "com.unity.modules.animation": "1.0.0",
-        "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.particlesystem": "1.0.0"
       },
       "url": "https://packages.unity.com"

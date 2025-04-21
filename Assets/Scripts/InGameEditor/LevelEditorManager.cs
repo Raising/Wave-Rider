@@ -45,16 +45,17 @@ public class LevelEditorManager : MonoBehaviour
 
     public void SaveLevel()
     {
-        List<GameObject> allCurrentElements = new List<GameObject>();
-        foreach (Transform child in InteractionHolder.transform)
-        {
-            allCurrentElements.Add(child.gameObject);
-
-        }
-
         LevelData levelData = InteractionHolder.GetComponent<MetaLevel>().PortLevelToData();
         SaveManager.SaveLevelData(levelData);
         SaveManager.SaveGame();
+    }
+    public void TryLevel()
+    {
+        SaveLevel();
+        GameManager.Instance.LoadScene("LevelLoader");
+       
+
+
     }
 
 

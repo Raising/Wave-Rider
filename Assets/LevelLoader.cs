@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,16 +6,17 @@ using UnityEngine;
 public class LevelLoader : MonoBehaviour
 {
     private string levelId = string.Empty;
-    public GameObject touchableArea;
-
-    public GameObject[] elementPrefabs;
+    private MetaLevel metalevel;
+    //public GameObject[] elementPrefabs;
     // Start is called before the first frame update
     void Start()
     {
+        metalevel = FindObjectOfType<MetaLevel>();
         levelId = GameManager.TargetLevel;
         if (levelId == string.Empty)
         {
-            levelId = "3ec35a10-98b0-494f-99ad-47807c85f7d4";
+            levelId = "0fe419e5-5095-4be5-bc75-792f17f3aae1";
+            GameManager.SetTargetLevel(levelId);
         }
 
         LevelData levelData = SaveManager.Instance.Data.createdLevelList.First((data) => data.levelId == levelId);
@@ -30,20 +31,35 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadLevelFromJson(LevelData levelData)
     {
-        Instantiate(touchableArea, this.transform);
+
         //TODO set Size
         foreach (GameObject elementGo in GetComponentsInChildren<ILevelElement>().Select(el => ((MonoBehaviour)el).gameObject))
         {
             Destroy(elementGo);
         }
-        foreach (GameObject prefab in elementPrefabs)
+        foreach (GameObject prefab in metalevel.elementPrefabs)
         {
             string type = prefab.GetComponent<ILevelElement>().Type();
             foreach (ElementData item in levelData.levelElements.Where(el => el.type == type))
             {
+
                 GameObject ob = Instantiate(prefab, this.transform);
                 ILevelElement script = ob.GetComponent<ILevelElement>();
-                script.LoadFromLevelData(item);
+                try
+                {
+                    script.LoadFromLevelData(item);
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError($"❌ Error al cargar el item de tipo '{type}': {ex.Message}");
+
+                    // Opcional: mostrar el stacktrace
+                    Debug.LogException(ex);
+
+                    // Opcional: log del contenido original en formato JSON
+                    string json = Newtonsoft.Json.JsonConvert.SerializeObject(item, Newtonsoft.Json.Formatting.Indented);
+                    Debug.Log($"📦 Datos originales del item:\n{json}");
+                }
 
             }
         }

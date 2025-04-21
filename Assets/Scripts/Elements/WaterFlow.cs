@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,11 +12,10 @@ public enum FlowType
 }
 
 [System.Serializable]
-public class FlowData
+public class WaterFlowData
 {
-    public FlowType type = FlowType.lineal;
-    public Vector2 position = new Vector2();
-    public Vector2 scale = new Vector2();
+    public SerializableVector2 position = new SerializableVector2();
+    public SerializableVector2 scale = new SerializableVector2();
     public float rotation = 0;
     public float strength = 1;
 }
@@ -58,22 +58,21 @@ public class WaterFlow : LevelElementBase
         return new ElementData
         {
             type = this.Type(),
-            data = new FlowData
+            data = JsonConvert.SerializeObject(new WaterFlowData()
             {
-                position = this.transform.position,
-                scale = this.transform.localScale,
+                position = new SerializableVector2(this.transform.position),
+                scale = new SerializableVector2(this.transform.localScale),
                 rotation = this.transform.eulerAngles.z,
                 strength = force.y,
-                type = this.flowType,
-            }
+            })
         };
     }
 
     public override void LoadFromLevelData(ElementData elementData)
     {
-        FlowData data = (FlowData)elementData.data;
-        this.transform.position = data.position;
-        this.transform.localScale = data.scale;
+        WaterFlowData data = JsonUtility.FromJson<WaterFlowData>(elementData.data);
+        this.transform.position = data.position.ToVector2();
+        this.transform.localScale = data.scale.ToVector2();
         this.transform.rotation = Quaternion.Euler(0, 0, data.rotation);
         this.force = new Vector2(0, data.strength);
         this.flowType = FlowType.lineal;

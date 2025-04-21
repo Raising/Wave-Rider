@@ -7,11 +7,11 @@ using UnityEngine;
 using static UnityEditor.Progress;
 using static UnityEngine.GraphicsBuffer;
 
-
+[System.Serializable]
 public class ElementData
 {
     public string type;
-    public object data;
+    public string data;
 }
 public interface ILevelElement
 {
@@ -60,6 +60,7 @@ public class MetaLevel : MonoBehaviour
     {
         //load level json
 
+        levelId = GameManager.TargetLevel;
     }
 
     // Update is called once per frame
@@ -72,6 +73,7 @@ public class MetaLevel : MonoBehaviour
         if (string.IsNullOrEmpty(levelId))
         {
             levelId = System.Guid.NewGuid().ToString();
+            GameManager.SetTargetLevel(levelId);
         }
         LevelData levelData = new LevelData()
         {
@@ -112,6 +114,7 @@ public class MetaLevel : MonoBehaviour
 
     private void saveToFile(LevelData levelData)
     {
+        throw new System.NotImplementedException();
         jsonPath = Path.Combine(Application.persistentDataPath, "levels/" + levelId + ".json");
         string json = JsonUtility.ToJson(levelData, true);
         File.WriteAllText(jsonPath, json);

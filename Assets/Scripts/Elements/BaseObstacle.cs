@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine.UIElements;
+using Newtonsoft.Json;
+
 
 #if UNITY_EDITOR
 using static UnityEditor.PlayerSettings;
@@ -23,10 +25,9 @@ public enum ObstacleType
 [System.Serializable]
 public class ObstacleData
 {
-    public ObstacleType type = ObstacleType.normal;
-    public Vector2[] points = new Vector2[0];
-    public Vector2 position = new Vector2();
-    public Vector2 scale = new Vector2();
+    public SerializableVector2[] points = new SerializableVector2[0];
+    public SerializableVector2 position = new SerializableVector2();
+    public SerializableVector2 scale = new SerializableVector2();
     public float rotation = 0;
 }
 
@@ -163,25 +164,24 @@ public class BaseObstacle : LevelElementBase, PolyEdit
         return new ElementData
         {
             type = this.Type(),
-            data = new ObstacleData
+            data = JsonConvert.SerializeObject(new ObstacleData()
             {
-                points = this.polygonCollider.points,
-                position = this.transform.position,
-                type = this.type,
-                scale = this.transform.localScale,
+                points = this.polygonCollider.points.Select(p => new SerializableVector2(p)).ToArray(),
+                position = new SerializableVector2(this.transform.position),
+                scale = new SerializableVector2(this.transform.localScale),
                 rotation = this.transform.rotation.z,
-            }
+            }),
+
         };
     }
 
     public override void LoadFromLevelData(ElementData elementData)
     {
-        ObstacleData data = (ObstacleData)elementData.data;
-        this.polygonCollider.points = data.points;
-        this.transform.position = data.position;
+        ObstacleData data = JsonUtility.FromJson<ObstacleData>(elementData.data); 
+        this.polygonCollider.points = data.points.Select(p => p.ToVector2()).ToArray();
+        this.transform.position = data.position.ToVector2();
         this.transform.rotation = Quaternion.Euler(0, 0, data.rotation);
-        this.type = data.type;
-        this.transform.localScale = data.scale;
+        this.transform.localScale = data.scale.ToVector2();
 
         this.ApplyPolygonChanges();
     }

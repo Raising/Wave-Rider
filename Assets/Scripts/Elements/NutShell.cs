@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,11 +16,10 @@ public enum BallType
 [System.Serializable]
 public class BallData
 {
-    public BallType type = BallType.normal;
-    public Vector2 position = new Vector2();
-    public Vector2 scale = new Vector2();
+    public SerializableVector2 position = new SerializableVector2();
+    public SerializableVector2 scale = new SerializableVector2();
     public float rotation = 0;
-    public Vector2 initialVelocity = new Vector2(0, 0);
+    public SerializableVector2 initialVelocity = new SerializableVector2(0, 0);
 }
 
 public class NutShell : LevelElementBase
@@ -130,24 +130,23 @@ public class NutShell : LevelElementBase
         return new ElementData
         {
             type = this.Type(),
-            data = new BallData
+            data = JsonConvert.SerializeObject(new BallData()
             {
-                type = ballType,
-                position = this.transform.position,
-                scale = this.transform.localScale,
+                position = new SerializableVector2(this.transform.position),
+                scale = new SerializableVector2(this.transform.localScale),
                 rotation = this.transform.eulerAngles.z,
-                initialVelocity = new Vector2()
-            }
+                initialVelocity = new SerializableVector2()
+            })
         };
     }
 
     public override void LoadFromLevelData(ElementData elementData)
     {
-        BallData data = (BallData)elementData.data;
-        this.transform.position = data.position;
-        this.transform.localScale = data.scale;
+        BallData data = JsonUtility.FromJson<BallData>(elementData.data);
+        this.transform.position = data.position.ToVector2();
+        this.transform.localScale = data.scale.ToVector2();
         this.transform.rotation = Quaternion.Euler(0, 0, data.rotation);
-        this.ballType = data.type;
+
     }
 
     public override void SetInert()

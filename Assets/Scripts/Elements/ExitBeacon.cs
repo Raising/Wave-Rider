@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,11 +11,9 @@ public enum ExitType
 [System.Serializable]
 public class ExitBeaconData
 {
-    public ExitType type = ExitType.normal;
-    public Vector2 position = new Vector2();
-    public Vector2 scale = new Vector2();
+    public SerializableVector2 position = new SerializableVector2();
+    public SerializableVector2 scale = new SerializableVector2();
     public float rotation = 0;
-
 }
 public class ExitBeacon : LevelElementBase
 {
@@ -57,20 +56,21 @@ public class ExitBeacon : LevelElementBase
         return new ElementData
         {
             type = this.Type(),
-            data = new ExitBeaconData
+            data = JsonConvert.SerializeObject(new ExitBeaconData()
             {
-                position = this.transform.position,
-                scale = this.transform.localScale,
+
+                position = new SerializableVector2(this.transform.position),
+                scale = new SerializableVector2(this.transform.localScale),
                 rotation = this.transform.eulerAngles.z
-            }
+            })
         };
     }
 
     public override void LoadFromLevelData(ElementData elementData)
     {
-        ExitBeaconData data = (ExitBeaconData)elementData.data;
-        this.transform.position = data.position;
-        this.transform.localScale = data.scale;
+        ExitBeaconData data = JsonUtility.FromJson<ExitBeaconData>(elementData.data); 
+        this.transform.position = data.position.ToVector2();
+        this.transform.localScale = data.scale.ToVector2();
         this.transform.rotation = Quaternion.Euler(0, 0, data.rotation);
     }
 

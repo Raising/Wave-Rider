@@ -1,12 +1,14 @@
+using Newtonsoft.Json;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Purchasing.MiniJSON;
 
 [System.Serializable]
-public class NoCLickZoneData
+public class NoCLickZoneData 
 {
-    public Vector2 size = new Vector2();
-    public Vector2 position = new Vector2();
-    public Vector2 scale = new Vector2();
+    public SerializableVector2 size = new SerializableVector2();
+    public SerializableVector2 position = new SerializableVector2();
+    public SerializableVector2 scale = new SerializableVector2();
     public float rotation = 0;
 }
 
@@ -71,23 +73,24 @@ public class NoClickArea : LevelElementBase
         return new ElementData
         {
             type = this.Type(),
-            data = new NoCLickZoneData
+            data = JsonConvert.SerializeObject(new NoCLickZoneData()
             {
-                size = new Vector2(this.Rectangle.Width, this.Rectangle.Height),
-                position = this.transform.position,
-                scale = this.transform.localScale,
+                size = new SerializableVector2(this.Rectangle.Width, this.Rectangle.Height),
+                position = new SerializableVector2(this.transform.position),
+                scale = new SerializableVector2(this.transform.localScale),
                 rotation = this.transform.eulerAngles.z
-            }
+            })
         };
     }
 
     public override void LoadFromLevelData(ElementData elementData)
     {
-        NoCLickZoneData data = (NoCLickZoneData)elementData.data;
+
+        NoCLickZoneData data = JsonUtility.FromJson<NoCLickZoneData>(elementData.data);
         this.Rectangle.Width = data.size.x;
         this.Rectangle.Height = data.size.y;
-        this.transform.position = data.position;
-        this.transform.localScale = data.scale;
+        this.transform.position = data.position.ToVector2();
+        this.transform.localScale = data.scale.ToVector2();
         this.transform.rotation = Quaternion.Euler(0, 0, data.rotation);
         PolygonCollider2D collider = GetComponent<PolygonCollider2D>();
         collider.points = new Vector2[4] {

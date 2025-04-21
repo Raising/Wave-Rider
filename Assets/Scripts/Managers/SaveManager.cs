@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
+
 
 public class SaveManager : MonoBehaviour
 {
@@ -14,8 +13,15 @@ public class SaveManager : MonoBehaviour
     private string path;
     public PlayerData Data { get; private set; }
 
+    private static JsonSerializerSettings settings = new JsonSerializerSettings
+    {
+        //TypeNameHandling = TypeNameHandling.All, // 👈 ¡clave!
+        Formatting = Formatting.Indented
+    };
     private void Awake()
     {
+
+       
         // Implementar Singleton
         if (Instance == null)
         {
@@ -35,7 +41,8 @@ public class SaveManager : MonoBehaviour
     static public void SaveGame()
     {
         Instance.Data.PrepareForSerialization();
-        string json = JsonUtility.ToJson(Instance.Data, true);
+        
+        string json = JsonConvert.SerializeObject(Instance.Data, settings);  //JsonUtility.ToJson(Instance.Data, true);
         Instance.StartCoroutine(Instance.SaveToFile(json));
     }
     static public Level GetLevelHistory(string levelName)
@@ -87,8 +94,8 @@ public class SaveManager : MonoBehaviour
         string[] worldName = levelState.levelName.Split('_');
         if (worldName.Length == 2)
         {
-        world = levelState.levelName.Split('_')[0];  // e.g. "intro"
-        level = levelState.levelName.Split('_')[1]; // e.g. "1"
+            world = levelState.levelName.Split('_')[0];  // e.g. "intro"
+            level = levelState.levelName.Split('_')[1]; // e.g. "1"
         }
         else
         {
@@ -214,7 +221,7 @@ public class SaveManager : MonoBehaviour
             try
             {
                 string json = File.ReadAllText(path);
-                Data = JsonUtility.FromJson<PlayerData>(json);
+                Data = JsonConvert.DeserializeObject<PlayerData>(json, settings); //JsonUtility.FromJson<PlayerData>(json);
                 Data.RestoreFromSerialization();
                 //Debug.Log($"📂 Datos cargados - Nivel: {Data.nivel}, Vida: {Data.vida}, Nombre: {Data.nombre}");
             }
