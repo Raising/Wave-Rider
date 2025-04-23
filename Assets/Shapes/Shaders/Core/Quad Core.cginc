@@ -1,5 +1,5 @@
-// Shapes © Freya Holmér - https://twitter.com/FreyaHolmer/
-// Website & Documentation - https://acegikmo.com/shapes/
+
+// Shapes © Freya Holmér - modificado para usar OKLab
 #include "UnityCG.cginc"
 #include "../Shapes.cginc"
 #pragma target 3.0
@@ -15,6 +15,34 @@ PROP_DEF( float3, _C)
 PROP_DEF( float3, _D)
 UNITY_INSTANCING_BUFFER_END(Props)
 
+float3 RGBToOKLab(float3 c) {
+    float l = 0.4122214708 * c.r + 0.5363325363 * c.g + 0.0514459929 * c.b;
+    float m = 0.2119034982 * c.r + 0.6806995451 * c.g + 0.1073969566 * c.b;
+    float s = 0.0883024619 * c.r + 0.2817188376 * c.g + 0.6299787005 * c.b;
+    l = pow(l, 1.0 / 3.0);
+    m = pow(m, 1.0 / 3.0);
+    s = pow(s, 1.0 / 3.0);
+    return float3(
+        0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s,
+        1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s,
+        0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s
+    );
+}
+
+float3 OKLabToRGB(float3 lab) {
+    float l = lab.x + 0.3963377774 * lab.y + 0.2158037573 * lab.z;
+    float m = lab.x - 0.1055613458 * lab.y - 0.0638541728 * lab.z;
+    float s = lab.x - 0.0894841775 * lab.y - 1.2914855480 * lab.z;
+    l = l * l * l;
+    m = m * m * m;
+    s = s * s * s;
+    return float3(
+        +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+        -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+        -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s
+    );
+}
+
 struct VertexInput {
     float4 vertex : POSITION;
     float4 color : COLOR;
@@ -23,99 +51,49 @@ struct VertexInput {
 };
 struct VertexOutput {
     float4 pos : SV_POSITION;
-    #if QUAD_INTERPOLATION_QUALITY == 0
-        half4 color : TEXCOORD0;
-    #elif QUAD_INTERPOLATION_QUALITY == 1
-        half2 uv : TEXCOORD2;
-    #elif QUAD_INTERPOLATION_QUALITY == 2
-        half2 localPos : TEXCOORD1;
-    #elif QUAD_INTERPOLATION_QUALITY == 3
-        half2 localPos : TEXCOORD1;
-        half4 posAB : TEXCOORD2;
-        half4 posCD : TEXCOORD3;
-    #endif
-    UNITY_FOG_COORDS(4)
+    half2 uv : TEXCOORD0;
+    UNITY_FOG_COORDS(1)
     UNITY_VERTEX_INPUT_INSTANCE_ID
     UNITY_VERTEX_OUTPUT_STEREO
 };
-
-half2 PlanarProject( half3 pos3D, half3 dirX, half3 dirY ){
-    return half2( dot( pos3D, dirX ), dot( pos3D, dirY ) );
-}
 
 VertexOutput vert (VertexInput v) {
     UNITY_SETUP_INSTANCE_ID(v);
     VertexOutput o = (VertexOutput)0;
     UNITY_TRANSFER_INSTANCE_ID(v, o);
     UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
-    
+
     float3 A = PROP(_A);
     float3 B = PROP(_B);
     float3 C = PROP(_C);
     float3 D = PROP(_D);
     v.vertex.xyz = A * v.color.r + B * v.color.g + C * v.color.b + D * v.color.a;
-    
-    #if QUAD_INTERPOLATION_QUALITY == 0
-        // per-vertex version, which doesn't do a real bilinear version
-        half4 colorA = PROP(_Color);
-        half4 colorB = PROP(_ColorB);
-        half4 colorC = PROP(_ColorC);
-        half4 colorD = PROP(_ColorD);
-        o.color = colorA * v.color.r + colorB * v.color.g + colorC * v.color.b + colorD * v.color.a;
-    #elif QUAD_INTERPOLATION_QUALITY == 1
-        o.uv = v.uv * 0.5 + 0.5;
-    #elif QUAD_INTERPOLATION_QUALITY == 2
-        o.localPos = v.vertex.xy; // assume 2D coordinates only
-    #elif QUAD_INTERPOLATION_QUALITY == 3
-        // construct best fit plane from average face normals
-        half3 ab = B - A;
-        half3 ac = C - A;
-        half3 ad = D - A;
-        half3 normalA = normalize(cross( ab, ac ));
-        half3 normalB = normalize(cross( ab, ac ));
-        half3 normal = normalize(normalA + normalB);
-        half3 tangent = normalize(ab);
-        half3 bitangent = cross( normal, tangent );
-        
-        // project all coordinates
-        o.posAB.xy = PlanarProject( A, tangent, bitangent );
-        o.posAB.zw = PlanarProject( B, tangent, bitangent );
-        o.posCD.xy = PlanarProject( C, tangent, bitangent );
-        o.posCD.zw = PlanarProject( D, tangent, bitangent );
-        o.localPos = PlanarProject( v.vertex, tangent, bitangent );
-    #endif
-    
-    o.pos = UnityObjectToClipPos( v.vertex );
-    UNITY_TRANSFER_FOG(o,o.pos);
+    o.uv = v.uv * 0.5 + 0.5;
+
+    o.pos = UnityObjectToClipPos(v.vertex);
+    UNITY_TRANSFER_FOG(o, o.pos);
     return o;
 }
 
-FRAG_OUTPUT_V4 frag( VertexOutput i ) : SV_Target {
+FRAG_OUTPUT_V4 frag(VertexOutput i) : SV_Target {
     UNITY_SETUP_INSTANCE_ID(i);
-    #if QUAD_INTERPOLATION_QUALITY == 0
-        return ShapesOutput( i.color, 1 );
-    #else
-        #if QUAD_INTERPOLATION_QUALITY == 1
-            half2 uv = i.uv;
-        #elif QUAD_INTERPOLATION_QUALITY == 2
-            float3 A = PROP(_A);
-            float3 B = PROP(_B);
-            float3 C = PROP(_C);
-            float3 D = PROP(_D);
-            half2 uv = InvBilinear( i.localPos.xy, A.xy, B.xy, C.xy, D.xy );
-        #elif QUAD_INTERPOLATION_QUALITY == 3
-            half2 uv = InvBilinear( i.localPos.xy, i.posAB.xy, i.posAB.zw, i.posCD.xy, i.posCD.zw );
-        #endif
-        half4 colorA = PROP(_Color);
-        half4 colorB = PROP(_ColorB);
-        half4 colorC = PROP(_ColorC);
-        half4 colorD = PROP(_ColorD);
-        half4 left = lerp(colorA, colorB, uv.y );
-        half4 right = lerp(colorD, colorC, uv.y );
-        half4 color = lerp( left, right, uv.x );
-        return SHAPES_OUTPUT( color, 1, i );
-    #endif
+
+    half2 uv = i.uv;
+    half4 colorA = PROP(_Color);
+    half4 colorB = PROP(_ColorB);
+    half4 colorC = PROP(_ColorC);
+    half4 colorD = PROP(_ColorD);
+
+    float3 labA = RGBToOKLab(colorA.rgb);
+    float3 labB = RGBToOKLab(colorB.rgb);
+    float3 labC = RGBToOKLab(colorC.rgb);
+    float3 labD = RGBToOKLab(colorD.rgb);
+
+    float3 left = lerp(labA, labB, uv.y);
+    float3 right = lerp(labD, labC, uv.y);
+    float3 finalLab = lerp(left, right, uv.x);
+    float3 rgb = OKLabToRGB(finalLab);
+
+    float alpha = lerp(lerp(colorA.a, colorB.a, uv.y), lerp(colorD.a, colorC.a, uv.y), uv.x);
+    return half4(rgb, alpha);
 }
-
-
-

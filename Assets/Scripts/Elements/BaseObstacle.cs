@@ -44,7 +44,7 @@ public class BaseObstacle : LevelElementBase, PolyEdit
     public Shapes.Polygon baseBorderColor;
     public Shapes.Polygon whiteBorderColor;
     public ObstacleType type = ObstacleType.normal;
-    private Boolean privateDirty = false;
+    private ObstacleRenderer obstacleRender;
     // Start is called before the first frame update
 
     public override string Type()
@@ -53,7 +53,7 @@ public class BaseObstacle : LevelElementBase, PolyEdit
     }
     void Awake()
     {
-        //ApplyPolygonChanges();
+        ApplyPolygonChanges();
     }
 
     void Start()
@@ -68,26 +68,19 @@ public class BaseObstacle : LevelElementBase, PolyEdit
             Debug.LogError("PolygonCollider2D is missing!");
             return;
         }
-
-        Vector2[] points = polygonCollider.points;
-        Vector2 center = CalculateCenter(points);
-        Vector2[] modifiedPoints = ModifyPoints(points, center, 0.2f); // Desplazamiento base 0.1f
-        Vector2[] borderPoints = ModifyPoints(points, center, 0.1f); // Un poco menos para el borde
-
-        polygonBody.SetPoints(modifiedPoints);
-        baseBorderColor.SetPoints(borderPoints);
-        whiteBorderColor.SetPoints(points);
-
-        if (!privateDirty)
+        if (obstacleRender == null)
         {
-            privateDirty = true;
-#if UNITY_EDITOR
-            //EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            //EditorUtility.SetDirty(polygonBody);
-            //EditorUtility.SetDirty(baseBorderColor);
-            //EditorUtility.SetDirty(whiteBorderColor);
-#endif
+            obstacleRender = FindObjectOfType<ObstacleRenderer>();  
         }
+        obstacleRender.UpdateRender();
+        //Vector2[] points = polygonCollider.points;
+        //Vector2 center = CalculateCenter(points);
+        //Vector2[] modifiedPoints = ModifyPoints(points, center, 0.2f); // Desplazamiento base 0.1f
+        //Vector2[] borderPoints = ModifyPoints(points, center, 0.1f); // Un poco menos para el borde
+
+        //polygonBody.SetPoints(modifiedPoints);
+        //baseBorderColor.SetPoints(borderPoints);
+        //whiteBorderColor.SetPoints(points);
     }
     float SineBetweenVectors(Vector2 v1, Vector2 v2)
     {
@@ -154,7 +147,7 @@ public class BaseObstacle : LevelElementBase, PolyEdit
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        ApplyPolygonChanges();
+        //ApplyPolygonChanges();
     }
 
 #endif
