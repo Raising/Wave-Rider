@@ -47,17 +47,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c626732f32682d6478db3f116ba06915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldName: test
-  levelId: 
   interactionObject: {fileID: 2011841000057504636}
-  waveTarget: 0
-  timeTarget: 0
+  workingLevelData:
+    name: 
+    world: 
+    levelId: 
+    size: 7
+    cameraMode: 0
+    waveTarget: 0
+    timeTarget: 0
+    levelElements: []
   elementPrefabs:
   - {fileID: 1175137014960554, guid: 269c3130f09c4d04f9cfbbd06dc24338, type: 3}
   - {fileID: 5835532398723387498, guid: ad5d89c5ef5e6074da042ab7986a64bb, type: 3}
   - {fileID: 1238050758250638829, guid: 65a9bfe01bb88c44bab2cc7dddd1f638, type: 3}
   - {fileID: 6202361106607566593, guid: 58c82471197611b4cb84173b7e896753, type: 3}
   - {fileID: 1031272667602944, guid: 1c1bd0c144ee5fe4aa5727cd0540d94c, type: 3}
+  negativeObstaclePrefab: {fileID: 4297342458894152633, guid: 36a706fe5cf71874b934a4058e03e753,
+    type: 3}
 --- !u!114 &2011841000057504611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,6 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editMode: 1
+  newLevel: 0
 --- !u!1001 &803151341330573169
 PrefabInstance:
   m_ObjectHideFlags: 0

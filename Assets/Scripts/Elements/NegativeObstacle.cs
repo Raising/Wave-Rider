@@ -1,10 +1,6 @@
 using System;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEngine.UIElements;
 using Newtonsoft.Json;
 
 
@@ -14,16 +10,9 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
 
-public enum ObstacleType
-{
-    normal,
-    killer,
-    dumper,
-    banger,
-}
 
 [System.Serializable]
-public class ObstacleData
+public class NegativeObstacleData
 {
     public SerializableVector2[] points = new SerializableVector2[0];
     public SerializableVector3 position = new SerializableVector3();
@@ -31,43 +20,20 @@ public class ObstacleData
     public float rotation = 0;
 }
 
-public interface PolyEdit
-{
-    void ApplyPolygonChanges();
 
-}
-public abstract class Obstacle : LevelElementBase, PolyEdit
+public class NegativeObstacle : Obstacle
 {
-    public PolygonCollider2D polygonCollider;
-    private ObstacleRenderer obstacleRender;
-    public void ApplyPolygonChanges()
-    {
-        if (polygonCollider == null)
-        {
-            Debug.LogError("PolygonCollider2D is missing!");
-            return;
-        }
-        if (obstacleRender == null)
-        {
-            obstacleRender = FindObjectOfType<ObstacleRenderer>();
-        }
 
-        obstacleRender.UpdateRender();
-    }
-}
-
-public class BaseObstacle : Obstacle 
-{
     public Shapes.Polygon polygonBody;
     public Shapes.Polygon baseBorderColor;
     public Shapes.Polygon whiteBorderColor;
     public ObstacleType type = ObstacleType.normal;
-    
+
     // Start is called before the first frame update
 
     public override string Type()
     {
-        return "BaseObstacle";
+        return "NegativeObstacle";
     }
     void Awake()
     {
@@ -79,7 +45,7 @@ public class BaseObstacle : Obstacle
 
     }
 
-  
+
     float SineBetweenVectors(Vector2 v1, Vector2 v2)
     {
         float crossProduct = v1.x * v2.y - v1.y * v2.x; // Producto cruzado en 2D
@@ -155,7 +121,7 @@ public class BaseObstacle : Obstacle
         return new ElementData
         {
             type = this.Type(),
-            data = JsonConvert.SerializeObject(new ObstacleData()
+            data = JsonConvert.SerializeObject(new NegativeObstacleData()
             {
                 points = this.polygonCollider.points.Select(p => new SerializableVector2(p)).ToArray(),
                 position = new SerializableVector3(this.transform.position),
@@ -168,7 +134,7 @@ public class BaseObstacle : Obstacle
 
     public override void LoadFromLevelData(ElementData elementData)
     {
-        ObstacleData data = JsonUtility.FromJson<ObstacleData>(elementData.data); 
+        NegativeObstacleData data = JsonUtility.FromJson<NegativeObstacleData>(elementData.data);
         this.polygonCollider.points = data.points.Select(p => p.ToVector2()).ToArray();
         this.transform.position = data.position.ToVector3();
         this.transform.rotation = Quaternion.Euler(0, 0, data.rotation);

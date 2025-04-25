@@ -3,6 +3,7 @@ using UnityEngine;
 using Shapes;
 using System;
 using Unity.Mathematics;
+using System.Linq;
 
 [ExecuteAlways]
 public class ObstacleRenderer : MonoBehaviour
@@ -119,8 +120,59 @@ public class ObstacleRenderer : MonoBehaviour
     {
         GameObject surfaceObj = Instantiate(surfacePrefab, transform);
         var polygon = surfaceObj.GetComponent<Shapes.Polygon>();
-        polygon.points = surfacePoints;
-        instances.Add(surfaceObj);
+        if (Trigonometrics.SignedArea(surfacePoints.ToArray()) > 0)
+        {
+            List<Vector2> exterior = new List<Vector2>();
+            Vector2 outerPoint = surfacePoints.OrderBy(el => -el.magnitude).FirstOrDefault();
+            int startIndex = surfacePoints.IndexOf(outerPoint);
+            List<Vector2> reordered = new List<Vector2>(surfacePoints.Count);
+            for (int i = 0; i < startIndex; i++)
+            {
+                reordered.Add(surfacePoints[i]);
+            }
+            reordered.Add(outerPoint);
+
+            Vector2 outerDir = outerPoint.normalized;
+
+            List<Vector2> baseCorners = new List<Vector2> {
+                new Vector2(1, 1),
+                new Vector2(1, -1),
+                new Vector2(-1, -1),
+                new Vector2(-1, 1)
+            };
+            reordered.Add(outerDir * 30);
+            //Ordenar empezando por el punto más alineado con outerDir
+            baseCorners
+                 .OrderBy(p =>
+                 {
+                     float angle = Vector2.SignedAngle(p.normalized, outerDir); //-180/180 degrees
+                     if (angle >= 0)
+                     {
+                         return angle;
+                     }
+                     else
+                     {
+                         return 360 + angle;
+                     }
+                 }).ToList().ForEach(corner =>
+             {
+                 reordered.Add(corner * 30f);
+             });
+            reordered.Add(outerDir * 30);
+            for (int i = startIndex; i < surfacePoints.Count; i++)
+            {
+                reordered.Add(surfacePoints[i]);
+            }
+            polygon.points = reordered;
+            instances.Add(surfaceObj);
+
+        }
+        else
+        {
+            polygon.points = surfacePoints;
+            instances.Add(surfaceObj);
+        }
+
     }
 
     void DrawGradientQuad(Vector2 q0, Vector2 q1, Vector2 q2, Vector2 q3)

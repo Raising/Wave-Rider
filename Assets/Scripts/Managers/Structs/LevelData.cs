@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 [System.Serializable]
 public class LevelData
@@ -7,16 +8,11 @@ public class LevelData
     public string world;
     public string levelId;
 
+    public float size = 7;
+    public CameraMode cameraMode = CameraMode.Static;
     public int waveTarget;
     public float timeTarget;
     public ElementData[] levelElements;
-
-    //public ObstacleData[] obstacleList = new ObstacleData[0];
-    //public BallData[] ballList = new BallData[0];
-    //public ExitData[] exitList = new ExitData[0];
-    //public FlowData[] flowList = new FlowData[0];
-    //public BlockData[] blockList = new BlockData[0];
-
 }
 
 

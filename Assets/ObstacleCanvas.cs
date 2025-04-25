@@ -13,9 +13,9 @@ public class ObstacleCanvas : MonoBehaviour
 {
     public float insetDistance = 0.2f;
 
-    private List<BaseObstacle> allObstacles = new List<BaseObstacle>();
+    private List<Obstacle> allObstacles = new List<Obstacle>();
     private List<Vector2[]> drawnPolygons = new List<Vector2[]>();
-    private Dictionary<BaseObstacle, Vector2[]> previousPoints = new Dictionary<BaseObstacle, Vector2[]>();
+    private Dictionary<Obstacle, Vector2[]> previousPoints = new Dictionary<Obstacle, Vector2[]>();
     public ObstacleRenderer obstacleRenderer;
     public int maxLength = 4;
     void Update()
@@ -34,7 +34,7 @@ public class ObstacleCanvas : MonoBehaviour
 
     void RefreshObstacleList()
     {
-        allObstacles = FindObjectsOfType<BaseObstacle>().ToList();
+        allObstacles = FindObjectsOfType<Obstacle>().ToList();
     }
 
     bool AnyObstacleChanged()
@@ -92,16 +92,16 @@ public class ObstacleCanvas : MonoBehaviour
         }
     }
 
-    List<List<BaseObstacle>> AgruparObstaculos()
+    List<List<Obstacle>> AgruparObstaculos()
     {
-        var grupos = new List<List<BaseObstacle>>();
-        var visitados = new HashSet<BaseObstacle>();
+        var grupos = new List<List<Obstacle>>();
+        var visitados = new HashSet<Obstacle>();
 
         foreach (var obs in allObstacles)
         {
             if (visitados.Contains(obs)) continue;
-            var grupo = new List<BaseObstacle>();
-            var cola = new Queue<BaseObstacle>();
+            var grupo = new List<Obstacle>();
+            var cola = new Queue<Obstacle>();
             cola.Enqueue(obs);
 
             while (cola.Count > 0)
@@ -126,7 +126,7 @@ public class ObstacleCanvas : MonoBehaviour
         return grupos;
     }
 
-    bool Intersectan(BaseObstacle a, BaseObstacle b)
+    bool Intersectan(Obstacle a, Obstacle b)
     {
         var worldA = GetWorldPoints(a);
         var worldB = GetWorldPoints(b);
@@ -152,7 +152,7 @@ public class ObstacleCanvas : MonoBehaviour
         return false;
     }
 
-    Vector2[] GetWorldPoints(BaseObstacle obs)
+    Vector2[] GetWorldPoints(Obstacle obs)
     {
         return obs.polygonCollider.points.Select(p => (Vector2)obs.transform.TransformPoint(p)).ToArray();
     }
@@ -237,7 +237,7 @@ public class ObstacleCanvas : MonoBehaviour
         return false;
     }
 
-    Segmento[] GetSegmentChain(Segmento starter, List<BaseObstacle> grupo)
+    Segmento[] GetSegmentChain(Segmento starter, List<Obstacle> grupo)
     {
 
         List<Segmento> rawSegments = new List<Segmento>();
@@ -324,7 +324,7 @@ public class ObstacleCanvas : MonoBehaviour
         return segmentChain.ToArray();
     }
 
-    Vector2[] CalcularUnion(List<BaseObstacle> grupo)
+    Vector2[] CalcularUnion(List<Obstacle> grupo)
     {
         List<Segmento> rawSegments = new List<Segmento>();
 

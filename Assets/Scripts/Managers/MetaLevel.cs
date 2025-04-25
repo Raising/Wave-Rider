@@ -41,26 +41,26 @@ public abstract class LevelElementBase : MonoBehaviour, ILevelElement
 
 public class MetaLevel : MonoBehaviour
 {
-    public string worldName = string.Empty;
-    public string levelId = "";
     private string jsonPath = string.Empty;
     public GameObject interactionObject;
-    public int waveTarget = 0;
-    public float timeTarget = 0;
     private LevelData tempLevelData;
+    public LevelData workingLevelData;
 
     public GameObject[] elementPrefabs;
-    //public GameObject obstaclePrefab;
-    //public GameObject blockPrefab;
-    //public GameObject ballPrefab;
-    //public GameObject exitPrefab;
-    //public GameObject flowPrefab;
-    // Start is called before the first frame update
+
+    public GameObject negativeObstaclePrefab;
+
     void Start()
     {
         //load level json
-
-        levelId = GameManager.TargetLevel;
+ 
+        workingLevelData = new LevelData()
+        {
+            world = string.Empty,
+            levelId = GameManager.TargetLevel,
+            waveTarget = 0,
+            timeTarget = 0,
+        };
     }
 
     // Update is called once per frame
@@ -70,23 +70,26 @@ public class MetaLevel : MonoBehaviour
     }
     public LevelData PortLevelToData()
     {
-        if (string.IsNullOrEmpty(levelId))
+        if (string.IsNullOrEmpty(workingLevelData.levelId))
         {
-            levelId = System.Guid.NewGuid().ToString();
-            GameManager.SetTargetLevel(levelId);
+            workingLevelData.levelId = System.Guid.NewGuid().ToString();
+            GameManager.SetTargetLevel(workingLevelData.levelId);
         }
         LevelData levelData = new LevelData()
         {
-            world = worldName,
-            levelId = levelId,
-            name = levelId,
-            waveTarget = waveTarget,
-            timeTarget = timeTarget,
+            world = workingLevelData.world,
+            levelId = workingLevelData.levelId,
+            name = workingLevelData.levelId,
+            cameraMode = workingLevelData.cameraMode,
+            size = workingLevelData.size,
+            waveTarget = workingLevelData.waveTarget,
+            timeTarget = workingLevelData.timeTarget,
             levelElements = GetComponentsInChildren<ILevelElement>().Select(el => el.AsLevelData()).ToArray(),
         };
 
         return levelData;
     }
+    //solo se usa en el boton
     public void SaveLevelToJson()
     {
         tempLevelData = PortLevelToData();
@@ -99,23 +102,31 @@ public class MetaLevel : MonoBehaviour
         {
             Destroy(elementGo);
         }
+        InstancePrefabs(negativeObstaclePrefab);
         foreach (GameObject prefab in elementPrefabs)
         {
-            string type = prefab.GetComponent<ILevelElement>().Type();
-            foreach (ElementData item in tempLevelData.levelElements.Where(el => el.type == type))
-            {
-                GameObject ob = Instantiate(prefab, this.transform);
-                ILevelElement script = ob.GetComponent<ILevelElement>();
-                script.LoadFromLevelData(item);
+            InstancePrefabs(prefab);
+        }
+    }
 
-            }
+    private void InstancePrefabs(GameObject prefab)
+    {
+        //Usar eldel level loader
+        string type = prefab.GetComponent<ILevelElement>().Type();
+        foreach (ElementData item in tempLevelData.levelElements.Where(el => el.type == type))
+        {
+            GameObject ob = Instantiate(prefab, this.transform);
+            ILevelElement script = ob.GetComponent<ILevelElement>();
+            script.LoadFromLevelData(item);
+
         }
     }
 
     private void saveToFile(LevelData levelData)
     {
+        
         throw new System.NotImplementedException();
-        jsonPath = Path.Combine(Application.persistentDataPath, "levels/" + levelId + ".json");
+        jsonPath = Path.Combine(Application.persistentDataPath, "levels/" + workingLevelData.levelId + ".json");
         string json = JsonUtility.ToJson(levelData, true);
         File.WriteAllText(jsonPath, json);
     }

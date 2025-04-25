@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum CameraMode
+{
+    Static,
+    Follow,
+    Moving,
+}
 public class CameraController : MonoBehaviour
 {
     private Camera cam;

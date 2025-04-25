@@ -6,12 +6,12 @@ public class PolygonEditor2D : MonoBehaviour
 {
     public float handleRadius = 0.1f;
     private PolygonCollider2D polygon;
-    private BaseObstacle obsScript;
+    private Obstacle obsScript;
     private int selectedIndex = -1;
 
     void Start()
     {
-        obsScript = GetComponent<BaseObstacle>();
+        obsScript = GetComponent<Obstacle>();
         polygon = GetComponent<PolygonCollider2D>();
         if (polygon == null)
         {
